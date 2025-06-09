@@ -251,16 +251,62 @@ print("🚀 시작!")</textarea>
             </div>
 
             <div class="content-section">
-                <h2>📊 리스트와 반복문</h2>
-                <p>리스트의 모든 요소를 반복문으로 처리할 수 있습니다.</p>
+                <h2>📊 리스트 기초</h2>
+                <p><strong>리스트</strong>는 여러 개의 값을 순서대로 저장하는 데이터 구조입니다.</p>
+                
+                <div class="concept-box">
+                    <h4>📝 리스트 기본 구조</h4>
+                    <pre>리스트명 = [값1, 값2, 값3, ...]
+리스트명[인덱스]  # 특정 위치의 값 가져오기</pre>
+                </div>
 
                 <div class="code-container">
-                    <textarea class="code-editor" id="editor3"># MechDog 동작 시퀀스
+                    <textarea class="code-editor" id="editor3a"># 리스트 만들기
+fruits = ["사과", "바나나", "오렌지"]
+numbers = [10, 20, 30, 40, 50]
+mechdog_actions = ["앉기", "일어서기", "돌기"]
+
+print("🍎 과일 리스트:", fruits)
+print("🔢 숫자 리스트:", numbers)
+print("🤖 MechDog 동작 리스트:", mechdog_actions)
+
+# 리스트 요소 접근하기 (인덱스는 0부터 시작!)
+print(f"\n첫 번째 과일: {fruits[0]}")
+print(f"두 번째 숫자: {numbers[1]}")
+print(f"마지막 동작: {mechdog_actions[-1]}")  # -1은 마지막 요소
+
+# 리스트 길이 확인
+print(f"\n과일 개수: {len(fruits)}개")
+print(f"동작 개수: {len(mechdog_actions)}개")</textarea>
+                    <button class="run-button" onclick="runCode('editor3a', 'output3a')">실행 ▶</button>
+                    <div class="output" id="output3a">여기에 실행 결과가 표시됩니다</div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>🔄 리스트와 반복문</h2>
+                <p>리스트의 모든 요소를 반복문으로 하나씩 처리할 수 있습니다.</p>
+
+                <div class="tip-box">
+                    <h4>💡 리스트 반복문 방법</h4>
+                    <ul>
+                        <li><strong>for 요소 in 리스트:</strong> 각 요소에 직접 접근</li>
+                        <li><strong>for i in range(len(리스트)):</strong> 인덱스로 접근</li>
+                        <li><strong>for i, 요소 in enumerate(리스트):</strong> 인덱스와 요소 모두 사용</li>
+                    </ul>
+                </div>
+
+                <div class="code-container">
+                    <textarea class="code-editor" id="editor3b"># MechDog 동작 시퀀스
 actions = ["앉기", "일어서기", "돌기", "손 흔들기", "짖기"]
 
 print("🤖 MechDog 동작 시퀀스 실행:")
 for action in actions:
     print(f"▶ {action} 동작 실행 중...")
+
+print("\n📝 순서와 함께 동작 목록:")
+for i in range(len(actions)):
+    print(f"{i+1}. {actions[i]}")
 
 # 센서 값들 처리
 sensor_values = [25, 30, 28, 35, 22]
@@ -277,8 +323,8 @@ colors = ["빨강", "파랑", "노랑", "초록"]
 print(f"\n🎨 인식된 색상: {len(colors)}개")
 for color in colors:
     print(f"• {color} 색상 감지")</textarea>
-                    <button class="run-button" onclick="runCode('editor3', 'output3')">실행 ▶</button>
-                    <div class="output" id="output3">여기에 실행 결과가 표시됩니다</div>
+                    <button class="run-button" onclick="runCode('editor3b', 'output3b')">실행 ▶</button>
+                    <div class="output" id="output3b">여기에 실행 결과가 표시됩니다</div>
                 </div>
             </div>
 
