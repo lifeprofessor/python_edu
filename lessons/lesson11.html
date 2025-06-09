@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레슨 11: 음성 인식 제어 - MechDog 파이썬</title>
+    <script src="https://pyodide-cdn2.iodide.io/v0.18.1/full/pyodide.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; color: #333; line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header {
+            text-align: center; margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+            border-radius: 20px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .header h1 { color: #fff; font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .header p { color: rgba(255, 255, 255, 0.9); font-size: 1.1em; }
+        .lesson-content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .content-section {
+            background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .content-section h2 { color: #4A90E2; margin-bottom: 15px; font-size: 1.5em; border-bottom: 2px solid #4A90E2; padding-bottom: 5px; }
+        .code-editor {
+            background: #2d3748; border-radius: 10px; padding: 15px;
+            font-family: 'Monaco', 'Menlo', monospace; font-size: 14px; color: #e2e8f0;
+            border: none; width: 100%; min-height: 150px; resize: vertical;
+        }
+        .run-button {
+            background: linear-gradient(135deg, #4CAF50, #45a049); color: white; border: none;
+            padding: 12px 24px; border-radius: 25px; cursor: pointer; font-size: 16px;
+            margin: 10px 5px; transition: all 0.3s ease;
+        }
+        .output {
+            background: #1a202c; color: #00ff00; font-family: 'Monaco', 'Menlo', monospace;
+            padding: 15px; border-radius: 10px; margin-top: 10px; min-height: 100px; white-space: pre-wrap;
+        }
+        .concept-box {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border-radius: 10px; padding: 20px; margin: 15px 0; border-left: 5px solid #ff6b6b;
+        }
+        .tip-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 10px; padding: 20px; margin: 15px 0; border-left: 5px solid #4ecdc4;
+        }
+        .exercise-section { grid-column: 1 / -1; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+        .nav-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;
+            text-decoration: none; padding: 12px 30px; border-radius: 25px; margin: 0 10px;
+            display: inline-block; transition: all 0.3s ease;
+        }
+        .navigation { text-align: center; margin-top: 30px; }
+        @media (max-width: 768px) { .lesson-content { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 레슨 11: 음성 인식 제어</h1>
+            <p>음성 명령으로 MechDog을 제어하는 스마트한 시스템을 구축해보세요!</p>
+        </div>
+
+        <div class="lesson-content">
+            <div class="content-section">
+                <h2>🎯 음성 인식 기본</h2>
+                <p>음성 명령을 텍스트로 변환하고 MechDog이 이해할 수 있도록 처리하는 시스템을 만들어보세요.</p>
+                
+                <div class="concept-box">
+                    <h4>📝 음성 인식 과정</h4>
+                    <ul>
+                        <li>🎤 마이크로 음성 입력 받기</li>
+                        <li>🔄 음성을 텍스트로 변환</li>
+                        <li>🧠 명령어 분석 및 해석</li>
+                        <li>🤖 해당 동작 실행</li>
+                    </ul>
+                </div>
+
+                <div class="code-container">
+                    <textarea class="code-editor" id="editor1"># 음성 명령 처리 시스템
+class VoiceCommandProcessor:
+    """음성 명령 처리 클래스"""
+    
+    def __init__(self):
+        # 명령어 사전
+        self.commands = {
+            "앉아": "sit",
+            "일어서": "stand", 
+            "짖어": "bark",
+            "돌아": "turn",
+            "앞으로": "move_forward",
+            "뒤로": "move_backward",
+            "멈춰": "stop",
+            "충전": "charge"
+        }
+        
+        self.responses = {
+            "sit": "🐕 앉았습니다!",
+            "stand": "🐕 일어섰습니다!",
+            "bark": "🐕 멍멍!",
+            "turn": "🐕 빙글빙글 돌았습니다!",
+            "move_forward": "🐕 앞으로 이동합니다!",
+            "move_backward": "🐕 뒤로 이동합니다!",
+            "stop": "🐕 멈췄습니다!",
+            "charge": "🔌 충전을 시작합니다!"
+        }
+    
+    def process_voice_input(self, voice_text):
+        """음성 입력 처리"""
+        print(f"🎤 음성 입력: '{voice_text}'")
+        
+        # 텍스트 전처리 (소문자, 공백 제거)
+        cleaned_text = voice_text.strip().lower()
+        
+        # 명령어 찾기
+        for korean_cmd, english_cmd in self.commands.items():
+            if korean_cmd in cleaned_text:
+                return self.execute_command(english_cmd)
+        
+        return "❓ 이해하지 못한 명령입니다."
+    
+    def execute_command(self, command):
+        """명령 실행"""
+        if command in self.responses:
+            response = self.responses[command]
+            print(f"✅ 명령 실행: {response}")
+            return response
+        else:
+            return "❌ 알 수 없는 명령입니다."
+
+# 음성 인식 테스트
+print("=== 음성 명령 시스템 테스트 ===")
+voice_processor = VoiceCommandProcessor()
+
+# 다양한 음성 입력 테스트
+test_inputs = [
+    "앉아",
+    "MechDog 일어서",
+    "짖어 봐",
+    "앞으로 가자",
+    "이제 멈춰",
+    "알아들을 수 없는 말"
+]
+
+for voice_input in test_inputs:
+    result = voice_processor.process_voice_input(voice_input)
+    print(f"결과: {result}\n")</textarea>
+                    <button class="run-button" onclick="runCode('editor1', 'output1')">실행 ▶</button>
+                    <div class="output" id="output1">여기에 실행 결과가 표시됩니다</div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>🧠 고급 명령 해석</h2>
+                <p>복잡한 음성 명령을 해석하고 매개변수를 추출하는 고급 시스템을 구현해보세요.</p>
+
+                <div class="code-container">
+                    <textarea class="code-editor" id="editor2"># 고급 음성 명령 해석기
+import re
+
+class AdvancedVoiceProcessor:
+    """고급 음성 명령 해석기"""
+    
+    def __init__(self):
+        # 패턴 기반 명령어 정의
+        self.command_patterns = [
+            # 이동 명령
+            {
+                'pattern': r'(\d+)걸음?\s*(앞으로|뒤로|왼쪽|오른쪽)',
+                'action': 'move_with_steps',
+                'params': ['steps', 'direction']
+            },
+            # 반복 명령
+            {
+                'pattern': r'(\d+)번\s*(짖어|앉아|일어서)',
+                'action': 'repeat_action',
+                'params': ['count', 'action']
+            },
+            # 시간 기반 명령
+            {
+                'pattern': r'(\d+)초\s*동안\s*(기다려|멈춰)',
+                'action': 'timed_action',
+                'params': ['duration', 'action']
+            }
+        ]
+        
+        self.direction_map = {
+            '앞으로': 'forward',
+            '뒤로': 'backward', 
+            '왼쪽': 'left',
+            '오른쪽': 'right'
+        }
+        
+        self.action_map = {
+            '짖어': 'bark',
+            '앉아': 'sit',
+            '일어서': 'stand',
+            '기다려': 'wait',
+            '멈춰': 'stop'
+        }
+    
+    def parse_complex_command(self, voice_text):
+        """복잡한 명령 해석"""
+        print(f"🎤 복잡한 명령 분석: '{voice_text}'")
+        
+        for pattern_info in self.command_patterns:
+            match = re.search(pattern_info['pattern'], voice_text)
+            if match:
+                params = {}
+                for i, param_name in enumerate(pattern_info['params']):
+                    value = match.group(i + 1)
+                    
+                    # 매개변수 변환
+                    if param_name in ['steps', 'count', 'duration']:
+                        params[param_name] = int(value)
+                    elif param_name == 'direction':
+                        params[param_name] = self.direction_map.get(value, value)
+                    elif param_name == 'action':
+                        params[param_name] = self.action_map.get(value, value)
+                    else:
+                        params[param_name] = value
+                
+                return self.execute_complex_command(pattern_info['action'], params)
+        
+        return "❓ 복잡한 명령을 이해하지 못했습니다."
+    
+    def execute_complex_command(self, action, params):
+        """복잡한 명령 실행"""
+        if action == 'move_with_steps':
+            steps = params['steps']
+            direction = params['direction']
+            print(f"🚶 {steps}걸음 {direction} 이동 중...")
+            for i in range(steps):
+                print(f"  걸음 {i+1}: {direction}으로 이동")
+            return f"✅ {steps}걸음 {direction} 이동 완료!"
+            
+        elif action == 'repeat_action':
+            count = params['count']
+            action_name = params['action']
+            print(f"🔄 {action_name} 동작을 {count}번 반복...")
+            for i in range(count):
+                if action_name == 'bark':
+                    print(f"  {i+1}번째: 멍멍! 🐕")
+                elif action_name == 'sit':
+                    print(f"  {i+1}번째: 앉기 🐕")
+                elif action_name == 'stand':
+                    print(f"  {i+1}번째: 일어서기 🐕")
+            return f"✅ {action_name} {count}번 반복 완료!"
+            
+        elif action == 'timed_action':
+            duration = params['duration']
+            action_name = params['action']
+            print(f"⏱️ {duration}초 동안 {action_name} 실행...")
+            if action_name in ['wait', 'stop']:
+                print(f"  {action_name} 상태로 {duration}초 대기 중...")
+            return f"✅ {duration}초 {action_name} 완료!"
+        
+        return "❌ 알 수 없는 복잡한 명령입니다."
+
+# 고급 음성 인식 테스트
+print("=== 고급 음성 명령 테스트 ===")
+advanced_processor = AdvancedVoiceProcessor()
+
+complex_commands = [
+    "3걸음 앞으로 가",
+    "5번 짖어",
+    "2번 앉아",
+    "10초 동안 기다려",
+    "7걸음 왼쪽으로 이동해"
+]
+
+for command in complex_commands:
+    result = advanced_processor.parse_complex_command(command)
+    print(f"결과: {result}\n")</textarea>
+                    <button class="run-button" onclick="runCode('editor2', 'output2')">실행 ▶</button>
+                    <div class="output" id="output2">여기에 실행 결과가 표시됩니다</div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>🎭 감정 인식</h2>
+                <p>음성의 톤과 키워드를 분석하여 사용자의 감정을 인식하고 적절히 반응하는 시스템을 만들어보세요.</p>
+
+                <div class="tip-box">
+                    <h4>💡 감정 인식 키워드</h4>
+                    <ul>
+                        <li>🎉 기쁨: "좋아", "최고", "훌륭해"</li>
+                        <li>😢 슬픔: "슬퍼", "우울해", "힘들어"</li>
+                        <li>😤 화남: "화나", "짜증", "답답해"</li>
+                        <li>😴 피곤: "피곤", "졸려", "쉬고싶어"</li>
+                    </ul>
+                </div>
+
+                <div class="code-container">
+                    <textarea class="code-editor" id="editor3"># 감정 인식 음성 시스템
+class EmotionalVoiceSystem:
+    """감정을 인식하는 음성 시스템"""
+    
+    def __init__(self):
+        self.emotion_keywords = {
+            'happy': ['좋아', '최고', '훌륭', '기뻐', '행복', '즐거워'],
+            'sad': ['슬퍼', '우울', '힘들어', '안좋아', '속상'],
+            'angry': ['화나', '짜증', '답답', '열받아', '싫어'],
+            'tired': ['피곤', '졸려', '쉬고싶', '지쳐', '힘들어'],
+            'excited': ['신나', '재밌', '흥미', '궁금', '기대']
+        }
+        
+        self.emotion_responses = {
+            'happy': [
+                "🎉 주인님이 기뻐하시니 저도 행복해요! 멍멍!",
+                "😊 함께 기뻐해요! 꼬리를 흔들흔들~",
+                "🎊 좋은 일이 있으셨나봐요! 축하해요!"
+            ],
+            'sad': [
+                "😢 주인님, 괜찮으세요? 제가 위로해드릴게요",
+                "🤗 슬프실 때는 제가 곁에 있어드릴게요",
+                "💝 따뜻한 포옹이 필요하시면 언제든 말씀하세요"
+            ],
+            'angry': [
+                "😌 진정하세요, 주인님. 깊게 숨을 쉬어보세요",
+                "🕊️ 화가 나실 때는 산책이나 어떠세요?",
+                "💆 스트레스 해소를 위해 재미있는 게임을 해볼까요?"
+            ],
+            'tired': [
+                "😴 피곤하시면 좀 쉬세요. 제가 조용히 지켜드릴게요",
+                "🛏️ 편안한 휴식을 위해 조명을 낮춰드릴까요?",
+                "☕ 따뜻한 차 한 잔과 함께 휴식하시는 건 어떠세요?"
+            ],
+            'excited': [
+                "🚀 우와! 저도 신나요! 함께 뛰어볼까요?",
+                "⭐ 흥미진진하네요! 더 자세히 말씀해주세요!",
+                "🎪 재미있는 일이 생겼나봐요! 함께 즐겨요!"
+            ]
+        }
+    
+    def detect_emotion(self, voice_text):
+        """음성에서 감정 감지"""
+        text_lower = voice_text.lower()
+        detected_emotions = []
+        
+        for emotion, keywords in self.emotion_keywords.items():
+            for keyword in keywords:
+                if keyword in text_lower:
+                    detected_emotions.append(emotion)
+                    break
+        
+        # 가장 먼저 감지된 감정 반환
+        if detected_emotions:
+            return detected_emotions[0]
+        else:
+            return 'neutral'
+    
+    def respond_to_emotion(self, emotion):
+        """감정에 따른 반응"""
+        if emotion in self.emotion_responses:
+            import random
+            responses = self.emotion_responses[emotion]
+            return random.choice(responses)
+        else:
+            return "🤖 주인님의 마음을 이해하려고 노력하고 있어요"
+    
+    def process_emotional_voice(self, voice_text):
+        """감정이 포함된 음성 처리"""
+        print(f"🎤 음성 입력: '{voice_text}'")
+        
+        # 감정 감지
+        emotion = self.detect_emotion(voice_text)
+        print(f"🧠 감지된 감정: {emotion}")
+        
+        # 감정에 따른 반응
+        response = self.respond_to_emotion(emotion)
+        print(f"🤖 MechDog 반응: {response}")
+        
+        return emotion, response
+
+# 감정 인식 테스트
+print("=== 감정 인식 시스템 테스트 ===")
+emotional_system = EmotionalVoiceSystem()
+
+emotional_inputs = [
+    "오늘 정말 좋은 일이 있어서 기뻐!",
+    "요즘 너무 슬프고 우울해...",
+    "화나서 짜증이 나는데 어떡하지?",
+    "너무 피곤해서 쉬고 싶어",
+    "새로운 게임이 너무 신나고 재밌어!",
+    "오늘은 그냥 평범한 하루야"
+]
+
+for voice_input in emotional_inputs:
+    emotion, response = emotional_system.process_emotional_voice(voice_input)
+    print(f"감정: {emotion} | 반응: {response}\n")</textarea>
+                    <button class="run-button" onclick="runCode('editor3', 'output3')">실행 ▶</button>
+                    <div class="output" id="output3">여기에 실행 결과가 표시됩니다</div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>🔊 음성 합성</h2>
+                <p>텍스트를 음성으로 변환하여 MechDog이 직접 말할 수 있도록 하는 시스템을 구현해보세요.</p>
+
+                <div class="code-container">
+                    <textarea class="code-editor" id="editor4"># 음성 합성 시스템
+class TextToSpeechSystem:
+    """텍스트를 음성으로 변환하는 시스템"""
+    
+    def __init__(self):
+        self.voice_settings = {
+            'speed': 'normal',  # slow, normal, fast
+            'pitch': 'medium',  # low, medium, high
+            'volume': 'normal'  # quiet, normal, loud
+        }
+        
+        # 특수 상황별 음성 스타일
+        self.voice_styles = {
+            'excited': {'speed': 'fast', 'pitch': 'high', 'volume': 'loud'},
+            'calm': {'speed': 'slow', 'pitch': 'low', 'volume': 'quiet'},
+            'normal': {'speed': 'normal', 'pitch': 'medium', 'volume': 'normal'},
+            'alert': {'speed': 'fast', 'pitch': 'high', 'volume': 'loud'}
+        }
+    
+    def set_voice_style(self, style):
+        """음성 스타일 설정"""
+        if style in self.voice_styles:
+            self.voice_settings.update(self.voice_styles[style])
+            print(f"🎵 음성 스타일을 '{style}'로 설정했습니다")
+            return True
+        return False
+    
+    def speak(self, text, style='normal'):
+        """텍스트를 음성으로 변환 (시뮬레이션)"""
+        # 실제로는 TTS 라이브러리를 사용하지만, 여기서는 시뮬레이션
+        old_style = self.voice_settings.copy()
+        self.set_voice_style(style)
+        
+        print(f"🔊 MechDog 음성 출력:")
+        print(f"   설정: 속도={self.voice_settings['speed']}, "
+              f"음높이={self.voice_settings['pitch']}, "
+              f"볼륨={self.voice_settings['volume']}")
+        
+        # 스타일에 따른 텍스트 표현 변화
+        if style == 'excited':
+            formatted_text = f"✨ {text.upper()} ✨"
+        elif style == 'calm':
+            formatted_text = f"😌 {text.lower()}..."
+        elif style == 'alert':
+            formatted_text = f"🚨 {text.upper()}! 🚨"
+        else:
+            formatted_text = f"🤖 {text}"
+        
+        print(f"   음성: {formatted_text}")
+        
+        # 설정 복원
+        self.voice_settings = old_style
+        return formatted_text
+
+# 종합 음성 시스템
+class ComprehensiveVoiceSystem:
+    """종합 음성 제어 시스템"""
+    
+    def __init__(self):
+        self.command_processor = VoiceCommandProcessor()
+        self.emotional_system = EmotionalVoiceSystem()
+        self.tts_system = TextToSpeechSystem()
+        self.conversation_mode = False
+    
+    def toggle_conversation_mode(self):
+        """대화 모드 전환"""
+        self.conversation_mode = not self.conversation_mode
+        status = "ON" if self.conversation_mode else "OFF"
+        response = f"💬 대화 모드가 {status}으로 설정되었습니다"
+        print(response)
+        return response
+    
+    def process_voice_input(self, voice_text):
+        """통합 음성 입력 처리"""
+        print(f"🎤 음성 입력: '{voice_text}'")
+        
+        # 특수 명령어 확인
+        if "대화모드" in voice_text:
+            return self.toggle_conversation_mode()
+        
+        # 감정 감지
+        emotion, emotional_response = self.emotional_system.process_emotional_voice(voice_text)
+        
+        # 감정이 중립이 아니고 대화 모드인 경우
+        if emotion != 'neutral' and self.conversation_mode:
+            # 감정에 맞는 스타일로 응답
+            voice_style = 'excited' if emotion == 'happy' else 'calm' if emotion == 'sad' else 'normal'
+            self.tts_system.speak(emotional_response, voice_style)
+            return emotional_response
+        
+        # 일반 명령어 처리
+        command_result = self.command_processor.process_voice_input(voice_text)
+        self.tts_system.speak(command_result, 'normal')
+        return command_result
+
+# 종합 시스템 테스트
+print("=== 종합 음성 시스템 테스트 ===")
+comprehensive_system = ComprehensiveVoiceSystem()
+
+test_scenarios = [
+    "대화모드 켜줘",
+    "오늘 정말 기뻐!",
+    "앉아",
+    "너무 슬퍼서 우울해",
+    "대화모드 꺼줘",
+    "앞으로 가자"
+]
+
+for scenario in test_scenarios:
+    print(f"\n--- 시나리오: {scenario} ---")
+    result = comprehensive_system.process_voice_input(scenario)
+    print("=" * 50)</textarea>
+                    <button class="run-button" onclick="runCode('editor4', 'output4')">실행 ▶</button>
+                    <div class="output" id="output4">여기에 실행 결과가 표시됩니다</div>
+                </div>
+            </div>
+
+            <div class="content-section exercise-section">
+                <h2>🎯 실습 과제</h2>
+                <p>지금까지 학습한 음성 인식 기술을 종합하여 완전한 MechDog 음성 제어 시스템을 구축해보세요!</p>
+
+                <div class="code-container">
+                    <textarea class="code-editor" id="exercise"># 🎤 완전한 MechDog 음성 제어 시스템
+class MechDogVoiceControl:
+    """MechDog 음성 제어 시스템"""
+    
+    def __init__(self):
+        # 여기에 초기화 코드를 작성하세요
+        self.commands = {}
+        self.emotional_responses = {}
+        
+    def process_voice(self, voice_input):
+        """음성 입력 처리 메인 함수"""
+        # 여기에 음성 처리 로직을 작성하세요
+        print(f"🎤 '{voice_input}' 처리 중...")
+        
+    def add_custom_command(self, voice_trigger, action):
+        """사용자 정의 명령 추가"""
+        # 여기에 커스텀 명령 추가 로직을 작성하세요
+        pass
+    
+    def set_personality(self, personality_type):
+        """MechDog 성격 설정"""
+        # 여기에 성격 설정 로직을 작성하세요
+        pass
+
+# 테스트 코드
+print("=== MechDog 음성 제어 시스템 ===")
+voice_control = MechDogVoiceControl()
+
+# 여기에 테스트 코드를 작성하세요</textarea>
+                    <button class="run-button" onclick="runCode('exercise', 'exerciseOutput')">실행 ▶</button>
+                    <div class="output" id="exerciseOutput">여기에 실행 결과가 표시됩니다</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="lesson10.html" class="nav-button">← 이전: 색상 인식</a>
+            <a href="../index.html" class="nav-button">🏠 홈으로</a>
+            <a href="lesson12.html" class="nav-button">다음: 최종 AI 프로젝트 →</a>
+        </div>
+    </div>
+
+    <script>
+        let pyodide;
+        async function main() { pyodide = await loadPyodide(); }
+        main();
+        
+        async function runCode(editorId, outputId) {
+            const code = document.getElementById(editorId).value;
+            const outputElement = document.getElementById(outputId);
+            try {
+                outputElement.textContent = "코드 실행 중...";
+                pyodide.runPython(`import sys; from io import StringIO; sys.stdout = StringIO()`);
+                pyodide.runPython(code);
+                const stdout = pyodide.runPython("sys.stdout.getvalue()");
+                outputElement.textContent = stdout || "실행 완료 (출력 없음)";
+            } catch (error) {
+                outputElement.textContent = `오류 발생: ${error.message}`;
+                outputElement.style.color = "#ff6b6b";
+            }
+        }
+        
+        window.addEventListener('load', function() {
+            const currentLesson = 11;
+            let progress = JSON.parse(localStorage.getItem('pythonProgress') || '[]');
+            if (!progress.includes(currentLesson)) {
+                progress.push(currentLesson);
+                localStorage.setItem('pythonProgress', JSON.stringify(progress));
+            }
+        });
+    </script>
+</body>
+</html> 

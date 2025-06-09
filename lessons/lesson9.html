@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레슨 9: 센서 활용 | MechDog 파이썬 학습</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Noto Sans KR', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .code-editor {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
+            font-size: 14px;
+            border: 2px solid #404040;
+            transition: all 0.3s ease;
+            resize: vertical;
+            min-height: 150px;
+        }
+        
+        .code-editor:focus {
+            outline: none;
+            border-color: #00d9ff;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+        }
+        
+        .output-panel {
+            background: #0d1117;
+            color: #e6edf3;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            min-height: 150px;
+            border: 2px solid #30363d;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        
+        .lesson-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quiz-option {
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-option:hover {
+            background: #e5e7eb;
+            transform: translateX(8px);
+        }
+        
+        .quiz-option.correct {
+            background: #dcfce7;
+            border-color: #16a34a;
+            color: #166534;
+        }
+        
+        .quiz-option.incorrect {
+            background: #fee2e2;
+            border-color: #dc2626;
+            color: #991b1b;
+        }
+        
+        .sensor-demo {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-sm sticky top-0 z-40 mx-4 mt-4 rounded-2xl shadow-lg">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <a href="../index.html" class="text-2xl hover:text-purple-600">🏠</a>
+                <h1 class="text-xl font-bold text-gray-800">레슨 9: 센서 활용</h1>
+                <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-sm">고급</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="lesson8.html" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm">
+                    ← 이전
+                </a>
+                <a href="lesson10.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">
+                    다음 →
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Lesson Introduction -->
+        <section class="lesson-card mb-8">
+            <div class="flex items-center mb-6">
+                <span class="text-4xl mr-4">📡</span>
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">MechDog 센서 활용</h2>
+                    <p class="text-gray-600">초음파 센서와 터치 센서로 스마트한 로봇 만들기</p>
+                </div>
+            </div>
+            
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+                <h3 class="text-lg font-bold text-red-800 mb-2">🎯 학습 목표</h3>
+                <ul class="text-red-700 space-y-1">
+                    <li>• 초음파 센서로 거리 측정하기</li>
+                    <li>• 터치 센서로 사용자 입력 받기</li>
+                    <li>• 센서 데이터를 기반으로 LED 제어하기</li>
+                    <li>• 실제 MechDog 하드웨어 코드 이해하기</li>
+                    <li>• 조건문과 반복문을 활용한 센서 로직 구현하기</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Theory Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📖 MechDog 센서 시스템</h3>
+            
+            <div class="space-y-6">
+                <div>
+                    <h4 class="text-xl font-semibold text-gray-700 mb-3">📏 초음파 센서 (Ultrasonic Sensor)</h4>
+                    <p class="text-gray-600 mb-4">
+                        초음파를 이용해 장애물까지의 거리를 측정합니다. MechDog이 벽이나 물체에 부딪히지 않도록 도와줍니다.
+                    </p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-blue-700 mb-2">📡 작동 원리</h5>
+                            <ul class="text-blue-600 text-sm space-y-1">
+                                <li>1. 초음파 발사</li>
+                                <li>2. 물체에 반사되어 돌아옴</li>
+                                <li>3. 시간 측정으로 거리 계산</li>
+                                <li>4. cm 단위로 결과 반환</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-green-700 mb-2">🎯 활용 예시</h5>
+                            <ul class="text-green-600 text-sm space-y-1">
+                                <li>• 장애물 회피</li>
+                                <li>• 자동 정지</li>
+                                <li>• 거리 기반 속도 조절</li>
+                                <li>• 경고 시스템</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-semibold text-gray-700 mb-3">👆 터치 센서 (Touch Sensor)</h4>
+                    <p class="text-gray-600 mb-4">
+                        사용자의 터치를 감지합니다. MechDog의 머리나 몸체를 터치하여 다양한 명령을 내릴 수 있습니다.
+                    </p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-purple-700 mb-2">🤚 터치 이벤트</h5>
+                            <ul class="text-purple-600 text-sm space-y-1">
+                                <li>• 짧은 터치 (클릭)</li>
+                                <li>• 긴 터치 (홀드)</li>
+                                <li>• 더블 터치</li>
+                                <li>• 터치 해제</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-yellow-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-yellow-700 mb-2">🎮 제어 가능한 동작</h5>
+                            <ul class="text-yellow-600 text-sm space-y-1">
+                                <li>• 앉기/일어서기</li>
+                                <li>• 엎드리기</li>
+                                <li>• 모드 변경</li>
+                                <li>• 동작 순환</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-semibold text-gray-700 mb-3">💡 RGB LED 제어</h4>
+                    <p class="text-gray-600 mb-4">
+                        센서 데이터에 따라 LED 색상을 변경하여 MechDog의 상태를 시각적으로 표현합니다.
+                    </p>
+                    
+                    <div class="sensor-demo">
+                        <h5 class="font-semibold mb-3">🌈 LED 색상 의미</h5>
+                        <div class="grid grid-cols-3 gap-4 text-sm">
+                            <div class="bg-red-500 p-2 rounded text-center">
+                                <strong>빨간색</strong><br>위험/가까움
+                            </div>
+                            <div class="bg-yellow-500 p-2 rounded text-center">
+                                <strong>노란색</strong><br>주의/중간거리
+                            </div>
+                            <div class="bg-blue-500 p-2 rounded text-center">
+                                <strong>파란색</strong><br>안전/먼거리
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Real Code Examples -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🔧 실제 MechDog 코드</h3>
+            
+            <div class="space-y-6">
+                <!-- Ultrasonic Sensor Code -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-700 mb-3">📏 초음파 센서 코드 분석</h4>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <pre class="text-sm overflow-x-auto"><code># 실제 MechDog 초음파 센서 코드 (ultrasonic_ranging.py)
+import Hiwonder
+import time
+import Hiwonder_IIC
+from HW_MechDog import MechDog
+
+# MechDog 객체 초기화
+mechdog = MechDog()
+# 7-세그먼트 디스플레이 객체 생성
+tm = Hiwonder.Digitaltube()
+# I2C 통신 객체 생성
+i2c1 = Hiwonder_IIC.IIC(1)
+# 초음파 센서 객체 생성
+i2csonar = Hiwonder_IIC.I2CSonar(i2c1)
+
+# 초기 설정
+mechdog.set_default_pose()  # 기본 자세 설정
+tm.setBrightness(4)         # 디스플레이 밝기 설정
+time.sleep(1)
+
+def main():
+    while True:
+        # 거리 측정
+        distance = i2csonar.getDistance()
+        tm.showNum(distance)  # 디스플레이에 거리 표시
+        
+        # 거리에 따른 LED 색상 변경
+        if distance < 15:
+            # 15cm 미만: 빨간색 (위험)
+            i2csonar.setRGB(0, 0xff, 0x00, 0x00)
+        elif distance > 40:
+            # 40cm 초과: 파란색 (안전)
+            i2csonar.setRGB(0, 0x00, 0x00, 0x99)
+        else:
+            # 15-40cm: 노란색 (주의)
+            i2csonar.setRGB(0, 0xfd, 0xd0, 0x00)
+        
+        time.sleep(0.1)
+
+main()</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Touch Sensor Code -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-700 mb-3">👆 터치 센서 코드 분석</h4>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <pre class="text-sm overflow-x-auto"><code># 실제 MechDog 터치 센서 코드 (Touch.py)
+import Hiwonder
+import time
+from HW_MechDog import MechDog
+
+# 전역 변수
+mechdog = MechDog()
+enter_flag = 0      # 버튼 누름 플래그
+action_num = 0      # 동작 번호
+button2 = Hiwonder.Button(2)  # 버튼 객체 생성
+
+mechdog.set_default_pose()  # 초기 자세
+time.sleep(1)
+
+def main():
+    global enter_flag, action_num
+    
+    while True:
+        if enter_flag == 1:  # 버튼이 눌렸을 때
+            if action_num == 1:
+                mechdog.action_run("sit_dowm")  # 앉기
+                time.sleep(1.5)
+                action_num += 1
+            elif action_num == 2:
+                mechdog.action_run("go_prone")  # 엎드리기
+                time.sleep(1.5)
+                action_num += 1
+            else:
+                mechdog.action_run("stand_four_legs")  # 서기
+                time.sleep(1.5)
+                action_num = 1
+            
+            enter_flag = 0  # 플래그 초기화
+        else:
+            time.sleep(0.2)
+
+# 버튼 클릭 콜백 함수
+def on_extbutton_clicked():
+    global enter_flag
+    enter_flag = 1
+
+# 버튼 이벤트 등록
+button2.Clicked(on_extbutton_clicked)
+main()</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">💻 센서 시뮬레이션 실습</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">코드 에디터</label>
+                    <textarea 
+                        id="code-editor" 
+                        class="code-editor w-full h-96"
+                        placeholder="센서 시뮬레이션 코드를 작성해보세요..."
+                    ># MechDog 센서 시뮬레이션
+import random
+import time
+
+class MechDogSensor:
+    def __init__(self):
+        self.name = "스마트독"
+        self.distance = 0
+        self.is_touched = False
+        self.led_color = "꺼짐"
+        self.action_mode = 0
+        print(f"🤖 {self.name} 센서 시스템 시작!")
+    
+    def get_distance(self):
+        """초음파 센서 시뮬레이션"""
+        self.distance = random.randint(5, 100)
+        print(f"📏 거리 측정: {self.distance}cm")
+        return self.distance
+    
+    def set_led_color(self, distance):
+        """거리에 따른 LED 색상 설정"""
+        if distance < 15:
+            self.led_color = "빨간색"
+            print("🔴 LED: 빨간색 (위험!)")
+        elif distance > 40:
+            self.led_color = "파란색"
+            print("🔵 LED: 파란색 (안전)")
+        else:
+            self.led_color = "노란색"
+            print("🟡 LED: 노란색 (주의)")
+    
+    def simulate_touch(self):
+        """터치 시뮬레이션"""
+        touch_chance = random.random()
+        if touch_chance < 0.3:  # 30% 확률로 터치
+            self.is_touched = True
+            print("👆 터치 감지!")
+            self.handle_touch()
+        else:
+            self.is_touched = False
+    
+    def handle_touch(self):
+        """터치 이벤트 처리"""
+        self.action_mode = (self.action_mode + 1) % 3
+        
+        if self.action_mode == 0:
+            print("🚶 동작: 서기")
+        elif self.action_mode == 1:
+            print("🪑 동작: 앉기")
+        else:
+            print("🛌 동작: 엎드리기")
+    
+    def smart_behavior(self):
+        """센서 기반 스마트 행동"""
+        distance = self.get_distance()
+        self.set_led_color(distance)
+        
+        # 거리 기반 행동
+        if distance < 10:
+            print("⚠️  너무 가까워요! 후진합니다.")
+        elif distance < 20:
+            print("🛑 정지합니다.")
+        else:
+            print("✅ 안전 거리, 계속 이동합니다.")
+        
+        # 터치 확인
+        self.simulate_touch()
+        print("-" * 30)
+
+# 센서 시스템 실행
+sensor_dog = MechDogSensor()
+
+print("🎮 5초간 센서 시뮬레이션 실행...")
+for i in range(5):
+    print(f"🎮 {i+1}초 진행 중...")
+    sensor_dog.smart_behavior()
+    # time.sleep(1)  # 실제 실행 시에는 주석 해제
+
+print("🎉 센서 시뮬레이션 완료!")
+print(f"현재 LED: {sensor_dog.led_color}")
+print(f"현재 모드: {sensor_dog.action_mode}")</textarea>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-code" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center">
+                            <span class="mr-2">▶️</span> 실행하기
+                        </button>
+                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            지우기
+                        </button>
+                        <button id="real-code" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            📡 실제 코드
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">실행 결과</label>
+                    <div id="output" class="output-panel h-96">
+                        센서 시뮬레이션 코드를 실행해보세요!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenge -->
+        <section class="lesson-card mb-8">
+            <div class="bg-orange-50 border-l-4 border-orange-500 p-6">
+                <h4 class="text-lg font-bold text-orange-800 mb-4">🎯 고급 도전 과제</h4>
+                <p class="text-orange-700 mb-4">다음 기능을 구현해보세요:</p>
+                <ol class="text-orange-700 space-y-2 mb-4">
+                    <li>1. <strong>스마트 경비 시스템:</strong> 15cm 이내 물체 감지 시 경고</li>
+                    <li>2. <strong>터치 패턴 인식:</strong> 연속 터치 횟수에 따른 다른 동작</li>
+                    <li>3. <strong>적응형 LED:</strong> 시간대별로 다른 색상 표시</li>
+                    <li>4. <strong>센서 융합:</strong> 거리와 터치를 동시에 고려한 복합 판단</li>
+                </ol>
+                <button id="show-advanced" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm">
+                    고급 코드 보기
+                </button>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🧠 센서 퀴즈</h3>
+            
+            <div class="space-y-6">
+                <!-- Quiz 1 -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-700 mb-3">문제 1: 초음파 센서</h4>
+                    <p class="text-gray-600 mb-4">거리 5cm일 때 어떤 색 LED가 켜져야 할까요?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option" data-quiz="1" data-answer="correct">빨간색 (위험)</div>
+                        <div class="quiz-option" data-quiz="1" data-answer="incorrect">노란색 (주의)</div>
+                        <div class="quiz-option" data-quiz="1" data-answer="incorrect">파란색 (안전)</div>
+                        <div class="quiz-option" data-quiz="1" data-answer="incorrect">초록색 (정상)</div>
+                    </div>
+                    <div id="quiz-1-result" class="mt-4 text-sm font-medium hidden"></div>
+                </div>
+                
+                <!-- Quiz 2 -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-700 mb-3">문제 2: 터치 센서</h4>
+                    <p class="text-gray-600 mb-4">터치 센서 코드에서 콜백 함수의 역할은?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option" data-quiz="2" data-answer="incorrect">거리를 측정한다</div>
+                        <div class="quiz-option" data-quiz="2" data-answer="correct">터치 이벤트를 처리한다</div>
+                        <div class="quiz-option" data-quiz="2" data-answer="incorrect">LED 색상을 변경한다</div>
+                        <div class="quiz-option" data-quiz="2" data-answer="incorrect">모터를 제어한다</div>
+                    </div>
+                    <div id="quiz-2-result" class="mt-4 text-sm font-medium hidden"></div>
+                </div>
+                
+                <!-- Quiz 3 -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-700 mb-3">문제 3: RGB LED 제어</h4>
+                    <p class="text-gray-600 mb-4"><code>i2csonar.setRGB(0, 0xff, 0x00, 0x00)</code>는 어떤 색을 나타낼까요?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option" data-quiz="3" data-answer="correct">빨간색</div>
+                        <div class="quiz-option" data-quiz="3" data-answer="incorrect">초록색</div>
+                        <div class="quiz-option" data-quiz="3" data-answer="incorrect">파란색</div>
+                        <div class="quiz-option" data-quiz="3" data-answer="incorrect">흰색</div>
+                    </div>
+                    <div id="quiz-3-result" class="mt-4 text-sm font-medium hidden"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 정리</h3>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-6">
+                <h4 class="text-lg font-bold text-green-800 mb-3">✅ 이번 레슨에서 배운 내용</h4>
+                <ul class="text-green-700 space-y-2">
+                    <li>• <strong>초음파 센서:</strong> getDistance()로 거리 측정</li>
+                    <li>• <strong>터치 센서:</strong> 콜백 함수로 이벤트 처리</li>
+                    <li>• <strong>RGB LED:</strong> setRGB()로 색상 제어</li>
+                    <li>• <strong>실제 하드웨어:</strong> Hiwonder 라이브러리 사용법</li>
+                    <li>• <strong>센서 융합:</strong> 다중 센서 데이터 활용</li>
+                </ul>
+            </div>
+            
+            <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-6">
+                <h4 class="text-lg font-bold text-blue-800 mb-3">🚀 다음 레슨 미리보기</h4>
+                <p class="text-blue-700">
+                    다음 레슨에서는 <strong>색상 인식</strong>을 배워봅시다! 
+                    카메라 센서로 색상을 감지하고 그에 따라 MechDog이 반응하도록 만들어보겠습니다.
+                </p>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="flex justify-between items-center">
+            <a href="lesson8.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                ← 이전 레슨
+            </a>
+            <a href="lesson10.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                다음 레슨 →
+            </a>
+        </section>
+    </main>
+
+    <script>
+        let pyodide = null;
+
+        // Initialize Pyodide
+        async function initPyodide() {
+            if (pyodide === null) {
+                document.getElementById('output').textContent = '파이썬 엔진을 준비하고 있습니다...';
+                pyodide = await loadPyodide();
+                document.getElementById('output').textContent = '준비 완료! 센서 코드를 실행해보세요.';
+            }
+        }
+
+        // Run Python code
+        async function runPythonCode(code) {
+            if (pyodide === null) {
+                await initPyodide();
+            }
+            
+            try {
+                // Capture stdout
+                pyodide.runPython(`
+                    import sys
+                    from io import StringIO
+                    old_stdout = sys.stdout
+                    sys.stdout = captured_output = StringIO()
+                `);
+                
+                // Run user code
+                pyodide.runPython(code);
+                
+                // Get output
+                const output = pyodide.runPython(`
+                    sys.stdout = old_stdout
+                    captured_output.getvalue()
+                `);
+                
+                document.getElementById('output').textContent = output || '(출력 없음)';
+                
+                // Update progress
+                updateProgress();
+                
+            } catch (error) {
+                document.getElementById('output').textContent = `오류 발생:\n${error.message}`;
+            }
+        }
+
+        // Update progress
+        function updateProgress() {
+            let progress = JSON.parse(localStorage.getItem('mechDogLearningProgress') || '{"lessonsCompleted": 0, "codesRun": 0}');
+            progress.codesRun = (progress.codesRun || 0) + 1;
+            
+            // Mark lesson 9 as completed if not already
+            if (progress.lessonsCompleted < 9) {
+                progress.lessonsCompleted = 9;
+            }
+            
+            localStorage.setItem('mechDogLearningProgress', JSON.stringify(progress));
+        }
+
+        // Quiz handling
+        function handleQuizAnswer(quizId, selectedOption, isCorrect) {
+            const options = document.querySelectorAll(`[data-quiz="${quizId}"]`);
+            const resultDiv = document.getElementById(`quiz-${quizId}-result`);
+            
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+                if (option === selectedOption) {
+                    option.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else if (option.dataset.answer === 'correct') {
+                    option.classList.add('correct');
+                }
+            });
+            
+            if (isCorrect) {
+                resultDiv.textContent = '정답입니다! 🎉';
+                resultDiv.className = 'mt-4 text-sm font-medium text-green-600';
+            } else {
+                resultDiv.textContent = '틀렸습니다. 다시 생각해보세요! 🤔';
+                resultDiv.className = 'mt-4 text-sm font-medium text-red-600';
+            }
+            
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize on first interaction
+            document.addEventListener('click', initPyodide, { once: true });
+            
+            // Run code button
+            document.getElementById('run-code').addEventListener('click', () => {
+                const code = document.getElementById('code-editor').value;
+                runPythonCode(code);
+            });
+            
+            // Clear code button
+            document.getElementById('clear-code').addEventListener('click', () => {
+                document.getElementById('code-editor').value = '';
+                document.getElementById('output').textContent = '에디터를 지웠습니다.';
+            });
+            
+            // Real code button
+            document.getElementById('real-code').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# 실제 MechDog 초음파 센서 코드 (시뮬레이션)
+# 실제 하드웨어에서는 Hiwonder 라이브러리를 사용합니다
+
+class MockMechDog:
+    """실제 MechDog 클래스 시뮬레이션"""
+    def set_default_pose(self):
+        print("🤖 기본 자세로 설정됨")
+        
+    def action_run(self, action):
+        print(f"🎬 동작 실행: {action}")
+
+class MockSonar:
+    """실제 초음파 센서 시뮬레이션"""
+    def __init__(self):
+        import random
+        self.random = random
+        
+    def getDistance(self):
+        # 실제로는 하드웨어에서 거리를 측정
+        return self.random.randint(5, 100)
+    
+    def setRGB(self, light, r, g, b):
+        colors = {
+            (255, 0, 0): "빨간색",
+            (0, 255, 0): "초록색", 
+            (0, 0, 255): "파란색",
+            (253, 208, 0): "노란색"
+        }
+        color_name = colors.get((r, g, b), "알 수 없는 색상")
+        print(f"💡 LED {light}: {color_name} (R:{r}, G:{g}, B:{b})")
+
+# 실제 MechDog 코드 시뮬레이션
+mechdog = MockMechDog()
+sonar = MockSonar()
+
+mechdog.set_default_pose()
+print("초음파 센서 테스트 시작...")
+
+for i in range(5):
+    distance = sonar.getDistance()
+    print(f"📏 측정 {i+1}: {distance}cm")
+    
+    if distance < 15:
+        sonar.setRGB(0, 255, 0, 0)  # 빨간색
+        print("⚠️  위험 구역!")
+    elif distance > 40:
+        sonar.setRGB(0, 0, 0, 153)  # 파란색  
+        print("✅ 안전 구역")
+    else:
+        sonar.setRGB(0, 253, 208, 0)  # 노란색
+        print("🔶 주의 구역")
+
+print("🎉 센서 테스트 완료!")`;
+            });
+            
+            // Show advanced code
+            document.getElementById('show-advanced').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# 고급 센서 융합 시스템
+import random
+import time
+
+class AdvancedMechDog:
+    def __init__(self):
+        self.name = "엘리트독"
+        self.security_mode = False
+        self.touch_pattern = []
+        self.time_mode = "day"  # day, night
+        self.distance_history = []
+        
+    def get_time_based_color(self):
+        """시간대별 기본 LED 색상"""
+        if self.time_mode == "night":
+            return (0, 0, 100)  # 어두운 파란색
+        else:
+            return (255, 255, 255)  # 흰색
+    
+    def security_system(self, distance):
+        """스마트 경비 시스템"""
+        if distance < 15:
+            if not self.security_mode:
+                self.security_mode = True
+                print("🚨 보안 경고! 침입자 감지!")
+                print("📱 알림 발송 중...")
+                return True
+        else:
+            if self.security_mode:
+                self.security_mode = False
+                print("✅ 보안 해제 - 위협 없음")
+        return False
+    
+    def pattern_recognition(self, touches):
+        """터치 패턴 인식"""
+        pattern_actions = {
+            1: "🎵 음성 인사",
+            2: "💃 춤추기", 
+            3: "🎪 재주 부리기",
+            4: "😴 절전 모드",
+            5: "🚀 고속 모드"
+        }
+        
+        if touches in pattern_actions:
+            print(f"🎯 패턴 인식: {touches}번 터치")
+            print(f"⚡ 실행: {pattern_actions[touches]}")
+            return True
+        return False
+    
+    def adaptive_behavior(self):
+        """적응형 행동"""
+        # 거리 측정
+        distance = random.randint(5, 100)
+        self.distance_history.append(distance)
+        
+        # 최근 5회 측정 평균
+        if len(self.distance_history) > 5:
+            self.distance_history.pop(0)
+        avg_distance = sum(self.distance_history) / len(self.distance_history)
+        
+        print(f"📏 현재 거리: {distance}cm (평균: {avg_distance:.1f}cm)")
+        
+        # 보안 시스템 체크
+        alert = self.security_system(distance)
+        
+        # 터치 시뮬레이션
+        if random.random() < 0.4:  # 40% 확률
+            touches = random.randint(1, 6)
+            self.pattern_recognition(touches)
+        
+        # 시간대별 LED
+        base_color = self.get_time_based_color()
+        
+        # 거리별 색상 오버라이드
+        if alert:
+            led_color = (255, 0, 0)  # 빨간색 경고
+        elif distance < 15:
+            led_color = (255, 100, 0)  # 주황색
+        elif avg_distance < 30:  # 평균이 가까우면
+            led_color = (255, 255, 0)  # 노란색
+        else:
+            led_color = base_color
+        
+        print(f"💡 LED: RGB{led_color}")
+        print("-" * 40)
+
+# 고급 시스템 실행
+elite_dog = AdvancedMechDog()
+print(f"🤖 {elite_dog.name} 고급 센서 시스템 시작!\\n")
+
+for i in range(7):
+    print(f"=== 단계 {i+1} ===")
+    elite_dog.adaptive_behavior()
+    if i == 3:  # 중간에 야간 모드로 변경
+        elite_dog.time_mode = "night"
+        print("🌙 야간 모드로 전환됨\\n")
+
+print("🎉 고급 센서 융합 시스템 테스트 완료!")`;
+            });
+            
+            // Quiz handlers
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const quizId = option.dataset.quiz;
+                    const isCorrect = option.dataset.answer === 'correct';
+                    handleQuizAnswer(quizId, option, isCorrect);
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레슨 8: MechDog 소개 | MechDog 파이썬 학습</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Noto Sans KR', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .code-editor {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            border: 2px solid #404040;
+            resize: vertical;
+            min-height: 150px;
+        }
+        
+        .output-panel {
+            background: #0d1117;
+            color: #e6edf3;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            min-height: 150px;
+            border: 2px solid #30363d;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        
+        .lesson-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-sm sticky top-0 z-40 mx-4 mt-4 rounded-2xl shadow-lg">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <a href="../index.html" class="text-2xl hover:text-purple-600">🏠</a>
+                <h1 class="text-xl font-bold text-gray-800">레슨 8: MechDog 소개</h1>
+                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm">중급</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="lesson7.html" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm">← 이전</a>
+                <a href="lesson9.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">다음 →</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Lesson Introduction -->
+        <section class="lesson-card mb-8">
+            <div class="flex items-center mb-6">
+                <span class="text-4xl mr-4">🤖</span>
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">MechDog 클래스 소개</h2>
+                    <p class="text-gray-600">실제 로봇 개를 객체지향으로 제어하기</p>
+                </div>
+            </div>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4">
+                <h3 class="text-lg font-bold text-yellow-800 mb-2">🎯 학습 목표</h3>
+                <ul class="text-yellow-700 space-y-1">
+                    <li>• MechDog 클래스의 구조 이해하기</li>
+                    <li>• 기본 동작 메서드 사용법 익히기</li>
+                    <li>• 자세 제어와 동작 실행하기</li>
+                    <li>• 실제 하드웨어와 시뮬레이션 연결하기</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MechDog Class Overview -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🏗️ MechDog 클래스 구조</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-blue-700 mb-3">🎮 기본 동작</h4>
+                    <ul class="text-blue-600 text-sm space-y-1">
+                        <li>• set_default_pose() - 기본 자세</li>
+                        <li>• move(speed, direction) - 이동</li>
+                        <li>• action_run(action) - 동작 실행</li>
+                        <li>• set_pose() - 자세 설정</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-green-700 mb-3">🎬 동작 종류</h4>
+                    <ul class="text-green-600 text-sm space-y-1">
+                        <li>• "sit_dowm" - 앉기</li>
+                        <li>• "stand_four_legs" - 서기</li>
+                        <li>• "go_prone" - 엎드리기</li>
+                        <li>• "shake_hands" - 손 흔들기</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">💻 MechDog 제어 실습</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <textarea id="code-editor" class="code-editor w-full h-80">
+# MechDog 클래스 시뮬레이션
+import time
+
+class MechDog:
+    def __init__(self, name="MechDog"):
+        self.name = name
+        self.position = [0, 0]  # x, y 좌표
+        self.pose = "standing"
+        self.is_moving = False
+        print(f"🤖 {self.name} 초기화 완료!")
+    
+    def set_default_pose(self):
+        """기본 자세 설정"""
+        self.pose = "standing"
+        print(f"🚶 {self.name}이 기본 자세를 취했습니다.")
+    
+    def move(self, speed, direction):
+        """이동 제어"""
+        if speed == 0:
+            self.is_moving = False
+            print(f"🛑 {self.name}이 정지했습니다.")
+        else:
+            self.is_moving = True
+            if direction > 0:
+                direction_str = "우측으로"
+            elif direction < 0:
+                direction_str = "좌측으로"
+            else:
+                direction_str = "직진으로"
+            
+            print(f"🏃 {self.name}이 속도 {speed}로 {direction_str} 이동합니다.")
+            
+            # 위치 업데이트 시뮬레이션
+            if direction == 0:  # 직진
+                self.position[1] += speed / 10
+            else:  # 회전하며 이동
+                self.position[0] += direction / 10
+                self.position[1] += speed / 10
+    
+    def action_run(self, action):
+        """동작 실행"""
+        actions = {
+            "sit_dowm": "앉기",
+            "stand_four_legs": "네 발로 서기", 
+            "go_prone": "엎드리기",
+            "shake_hands": "손 흔들기",
+            "bow": "인사하기",
+            "dance": "춤추기"
+        }
+        
+        if action in actions:
+            action_ko = actions[action]
+            self.pose = action.replace("_", " ")
+            print(f"🎬 {self.name}이 '{action_ko}' 동작을 실행합니다!")
+            
+            # 동작별 추가 효과
+            if action == "shake_hands":
+                print("   👋 친근하게 손을 흔들고 있어요!")
+            elif action == "dance":
+                print("   💃 신나는 댄스를 추고 있어요!")
+            elif action == "bow":
+                print("   🙇 정중하게 인사하고 있어요!")
+        else:
+            print(f"❌ 알 수 없는 동작: {action}")
+    
+    def set_pose(self, position, rotation, duration):
+        """세밀한 자세 제어"""
+        print(f"🎯 자세 조정: 위치{position}, 회전{rotation}, {duration}ms 동안")
+        # time.sleep(duration / 1000)  # 실제 실행시 주석 해제
+    
+    def show_status(self):
+        """현재 상태 표시"""
+        print(f"\\n📊 {self.name} 상태:")
+        print(f"   위치: {self.position}")
+        print(f"   자세: {self.pose}")
+        print(f"   이동 중: {self.is_moving}")
+
+# MechDog 시뮬레이션 실행
+print("🔥 MechDog 제어 시뮬레이션 시작!")
+
+# MechDog 생성
+my_dog = MechDog("로보독")
+
+# 기본 자세 설정
+my_dog.set_default_pose()
+
+# 다양한 동작 테스트
+print("\\n🎪 동작 쇼케이스:")
+actions = ["sit_dowm", "shake_hands", "stand_four_legs", "bow", "dance", "go_prone"]
+
+for action in actions:
+    my_dog.action_run(action)
+    time.sleep(0.5)  # 동작 간 간격
+
+# 이동 테스트
+print("\\n🏃 이동 테스트:")
+my_dog.move(50, 0)    # 직진
+my_dog.move(40, 30)   # 우회전
+my_dog.move(60, -20)  # 좌회전
+my_dog.move(0, 0)     # 정지
+
+# 최종 상태 확인
+my_dog.show_status()
+
+print("\\n🎉 MechDog 제어 시뮬레이션 완료!")
+</textarea>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-code" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg">🤖 실행</button>
+                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">지우기</button>
+                        <button id="real-code" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">🔧 실제 코드</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <div id="output" class="output-panel h-80">
+                        MechDog 클래스 코드를 실행해보세요!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 정리</h3>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-6">
+                <h4 class="text-lg font-bold text-green-800 mb-3">✅ 핵심 내용</h4>
+                <ul class="text-green-700 space-y-2">
+                    <li>• <strong>MechDog 클래스:</strong> 로봇 개를 제어하는 파이썬 클래스</li>
+                    <li>• <strong>기본 동작:</strong> move(), action_run(), set_pose()</li>
+                    <li>• <strong>동작 종류:</strong> 앉기, 서기, 엎드리기, 손 흔들기</li>
+                    <li>• <strong>객체지향:</strong> 클래스와 메서드로 체계적 제어</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="flex justify-between items-center">
+            <a href="lesson7.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg">← 이전</a>
+            <a href="lesson9.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg">다음 →</a>
+        </section>
+    </main>
+
+    <script>
+        let pyodide = null;
+
+        async function initPyodide() {
+            if (pyodide === null) {
+                document.getElementById('output').textContent = '🤖 MechDog 시스템 준비 중...';
+                pyodide = await loadPyodide();
+                document.getElementById('output').textContent = '🚀 준비 완료!';
+            }
+        }
+
+        async function runPythonCode(code) {
+            if (pyodide === null) await initPyodide();
+            
+            try {
+                pyodide.runPython(`
+                    import sys
+                    from io import StringIO
+                    old_stdout = sys.stdout
+                    sys.stdout = captured_output = StringIO()
+                `);
+                
+                pyodide.runPython(code);
+                
+                const output = pyodide.runPython(`
+                    sys.stdout = old_stdout
+                    captured_output.getvalue()
+                `);
+                
+                document.getElementById('output').textContent = output || '(출력 없음)';
+                
+                // Update progress
+                let progress = JSON.parse(localStorage.getItem('mechDogLearningProgress') || '{"lessonsCompleted": 0, "codesRun": 0}');
+                progress.codesRun = (progress.codesRun || 0) + 1;
+                if (progress.lessonsCompleted < 8) progress.lessonsCompleted = 8;
+                localStorage.setItem('mechDogLearningProgress', JSON.stringify(progress));
+                
+            } catch (error) {
+                document.getElementById('output').textContent = `오류:\n${error.message}`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.addEventListener('click', initPyodide, { once: true });
+            
+            document.getElementById('run-code').addEventListener('click', () => {
+                runPythonCode(document.getElementById('code-editor').value);
+            });
+            
+            document.getElementById('clear-code').addEventListener('click', () => {
+                document.getElementById('code-editor').value = '';
+                document.getElementById('output').textContent = '🧹 에디터를 지웠습니다.';
+            });
+            
+            document.getElementById('real-code').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# 실제 MechDog 하드웨어 제어 코드 예시
+# 실제 환경에서는 from HW_MechDog import MechDog 사용
+
+# 실제 코드 구조 (시뮬레이션)
+class RealMechDog:
+    """실제 MechDog 하드웨어 제어 클래스"""
+    
+    def __init__(self):
+        print("🔌 하드웨어 연결 중...")
+        print("✅ MechDog 하드웨어 연결 완료!")
+        self.is_connected = True
+        
+    def set_default_pose(self):
+        """실제 하드웨어 기본 자세"""
+        if self.is_connected:
+            print("🤖 하드웨어: 기본 자세 설정")
+            print("   - 모터 위치 조정")
+            print("   - 균형 센서 활성화")
+            print("   - 안정성 확인 완료")
+        
+    def move(self, speed, rotation):
+        """실제 모터 제어"""
+        if speed == 0 and rotation == 0:
+            print("🛑 모든 모터 정지")
+        else:
+            print(f"🏃 모터 제어:")
+            print(f"   - 속도: {speed}")
+            print(f"   - 회전: {rotation}")
+            print("   - PWM 신호 전송 중...")
+        
+    def action_run(self, action_name):
+        """미리 정의된 동작 실행"""
+        action_sequences = {
+            "sit_dowm": [
+                "후방 모터 90도 굽히기",
+                "전방 모터 균형 조정", 
+                "앉기 자세 완료"
+            ],
+            "stand_four_legs": [
+                "모든 모터 원위치",
+                "균형 센서 확인",
+                "서기 자세 완료"
+            ],
+            "shake_hands": [
+                "우측 전방 모터 들어올리기",
+                "좌우 흔들기 동작 3회",
+                "원위치 복귀"
+            ]
+        }
+        
+        if action_name in action_sequences:
+            print(f"🎬 동작 '{action_name}' 실행:")
+            for step in action_sequences[action_name]:
+                print(f"   - {step}")
+                # 실제로는 time.sleep() 추가
+        else:
+            print(f"❌ 알 수 없는 동작: {action_name}")
+
+# 실제 MechDog 사용 예시
+real_dog = RealMechDog()
+
+print("\\n📋 하드웨어 테스트 시퀀스:")
+real_dog.set_default_pose()
+real_dog.action_run("sit_dowm")
+real_dog.action_run("shake_hands")
+real_dog.action_run("stand_four_legs")
+real_dog.move(80, 0)    # 전진
+real_dog.move(50, 45)   # 우회전
+real_dog.move(0, 0)     # 정지
+
+print("\\n🎉 실제 하드웨어 제어 완료!")
+print("💡 실제 환경에서는 Hiwonder 라이브러리를 사용합니다.")`;
+            });
+        });
+    </script>
+</body>
+</html> 

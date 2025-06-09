@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레슨 3: 조건문 | MechDog 파이썬 학습</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Noto Sans KR', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .code-editor {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            border: 2px solid #404040;
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .output-panel {
+            background: #0d1117;
+            color: #e6edf3;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            min-height: 120px;
+            border: 2px solid #30363d;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        
+        .lesson-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-sm sticky top-0 z-40 mx-4 mt-4 rounded-2xl shadow-lg">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <a href="../index.html" class="text-2xl hover:text-purple-600">🏠</a>
+                <h1 class="text-xl font-bold text-gray-800">레슨 3: 조건문</h1>
+                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">기초</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="lesson2.html" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm">← 이전</a>
+                <a href="lesson4.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">다음 →</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Lesson Introduction -->
+        <section class="lesson-card mb-8">
+            <div class="flex items-center mb-6">
+                <span class="text-4xl mr-4">🔄</span>
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">조건문 (if-else)</h2>
+                    <p class="text-gray-600">MechDog이 상황에 따라 다른 행동을 하도록 만들기</p>
+                </div>
+            </div>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                <h3 class="text-lg font-bold text-blue-800 mb-2">🎯 학습 목표</h3>
+                <ul class="text-blue-700 space-y-1">
+                    <li>• if, elif, else 문의 사용법 이해하기</li>
+                    <li>• 비교 연산자로 조건 만들기</li>
+                    <li>• MechDog의 상태에 따른 다른 행동 구현하기</li>
+                    <li>• 논리 연산자 활용하기</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Theory Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📖 조건문 배우기</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-blue-700 mb-3">🔍 기본 문법</h4>
+                    <pre class="text-sm"><code>if 조건:
+    실행할 코드
+elif 다른조건:
+    다른 코드
+else:
+    기본 코드</code></pre>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-green-700 mb-3">⚖️ 비교 연산자</h4>
+                    <div class="text-sm space-y-1">
+                        <div><code>==</code> 같다</div>
+                        <div><code>!=</code> 다르다</div>
+                        <div><code>&gt;</code> 크다</div>
+                        <div><code>&lt;</code> 작다</div>
+                        <div><code>&gt;=</code> 크거나 같다</div>
+                        <div><code>&lt;=</code> 작거나 같다</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">💻 MechDog 조건문 실습</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <textarea id="code-editor" class="code-editor w-full h-80">
+# MechDog 상태 판단 시스템
+
+# MechDog 현재 상태
+battery_level = 75
+temperature = 28
+is_moving = False
+distance_to_object = 25
+
+print("🤖 MechDog 상태 분석 시작!")
+print(f"배터리: {battery_level}%")
+print(f"온도: {temperature}℃")
+print(f"이동 중: {is_moving}")
+print(f"장애물 거리: {distance_to_object}cm")
+print()
+
+# 배터리 상태 확인
+if battery_level >= 80:
+    print("🔋 배터리 상태: 충분")
+    battery_status = "양호"
+elif battery_level >= 50:
+    print("🔋 배터리 상태: 보통")
+    battery_status = "보통"
+elif battery_level >= 20:
+    print("⚠️ 배터리 상태: 부족")
+    battery_status = "부족"
+else:
+    print("🚨 배터리 상태: 위험! 즉시 충전 필요")
+    battery_status = "위험"
+
+# 온도 상태 확인
+if temperature > 35:
+    print("🔥 온도 경고: 너무 뜨거움!")
+    temp_action = "휴식 필요"
+elif temperature < 10:
+    print("🧊 온도 경고: 너무 추움!")
+    temp_action = "실내로 이동"
+else:
+    print("🌡️ 온도: 정상 범위")
+    temp_action = "정상 활동 가능"
+
+# 장애물 감지
+if distance_to_object <= 10:
+    print("🛑 즉시 정지! 장애물이 너무 가까움")
+    movement_action = "정지"
+elif distance_to_object <= 30:
+    print("⚠️ 주의! 천천히 이동")
+    movement_action = "저속 이동"
+else:
+    print("✅ 안전 거리, 정상 이동 가능")
+    movement_action = "정상 이동"
+
+# 종합 판단
+print("\n=== 🤖 MechDog 행동 결정 ===")
+if battery_status == "위험":
+    print("📍 최우선: 충전소로 이동")
+elif temp_action != "정상 활동 가능":
+    print(f"📍 온도 조치: {temp_action}")
+else:
+    print(f"📍 이동 계획: {movement_action}")
+
+print("🎉 상태 분석 완료!")
+</textarea>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-code" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg">▶️ 실행</button>
+                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">지우기</button>
+                        <button id="example-code" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">💡 예제</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <div id="output" class="output-panel h-80">
+                        MechDog 조건문 코드를 실행해보세요!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenge -->
+        <section class="lesson-card mb-8">
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6">
+                <h4 class="text-lg font-bold text-yellow-800 mb-4">🎯 도전 과제</h4>
+                <p class="text-yellow-700 mb-4">MechDog 보안 시스템을 만들어보세요:</p>
+                <ol class="text-yellow-700 space-y-1 mb-4">
+                    <li>1. 비밀번호 입력 시스템 (숫자 4자리)</li>
+                    <li>2. 3번 틀리면 잠금 모드</li>
+                    <li>3. 올바른 비밀번호시 환영 메시지</li>
+                </ol>
+                <button id="show-challenge" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">도전 과제 보기</button>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 정리</h3>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-6">
+                <h4 class="text-lg font-bold text-green-800 mb-3">✅ 핵심 내용</h4>
+                <ul class="text-green-700 space-y-2">
+                    <li>• <strong>if문:</strong> 조건이 참일 때 실행</li>
+                    <li>• <strong>elif문:</strong> 다른 조건 추가</li>
+                    <li>• <strong>else문:</strong> 모든 조건이 거짓일 때</li>
+                    <li>• <strong>비교 연산자:</strong> ==, !=, >, <, >=, <=</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="flex justify-between items-center">
+            <a href="lesson2.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg">← 이전</a>
+            <a href="lesson4.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg">다음 →</a>
+        </section>
+    </main>
+
+    <script>
+        let pyodide = null;
+
+        async function initPyodide() {
+            if (pyodide === null) {
+                document.getElementById('output').textContent = '파이썬 엔진 준비 중...';
+                pyodide = await loadPyodide();
+                document.getElementById('output').textContent = '준비 완료!';
+            }
+        }
+
+        async function runPythonCode(code) {
+            if (pyodide === null) await initPyodide();
+            
+            try {
+                pyodide.runPython(`
+                    import sys
+                    from io import StringIO
+                    old_stdout = sys.stdout
+                    sys.stdout = captured_output = StringIO()
+                `);
+                
+                pyodide.runPython(code);
+                
+                const output = pyodide.runPython(`
+                    sys.stdout = old_stdout
+                    captured_output.getvalue()
+                `);
+                
+                document.getElementById('output').textContent = output || '(출력 없음)';
+                
+                // Update progress
+                let progress = JSON.parse(localStorage.getItem('mechDogLearningProgress') || '{"lessonsCompleted": 0, "codesRun": 0}');
+                progress.codesRun = (progress.codesRun || 0) + 1;
+                if (progress.lessonsCompleted < 3) progress.lessonsCompleted = 3;
+                localStorage.setItem('mechDogLearningProgress', JSON.stringify(progress));
+                
+            } catch (error) {
+                document.getElementById('output').textContent = `오류:\n${error.message}`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.addEventListener('click', initPyodide, { once: true });
+            
+            document.getElementById('run-code').addEventListener('click', () => {
+                runPythonCode(document.getElementById('code-editor').value);
+            });
+            
+            document.getElementById('clear-code').addEventListener('click', () => {
+                document.getElementById('code-editor').value = '';
+                document.getElementById('output').textContent = '에디터를 지웠습니다.';
+            });
+            
+            document.getElementById('example-code').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# MechDog 센서 기반 모드 전환
+
+# 센서 데이터 (시뮬레이션)
+distance = 15
+sound_level = 45
+light_level = 300
+touch_detected = True
+
+print("🤖 MechDog 환경 센서 분석")
+print(f"거리: {distance}cm")
+print(f"소음: {sound_level}dB") 
+print(f"조도: {light_level}lux")
+print(f"터치: {touch_detected}")
+print()
+
+# 모드 결정
+if touch_detected:
+    print("👆 터치 감지 - 인터랙션 모드!")
+    mode = "상호작용"
+elif distance < 20:
+    print("⚠️ 장애물 근접 - 회피 모드!")
+    mode = "장애물 회피"
+elif sound_level > 60:
+    print("🔊 큰 소음 감지 - 경계 모드!")
+    mode = "경계"
+elif light_level < 100:
+    print("🌙 어두움 감지 - 야간 모드!")
+    mode = "야간"
+else:
+    print("✅ 정상 환경 - 탐색 모드!")
+    mode = "탐색"
+
+print(f"\\n🎯 현재 모드: {mode}")
+
+# 모드별 행동
+if mode == "상호작용":
+    print("🎵 꼬리 흔들기, 소리 내기")
+elif mode == "장애물 회피":
+    print("🔄 방향 전환, 속도 감소")
+elif mode == "경계":
+    print("👀 주변 스캔, 대기 자세")
+elif mode == "야간":
+    print("💡 LED 켜기, 저속 이동")
+else:
+    print("🚶 정상 이동, 환경 탐색")`;
+            });
+            
+            document.getElementById('show-challenge').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# MechDog 보안 시스템 도전 과제
+
+# 설정
+correct_password = "1234"
+max_attempts = 3
+attempts = 0
+
+print("🔐 MechDog 보안 시스템")
+print("4자리 비밀번호를 입력하세요.")
+print(f"최대 {max_attempts}번까지 시도 가능합니다.")
+print()
+
+# 시뮬레이션을 위한 입력값들 (실제로는 input() 사용)
+test_passwords = ["1111", "0000", "1234"]
+
+for password in test_passwords:
+    attempts += 1
+    print(f"시도 {attempts}: {password}")
+    
+    if password == correct_password:
+        print("✅ 비밀번호 일치!")
+        print("🎉 MechDog 보안 해제 완료")
+        print("🤖 환영합니다, 주인님!")
+        break
+    else:
+        remaining = max_attempts - attempts
+        if remaining > 0:
+            print(f"❌ 비밀번호 오류! 남은 기회: {remaining}번")
+        else:
+            print("🚨 보안 시스템 잠금!")
+            print("🔒 3번 실패로 시스템이 잠겼습니다.")
+            print("👮 관리자에게 문의하세요.")
+            break
+    print()
+
+print("\\n🔐 보안 시스템 테스트 완료")`;
+            });
+        });
+    </script>
+</body>
+</html> 

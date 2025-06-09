@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레슨 12: 최종 프로젝트 | MechDog 파이썬 학습</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Noto Sans KR', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .code-editor {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            border: 2px solid #404040;
+            resize: vertical;
+            min-height: 200px;
+        }
+        
+        .output-panel {
+            background: #0d1117;
+            color: #e6edf3;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            min-height: 200px;
+            border: 2px solid #30363d;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        
+        .lesson-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-feature {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-sm sticky top-0 z-40 mx-4 mt-4 rounded-2xl shadow-lg">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <a href="../index.html" class="text-2xl hover:text-purple-600">🏠</a>
+                <h1 class="text-xl font-bold text-gray-800">레슨 12: 최종 프로젝트</h1>
+                <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-sm">고급</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="lesson11.html" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm">← 이전</a>
+                <a href="../index.html" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm">🏁 완료</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Project Introduction -->
+        <section class="lesson-card mb-8">
+            <div class="flex items-center mb-6">
+                <span class="text-4xl mr-4">🚀</span>
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">나만의 MechDog AI</h2>
+                    <p class="text-gray-600">모든 학습 내용을 종합한 최종 프로젝트</p>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-purple-50 to-blue-50 border-l-4 border-purple-500 p-6">
+                <h3 class="text-lg font-bold text-purple-800 mb-2">🎯 프로젝트 목표</h3>
+                <ul class="text-purple-700 space-y-1">
+                    <li>• 모든 센서를 활용한 통합 시스템 구현</li>
+                    <li>• 사용자와 상호작용하는 지능형 AI 개발</li>
+                    <li>• 감정 표현과 학습 능력 추가</li>
+                    <li>• 창의적이고 실용적인 기능 구현</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Project Features -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🎨 프로젝트 특징</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="project-feature">
+                    <h4 class="text-lg font-bold mb-3">🧠 AI 기능</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>• 패턴 학습 및 기억</li>
+                        <li>• 상황별 적응 행동</li>
+                        <li>• 감정 상태 시뮬레이션</li>
+                        <li>• 사용자 선호도 분석</li>
+                    </ul>
+                </div>
+                
+                <div class="project-feature">
+                    <h4 class="text-lg font-bold mb-3">📡 센서 융합</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>• 다중 센서 데이터 분석</li>
+                        <li>• 환경 인식 및 대응</li>
+                        <li>• 실시간 의사결정</li>
+                        <li>• 예측 행동 시스템</li>
+                    </ul>
+                </div>
+                
+                <div class="project-feature">
+                    <h4 class="text-lg font-bold mb-3">🎮 인터랙션</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>• 음성 명령 인식</li>
+                        <li>• 제스처 기반 제어</li>
+                        <li>• 터치 패턴 학습</li>
+                        <li>• 게임 모드</li>
+                    </ul>
+                </div>
+                
+                <div class="project-feature">
+                    <h4 class="text-lg font-bold mb-3">💫 창의적 기능</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>• 음악 반응 댄스</li>
+                        <li>• 예술 작품 평가</li>
+                        <li>• 날씨 예보 서비스</li>
+                        <li>• 펫 케어 시스템</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Complete AI System -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🤖 완전한 MechDog AI 시스템</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <textarea id="code-editor" class="code-editor w-full h-96">
+# 최종 프로젝트: 나만의 MechDog AI
+import random
+import time
+from datetime import datetime
+
+class MechDogAI:
+    def __init__(self, name="SmartDog"):
+        self.name = name
+        self.personality = {
+            "energy": 80,
+            "happiness": 70,
+            "curiosity": 90,
+            "loyalty": 95
+        }
+        self.memory = []
+        self.skills = []
+        self.user_preferences = {}
+        self.current_mood = "neutral"
+        
+        print(f"🤖 {self.name} AI 시스템 초기화 완료!")
+        self.show_status()
+    
+    def show_status(self):
+        """현재 상태 표시"""
+        print(f"\\n=== {self.name} 상태 ===")
+        print(f"😊 기분: {self.current_mood}")
+        print(f"⚡ 에너지: {self.personality['energy']}%")
+        print(f"😄 행복도: {self.personality['happiness']}%")
+        print(f"🎓 학습된 기술: {len(self.skills)}개")
+        print(f"🧠 기억: {len(self.memory)}개")
+    
+    def analyze_environment(self):
+        """환경 분석"""
+        # 센서 시뮬레이션
+        distance = random.randint(10, 100)
+        light = random.randint(50, 500)
+        sound = random.randint(20, 80)
+        temperature = random.randint(18, 35)
+        
+        environment = {
+            "distance": distance,
+            "light": light,
+            "sound": sound,
+            "temperature": temperature,
+            "time": datetime.now().hour
+        }
+        
+        print(f"\\n🌍 환경 분석:")
+        print(f"📏 거리: {distance}cm")
+        print(f"💡 조도: {light}lux")
+        print(f"🔊 소음: {sound}dB")
+        print(f"🌡️ 온도: {temperature}℃")
+        
+        return environment
+    
+    def decide_mood(self, environment):
+        """환경에 따른 기분 결정"""
+        if environment["sound"] > 70:
+            self.current_mood = "alert"
+            print("🚨 기분: 경계 모드")
+        elif environment["light"] < 100:
+            self.current_mood = "calm"
+            print("🌙 기분: 차분함")
+        elif environment["temperature"] > 30:
+            self.current_mood = "tired"
+            print("😴 기분: 피곤함")
+        elif environment["distance"] < 20:
+            self.current_mood = "excited"
+            print("😆 기분: 흥분됨")
+        else:
+            self.current_mood = "happy"
+            print("😊 기분: 행복함")
+    
+    def learn_skill(self, skill_name):
+        """새로운 기술 학습"""
+        if skill_name not in self.skills:
+            self.skills.append(skill_name)
+            self.personality["curiosity"] += 5
+            print(f"🎓 새로운 기술 학습: {skill_name}")
+            return True
+        return False
+    
+    def remember_interaction(self, interaction):
+        """상호작용 기억"""
+        self.memory.append({
+            "interaction": interaction,
+            "mood": self.current_mood,
+            "time": datetime.now().strftime("%H:%M")
+        })
+        
+        # 메모리 관리 (최근 20개만 유지)
+        if len(self.memory) > 20:
+            self.memory.pop(0)
+    
+    def express_emotion(self):
+        """감정 표현"""
+        emotions = {
+            "happy": ["꼬리 흔들기", "점프하기", "빙글빙글 돌기"],
+            "excited": ["빠르게 움직이기", "소리 내기", "춤추기"],
+            "calm": ["천천히 걷기", "고개 끄덕이기", "조용히 앉기"],
+            "alert": ["귀 세우기", "주변 스캔", "경계 자세"],
+            "tired": ["하품하기", "눕기", "느린 움직임"]
+        }
+        
+        if self.current_mood in emotions:
+            action = random.choice(emotions[self.current_mood])
+            print(f"💫 감정 표현: {action}")
+    
+    def play_game(self):
+        """게임 모드"""
+        games = [
+            "숨바꼭질", "공 가져오기", "장애물 경주",
+            "댄스 배틀", "퀴즈 게임", "트릭 쇼"
+        ]
+        
+        game = random.choice(games)
+        print(f"🎮 게임 시작: {game}")
+        
+        # 게임 결과에 따른 기분 변화
+        success = random.choice([True, False])
+        if success:
+            print("🏆 게임 성공! 행복도 증가")
+            self.personality["happiness"] += 10
+        else:
+            print("😅 게임 실패! 다음에 더 잘해보자")
+            self.personality["energy"] -= 5
+        
+        self.learn_skill(f"{game} 전문가")
+    
+    def daily_routine(self):
+        """일상 루틴 실행"""
+        print(f"\\n🌅 {self.name}의 하루 시작!")
+        
+        for hour in range(3):  # 3시간 시뮬레이션
+            print(f"\\n--- {hour+1}시간 후 ---")
+            
+            # 환경 분석
+            env = self.analyze_environment()
+            
+            # 기분 결정
+            self.decide_mood(env)
+            
+            # 감정 표현
+            self.express_emotion()
+            
+            # 랜덤 활동
+            activities = [
+                "탐험하기", "휴식하기", "센서 점검",
+                "사용자와 놀기", "새로운 기술 연습"
+            ]
+            
+            activity = random.choice(activities)
+            print(f"🎯 활동: {activity}")
+            
+            if activity == "사용자와 놀기":
+                self.play_game()
+            elif activity == "새로운 기술 연습":
+                new_skill = random.choice([
+                    "곡예", "노래하기", "그림 그리기", "요리 도우미"
+                ])
+                self.learn_skill(new_skill)
+            
+            # 상호작용 기억
+            self.remember_interaction(activity)
+            
+            # 에너지 관리
+            self.personality["energy"] -= random.randint(5, 15)
+            if self.personality["energy"] < 20:
+                print("🔋 에너지 부족! 충전 시간")
+                self.personality["energy"] = 100
+        
+        print(f"\\n🌙 {self.name}의 하루 종료")
+        self.show_status()
+        
+        # 학습 요약
+        print(f"\\n📚 오늘 배운 것들:")
+        for skill in self.skills[-3:]:  # 최근 3개 기술
+            print(f"  • {skill}")
+
+# 나만의 MechDog AI 생성 및 실행
+my_ai_dog = MechDogAI("엘리트독")
+my_ai_dog.daily_routine()
+
+print("\\n🎉 MechDog AI 프로젝트 완성!")
+print("🏆 축하합니다! 모든 레슨을 완료했습니다!")
+</textarea>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-code" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg">🚀 AI 실행</button>
+                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">지우기</button>
+                        <button id="creative-project" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg">🎨 창의 프로젝트</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <div id="output" class="output-panel h-96">
+                        최종 MechDog AI 프로젝트를 실행해보세요!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Showcase -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🏆 프로젝트 쇼케이스</h3>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-b from-blue-50 to-blue-100 p-6 rounded-xl">
+                    <h4 class="text-lg font-bold text-blue-800 mb-3">🎖️ 달성한 목표</h4>
+                    <ul class="text-blue-700 text-sm space-y-2">
+                        <li>✅ 파이썬 기초 문법 마스터</li>
+                        <li>✅ 객체지향 프로그래밍</li>
+                        <li>✅ 센서 데이터 활용</li>
+                        <li>✅ 실제 하드웨어 제어</li>
+                        <li>✅ AI 시스템 구현</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gradient-to-b from-green-50 to-green-100 p-6 rounded-xl">
+                    <h4 class="text-lg font-bold text-green-800 mb-3">🚀 발전 방향</h4>
+                    <ul class="text-green-700 text-sm space-y-2">
+                        <li>🔬 고급 AI 알고리즘</li>
+                        <li>🌐 IoT 연결 기능</li>
+                        <li>📱 모바일 앱 연동</li>
+                        <li>🤝 다중 로봇 협업</li>
+                        <li>🎯 특수 목적 AI</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gradient-to-b from-purple-50 to-purple-100 p-6 rounded-xl">
+                    <h4 class="text-lg font-bold text-purple-800 mb-3">💡 창의 아이디어</h4>
+                    <ul class="text-purple-700 text-sm space-y-2">
+                        <li>🎵 음악 감상 도우미</li>
+                        <li>🏥 헬스케어 모니터</li>
+                        <li>🏠 스마트홈 관리자</li>
+                        <li>🎓 교육용 튜터 로봇</li>
+                        <li>🎪 엔터테인먼트 봇</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Congratulations -->
+        <section class="lesson-card mb-8 bg-gradient-to-r from-yellow-100 to-orange-100">
+            <div class="text-center">
+                <div class="text-6xl mb-4">🎉</div>
+                <h3 class="text-3xl font-bold text-orange-800 mb-4">축하합니다!</h3>
+                <p class="text-orange-700 text-lg mb-6">
+                    MechDog 제어를 위한 파이썬 학습 과정을 모두 완료하셨습니다!<br>
+                    이제 여러분은 실제 로봇을 프로그래밍할 수 있는 능력을 갖췄습니다.
+                </p>
+                
+                <div class="bg-white p-6 rounded-xl inline-block">
+                    <h4 class="text-lg font-bold text-gray-800 mb-3">🏅 최종 성취도</h4>
+                    <div class="text-left space-y-2">
+                        <div class="flex justify-between">
+                            <span>파이썬 기초</span>
+                            <span class="text-green-600 font-bold">100%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>센서 활용</span>
+                            <span class="text-green-600 font-bold">100%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>AI 구현</span>
+                            <span class="text-green-600 font-bold">100%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>창의적 사고</span>
+                            <span class="text-green-600 font-bold">100%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="flex justify-between items-center">
+            <a href="lesson11.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg">← 이전</a>
+            <a href="../index.html" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg">🏠 메인으로</a>
+        </section>
+    </main>
+
+    <script>
+        let pyodide = null;
+
+        async function initPyodide() {
+            if (pyodide === null) {
+                document.getElementById('output').textContent = '🤖 AI 시스템 준비 중...';
+                pyodide = await loadPyodide();
+                document.getElementById('output').textContent = '🚀 AI 준비 완료! 프로젝트를 실행해보세요!';
+            }
+        }
+
+        async function runPythonCode(code) {
+            if (pyodide === null) await initPyodide();
+            
+            try {
+                pyodide.runPython(`
+                    import sys
+                    from io import StringIO
+                    old_stdout = sys.stdout
+                    sys.stdout = captured_output = StringIO()
+                `);
+                
+                pyodide.runPython(code);
+                
+                const output = pyodide.runPython(`
+                    sys.stdout = old_stdout
+                    captured_output.getvalue()
+                `);
+                
+                document.getElementById('output').textContent = output || '(출력 없음)';
+                
+                // Final progress update
+                let progress = JSON.parse(localStorage.getItem('mechDogLearningProgress') || '{"lessonsCompleted": 0, "codesRun": 0}');
+                progress.codesRun = (progress.codesRun || 0) + 1;
+                progress.lessonsCompleted = 12; // Final lesson completed
+                progress.finalProjectCompleted = true;
+                localStorage.setItem('mechDogLearningProgress', JSON.stringify(progress));
+                
+            } catch (error) {
+                document.getElementById('output').textContent = `오류:\n${error.message}`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.addEventListener('click', initPyodide, { once: true });
+            
+            document.getElementById('run-code').addEventListener('click', () => {
+                runPythonCode(document.getElementById('code-editor').value);
+            });
+            
+            document.getElementById('clear-code').addEventListener('click', () => {
+                document.getElementById('code-editor').value = '';
+                document.getElementById('output').textContent = '🧹 에디터를 지웠습니다.';
+            });
+            
+            document.getElementById('creative-project').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# 창의적 MechDog 프로젝트: 반려로봇 케어 시스템
+import random
+from datetime import datetime
+
+class PetCareMechDog:
+    def __init__(self, owner_name):
+        self.owner_name = owner_name
+        self.health_status = {
+            "happiness": 85,
+            "hunger": 30,
+            "energy": 70,
+            "social": 60
+        }
+        self.daily_schedule = []
+        self.favorite_activities = []
+        
+        print(f"🐕 반려로봇 {self.owner_name}의 MechDog 등록 완료!")
+        self.morning_greeting()
+    
+    def morning_greeting(self):
+        """아침 인사"""
+        hour = datetime.now().hour
+        if hour < 12:
+            greeting = "좋은 아침이에요"
+        elif hour < 18:
+            greeting = "안녕하세요"
+        else:
+            greeting = "좋은 저녁이에요"
+        
+        print(f"🌅 {greeting}, {self.owner_name}님!")
+        print("💖 오늘도 함께 즐거운 하루 보내요!")
+        self.check_health()
+    
+    def check_health(self):
+        """건강 상태 체크"""
+        print("\\n🏥 건강 체크 중...")
+        for status, value in self.health_status.items():
+            status_ko = {
+                "happiness": "행복도",
+                "hunger": "배고픔", 
+                "energy": "에너지",
+                "social": "사회성"
+            }
+            
+            if value > 80:
+                emoji = "😊"
+            elif value > 50:
+                emoji = "😐"
+            else:
+                emoji = "😟"
+                
+            print(f"{emoji} {status_ko[status]}: {value}%")
+    
+    def suggest_activity(self):
+        """활동 추천"""
+        suggestions = []
+        
+        if self.health_status["hunger"] > 70:
+            suggestions.append("🍽️ 식사 시간이에요!")
+        if self.health_status["energy"] < 30:
+            suggestions.append("😴 휴식이 필요해요")
+        if self.health_status["social"] < 40:
+            suggestions.append("👥 함께 놀아주세요!")
+        if self.health_status["happiness"] < 50:
+            suggestions.append("🎮 재미있는 게임을 해요!")
+        
+        if not suggestions:
+            suggestions = [
+                "🚶 산책하기", "🎵 음악 감상", "📚 새로운 기술 배우기",
+                "🎨 창작 활동", "🧩 퍼즐 맞추기"
+            ]
+        
+        return random.choice(suggestions)
+    
+    def do_activity(self, activity):
+        """활동 수행"""
+        print(f"\\n🎯 활동 시작: {activity}")
+        
+        # 활동별 효과
+        effects = {
+            "식사": {"hunger": -50, "happiness": +10},
+            "휴식": {"energy": +40, "happiness": +5},
+            "놀기": {"social": +30, "happiness": +20, "energy": -10},
+            "게임": {"happiness": +25, "social": +15, "energy": -5},
+            "산책": {"energy": +10, "happiness": +15, "social": +10},
+            "음악": {"happiness": +20, "social": +5},
+            "학습": {"happiness": +10, "energy": -15},
+            "창작": {"happiness": +30, "energy": -20}
+        }
+        
+        # 키워드로 효과 찾기
+        for keyword, effect in effects.items():
+            if keyword in activity:
+                for stat, change in effect.items():
+                    self.health_status[stat] += change
+                    # 범위 제한 (0-100)
+                    self.health_status[stat] = max(0, min(100, self.health_status[stat]))
+                break
+        
+        # 좋아하는 활동 기록
+        if activity not in self.favorite_activities:
+            self.favorite_activities.append(activity)
+            print(f"💝 새로운 좋아하는 활동 발견: {activity}")
+        
+        print(f"✨ {activity} 완료!")
+    
+    def daily_care_routine(self):
+        """일일 케어 루틴"""
+        print(f"\\n📅 {self.owner_name}님과 MechDog의 하루 케어")
+        
+        for period in ["오전", "오후", "저녁"]:
+            print(f"\\n=== {period} 시간 ===")
+            
+            # 현재 상태 확인
+            self.check_health()
+            
+            # 활동 추천 및 수행
+            suggested = self.suggest_activity()
+            print(f"💡 추천 활동: {suggested}")
+            self.do_activity(suggested)
+            
+            # 시간에 따른 자연적 변화
+            self.health_status["hunger"] += random.randint(10, 20)
+            self.health_status["energy"] -= random.randint(5, 15)
+            
+            # 범위 제한
+            for stat in self.health_status:
+                self.health_status[stat] = max(0, min(100, self.health_status[stat]))
+        
+        # 하루 요약
+        print(f"\\n🌙 하루 마무리")
+        print(f"❤️ 오늘의 좋아하는 활동들:")
+        for activity in self.favorite_activities[-3:]:
+            print(f"  • {activity}")
+        
+        self.check_health()
+        
+        # 내일 계획
+        tomorrow_plan = self.suggest_activity()
+        print(f"\\n🌅 내일 계획: {tomorrow_plan}")
+        print(f"😴 좋은 꿈 꾸세요, {self.owner_name}님!")
+
+# 반려로봇 케어 시스템 실행
+care_system = PetCareMechDog("김파이썬")
+care_system.daily_care_routine()
+
+print("\\n🎉 창의적 MechDog 프로젝트 완성!")
+print("🏆 반려로봇과 함께하는 특별한 하루를 만들어보세요!")`;
+            });
+        });
+    </script>
+</body>
+</html> 

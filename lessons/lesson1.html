@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레슨 1: 첫 번째 코드 | MechDog 파이썬 학습</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Noto Sans KR', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .code-editor {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
+            font-size: 14px;
+            border: 2px solid #404040;
+            transition: all 0.3s ease;
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .code-editor:focus {
+            outline: none;
+            border-color: #00d9ff;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+        }
+        
+        .output-panel {
+            background: #0d1117;
+            color: #e6edf3;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            min-height: 120px;
+            border: 2px solid #30363d;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        
+        .lesson-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quiz-option {
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-option:hover {
+            background: #e5e7eb;
+            transform: translateX(8px);
+        }
+        
+        .quiz-option.correct {
+            background: #dcfce7;
+            border-color: #16a34a;
+            color: #166534;
+        }
+        
+        .quiz-option.incorrect {
+            background: #fee2e2;
+            border-color: #dc2626;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-sm sticky top-0 z-40 mx-4 mt-4 rounded-2xl shadow-lg">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <a href="../index.html" class="text-2xl hover:text-purple-600">🏠</a>
+                <h1 class="text-xl font-bold text-gray-800">레슨 1: 첫 번째 코드</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="lesson2.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">
+                    다음 레슨 →
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Lesson Introduction -->
+        <section class="lesson-card mb-8">
+            <div class="flex items-center mb-6">
+                <span class="text-4xl mr-4">🌟</span>
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">첫 번째 파이썬 코드</h2>
+                    <p class="text-gray-600">print() 함수로 "Hello, World!" 출력하기</p>
+                </div>
+            </div>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                <h3 class="text-lg font-bold text-blue-800 mb-2">🎯 학습 목표</h3>
+                <ul class="text-blue-700 space-y-1">
+                    <li>• print() 함수의 기본 사용법 이해하기</li>
+                    <li>• 여러 개 값을 한번에 출력하는 방법 배우기</li>
+                    <li>• end와 sep 매개변수 활용법 익히기</li>
+                    <li>• 변수와 f-string을 이용한 동적 출력 배우기</li>
+                    <li>• 문자열(따옴표)의 개념 알기</li>
+                    <li>• 첫 번째 파이썬 프로그램 실행해보기</li>
+                    <li>• MechDog 제어의 첫 걸음 내딛기</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Theory Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📖 이론 학습</h3>
+            
+            <div class="space-y-6">
+                <div>
+                    <h4 class="text-xl font-semibold text-gray-700 mb-3">🔤 print() 함수란?</h4>
+                    <p class="text-gray-600 mb-4">
+                        <code class="bg-gray-100 px-2 py-1 rounded">print()</code> 함수는 파이썬에서 가장 기본적인 함수입니다. 
+                        화면에 문자나 숫자를 출력할 때 사용합니다.
+                    </p>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h5 class="font-semibold mb-2">기본 문법:</h5>
+                        <code class="text-green-600">print("출력하고 싶은 내용")</code>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-semibold text-gray-700 mb-3">📝 문자열과 따옴표</h4>
+                    <p class="text-gray-600 mb-4">
+                        문자열은 글자들의 조합입니다. 파이썬에서는 따옴표(" " 또는 ' ')로 문자열을 표현합니다.
+                    </p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-green-700 mb-2">✅ 올바른 예:</h5>
+                            <div class="space-y-1 text-sm">
+                                <div><code>print("Hello, World!")</code></div>
+                                <div><code>print('안녕하세요')</code></div>
+                                <div><code>print("MechDog 안녕!")</code></div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-red-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-red-700 mb-2">❌ 잘못된 예:</h5>
+                            <div class="space-y-1 text-sm">
+                                <div><code>print(Hello, World!)</code></div>
+                                <div><code>print("안녕하세요')</code></div>
+                                <div><code>print(MechDog 안녕!)</code></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- New Advanced Print Methods Section -->
+                <div>
+                    <h4 class="text-xl font-semibold text-gray-700 mb-3">🚀 print() 함수의 다양한 사용법</h4>
+                    <p class="text-gray-600 mb-4">
+                        print() 함수는 단순히 글자를 출력하는 것 외에도 다양한 방법으로 활용할 수 있습니다!
+                    </p>
+                    
+                    <!-- Methods Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full bg-white border border-gray-300 rounded-lg text-sm">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">번호</th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">방법</th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">코드 예시</th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">설명</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2 font-bold">1</td>
+                                    <td class="border border-gray-300 px-4 py-2">기본 출력</td>
+                                    <td class="border border-gray-300 px-4 py-2"><code class="bg-gray-100 px-1 rounded">print("안녕하세요")</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">글자를 화면에 그대로 보여줘요</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="border border-gray-300 px-4 py-2 font-bold">2</td>
+                                    <td class="border border-gray-300 px-4 py-2">여러 개 출력</td>
+                                    <td class="border border-gray-300 px-4 py-2"><code class="bg-gray-100 px-1 rounded">print("안녕", "나는", "파이썬이야")</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">쉼표로 나누면 자동으로 띄어쓰기 돼요</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2 font-bold">3</td>
+                                    <td class="border border-gray-300 px-4 py-2">줄 바꾸지 않기</td>
+                                    <td class="border border-gray-300 px-4 py-2">
+                                        <code class="bg-gray-100 px-1 rounded">print("Hello", end=" ")</code><br>
+                                        <code class="bg-gray-100 px-1 rounded">print("World")</code>
+                                    </td>
+                                    <td class="border border-gray-300 px-4 py-2">end를 이용해서 줄바꿈 없이 이어서 출력해요</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="border border-gray-300 px-4 py-2 font-bold">4</td>
+                                    <td class="border border-gray-300 px-4 py-2">구분자 바꾸기</td>
+                                    <td class="border border-gray-300 px-4 py-2"><code class="bg-gray-100 px-1 rounded">print("2025", "06", "09", sep="-")</code></td>
+                                    <td class="border border-gray-300 px-4 py-2">sep로 글자 사이에 넣을 기호를 정할 수 있어요</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2 font-bold">5</td>
+                                    <td class="border border-gray-300 px-4 py-2">변수 넣기 (f-string)</td>
+                                    <td class="border border-gray-300 px-4 py-2">
+                                        <code class="bg-gray-100 px-1 rounded">name = "지민"</code><br>
+                                        <code class="bg-gray-100 px-1 rounded">print(f"안녕 {name}")</code>
+                                    </td>
+                                    <td class="border border-gray-300 px-4 py-2">f"문장{변수}"처럼 변수 값을 문장에 넣을 수 있어요</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Detailed Examples -->
+                    <div class="mt-6 space-y-4">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-blue-800 mb-3">💡 실제 실행 결과 예시:</h5>
+                            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <h6 class="font-semibold mb-2">📝 코드:</h6>
+                                    <div class="bg-gray-100 p-3 rounded font-mono">
+                                        <div>print("안녕", "나는", "MechDog")</div>
+                                        <div>print("2025", "06", "09", sep="-")</div>
+                                        <div>print("Hello", end=" ")</div>
+                                        <div>print("World!")</div>
+                                        <div>name = "파이썬"</div>
+                                        <div>print(f"안녕하세요 {name}입니다")</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="font-semibold mb-2">🖥️ 실행 결과:</h6>
+                                    <div class="bg-gray-800 text-green-400 p-3 rounded font-mono">
+                                        <div>안녕 나는 MechDog</div>
+                                        <div>2025-06-09</div>
+                                        <div>Hello World!</div>
+                                        <div>안녕하세요 파이썬입니다</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">💻 실습하기</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">코드 에디터</label>
+                    <textarea 
+                        id="code-editor" 
+                        class="code-editor w-full"
+                        placeholder="여기에 파이썬 코드를 작성하세요..."
+                    ># print() 함수의 다양한 사용법 실습
+# 1. 기본 출력
+print("Hello, World!")
+print("안녕하세요, MechDog!")
+
+# 2. 여러 개 출력 (쉼표로 구분)
+print("안녕", "나는", "파이썬", "학습자야")
+
+# 3. 줄 바꾸지 않기 (end 사용)
+print("MechDog이", end=" ")
+print("안녕하고 있어요!")
+
+# 4. 구분자 바꾸기 (sep 사용)
+print("2025", "06", "09", sep="-")
+print("파이썬", "학습", "재미있어요", sep=" ★ ")
+
+# 5. 변수와 f-string 사용
+name = "학습자"
+robot = "MechDog"
+print(f"안녕하세요 {name}님! {robot}과 함께 파이썬을 배워봅시다!")</textarea>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-code" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center">
+                            <span class="mr-2">▶️</span> 실행하기
+                        </button>
+                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            지우기
+                        </button>
+                        <button id="example-code" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            💡 예제 보기
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">실행 결과</label>
+                    <div id="output" class="output-panel">
+                        실행 버튼을 눌러 코드를 실행해보세요!
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Challenge -->
+            <div class="mt-8 p-6 bg-yellow-50 rounded-xl">
+                <h4 class="text-lg font-bold text-yellow-800 mb-4">🎯 도전 과제</h4>
+                <p class="text-yellow-700 mb-4">다양한 print() 함수 사용법을 활용해서 다음 결과가 나오도록 코드를 작성해보세요:</p>
+                
+                <div class="bg-gray-800 text-green-400 p-3 rounded font-mono text-sm mb-4">
+                    <div>안녕하세요 [여러분의 이름]님!</div>
+                    <div>MechDog 파이썬 학습-레슨1</div>
+                    <div>오늘 날짜: 2025-06-09</div>
+                    <div>첫 번째 레슨 완료!</div>
+                </div>
+                
+                <p class="text-yellow-700 mb-4">힌트: 다음 방법들을 사용해보세요:</p>
+                <ul class="text-yellow-700 space-y-1 mb-4 text-sm">
+                    <li>• f-string으로 이름 넣기</li>
+                    <li>• sep="-"로 구분자 사용하기</li>
+                    <li>• 변수에 이름과 날짜 저장하기</li>
+                </ul>
+                
+                <button id="show-solution" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">
+                    정답 보기
+                </button>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🧠 퀴즈</h3>
+            
+            <div class="space-y-6">
+                <!-- Quiz 1 -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-700 mb-3">문제 1: print() 함수에 대해</h4>
+                    <p class="text-gray-600 mb-4">다음 중 올바른 print() 함수 사용법은?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option" data-quiz="1" data-answer="incorrect">print(Hello World)</div>
+                        <div class="quiz-option" data-quiz="1" data-answer="correct">print("Hello World")</div>
+                        <div class="quiz-option" data-quiz="1" data-answer="incorrect">print[Hello World]</div>
+                        <div class="quiz-option" data-quiz="1" data-answer="incorrect">print{Hello World}</div>
+                    </div>
+                    <div id="quiz-1-result" class="mt-4 text-sm font-medium hidden"></div>
+                </div>
+                
+                <!-- Quiz 2 -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-700 mb-3">문제 2: 문자열 표현</h4>
+                    <p class="text-gray-600 mb-4">print("MechDog") 를 실행하면 어떤 결과가 나올까요?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option" data-quiz="2" data-answer="correct">MechDog</div>
+                        <div class="quiz-option" data-quiz="2" data-answer="incorrect">"MechDog"</div>
+                        <div class="quiz-option" data-quiz="2" data-answer="incorrect">print("MechDog")</div>
+                        <div class="quiz-option" data-quiz="2" data-answer="incorrect">오류 발생</div>
+                    </div>
+                    <div id="quiz-2-result" class="mt-4 text-sm font-medium hidden"></div>
+                </div>
+                
+                <!-- Quiz 3 -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-700 mb-3">문제 3: 여러 개 출력</h4>
+                    <p class="text-gray-600 mb-4">print("안녕", "MechDog", "파이썬") 의 실행 결과는?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option" data-quiz="3" data-answer="correct">안녕 MechDog 파이썬</div>
+                        <div class="quiz-option" data-quiz="3" data-answer="incorrect">안녕MechDog파이썬</div>
+                        <div class="quiz-option" data-quiz="3" data-answer="incorrect">안녕,MechDog,파이썬</div>
+                        <div class="quiz-option" data-quiz="3" data-answer="incorrect">오류 발생</div>
+                    </div>
+                    <div id="quiz-3-result" class="mt-4 text-sm font-medium hidden"></div>
+                </div>
+                
+                <!-- Quiz 4 -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-700 mb-3">문제 4: 구분자(sep) 사용</h4>
+                    <p class="text-gray-600 mb-4">print("A", "B", "C", sep="-") 의 실행 결과는?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option" data-quiz="4" data-answer="correct">A-B-C</div>
+                        <div class="quiz-option" data-quiz="4" data-answer="incorrect">A B C</div>
+                        <div class="quiz-option" data-quiz="4" data-answer="incorrect">A,B,C</div>
+                        <div class="quiz-option" data-quiz="4" data-answer="incorrect">ABC</div>
+                    </div>
+                    <div id="quiz-4-result" class="mt-4 text-sm font-medium hidden"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 정리</h3>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-6">
+                <h4 class="text-lg font-bold text-green-800 mb-3">✅ 이번 레슨에서 배운 내용</h4>
+                <ul class="text-green-700 space-y-2">
+                    <li>• <strong>기본 출력:</strong> print("내용") - 화면에 내용을 출력</li>
+                    <li>• <strong>여러 개 출력:</strong> print("A", "B", "C") - 쉼표로 구분하여 한번에 출력</li>
+                    <li>• <strong>줄바꿈 제어:</strong> print("내용", end=" ") - end로 줄바꿈 방식 조정</li>
+                    <li>• <strong>구분자 설정:</strong> print("A", "B", sep="-") - sep로 값 사이 구분자 지정</li>
+                    <li>• <strong>변수 활용:</strong> f"안녕 {name}" - f-string으로 변수 값을 문장에 삽입</li>
+                    <li>• <strong>문자열:</strong> 따옴표(" " 또는 ' ')로 감싸서 표현</li>
+                    <li>• <strong>첫 번째 코드:</strong> "Hello, World!" 출력 성공</li>
+                    <li>• <strong>MechDog 연결:</strong> 로봇 제어의 첫 걸음</li>
+                </ul>
+            </div>
+            
+            <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-6">
+                <h4 class="text-lg font-bold text-blue-800 mb-3">🚀 다음 레슨 미리보기</h4>
+                <p class="text-blue-700">
+                    다음 레슨에서는 <strong>변수</strong>를 배워봅시다! 
+                    MechDog의 이름, 위치, 상태 등을 저장하는 방법을 알아보겠습니다.
+                </p>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="flex justify-between items-center">
+            <a href="../index.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                ← 메인으로
+            </a>
+            <a href="lesson2.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                다음 레슨 →
+            </a>
+        </section>
+    </main>
+
+    <script>
+        let pyodide = null;
+
+        // Initialize Pyodide
+        async function initPyodide() {
+            if (pyodide === null) {
+                document.getElementById('output').textContent = '파이썬 엔진을 준비하고 있습니다...';
+                pyodide = await loadPyodide();
+                document.getElementById('output').textContent = '준비 완료! 코드를 실행해보세요.';
+            }
+        }
+
+        // Run Python code
+        async function runPythonCode(code) {
+            if (pyodide === null) {
+                await initPyodide();
+            }
+            
+            try {
+                // Capture stdout
+                pyodide.runPython(`
+                    import sys
+                    from io import StringIO
+                    old_stdout = sys.stdout
+                    sys.stdout = captured_output = StringIO()
+                `);
+                
+                // Run user code
+                pyodide.runPython(code);
+                
+                // Get output
+                const output = pyodide.runPython(`
+                    sys.stdout = old_stdout
+                    captured_output.getvalue()
+                `);
+                
+                document.getElementById('output').textContent = output || '(출력 없음)';
+                
+                // Update progress
+                updateProgress();
+                
+            } catch (error) {
+                document.getElementById('output').textContent = `오류 발생:\n${error.message}`;
+            }
+        }
+
+        // Update progress
+        function updateProgress() {
+            let progress = JSON.parse(localStorage.getItem('mechDogLearningProgress') || '{"lessonsCompleted": 0, "codesRun": 0}');
+            progress.codesRun = (progress.codesRun || 0) + 1;
+            
+            // Mark lesson 1 as completed if not already
+            if (progress.lessonsCompleted < 1) {
+                progress.lessonsCompleted = 1;
+            }
+            
+            localStorage.setItem('mechDogLearningProgress', JSON.stringify(progress));
+        }
+
+        // Quiz handling
+        function handleQuizAnswer(quizId, selectedOption, isCorrect) {
+            const options = document.querySelectorAll(`[data-quiz="${quizId}"]`);
+            const resultDiv = document.getElementById(`quiz-${quizId}-result`);
+            
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+                if (option === selectedOption) {
+                    option.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else if (option.dataset.answer === 'correct') {
+                    option.classList.add('correct');
+                }
+            });
+            
+            if (isCorrect) {
+                resultDiv.textContent = '정답입니다! 🎉';
+                resultDiv.className = 'mt-4 text-sm font-medium text-green-600';
+            } else {
+                resultDiv.textContent = '틀렸습니다. 다시 생각해보세요! 🤔';
+                resultDiv.className = 'mt-4 text-sm font-medium text-red-600';
+            }
+            
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize on first interaction
+            document.addEventListener('click', initPyodide, { once: true });
+            
+            // Run code button
+            document.getElementById('run-code').addEventListener('click', () => {
+                const code = document.getElementById('code-editor').value;
+                runPythonCode(code);
+            });
+            
+            // Clear code button
+            document.getElementById('clear-code').addEventListener('click', () => {
+                document.getElementById('code-editor').value = '';
+                document.getElementById('output').textContent = '에디터를 지웠습니다.';
+            });
+            
+            // Example code button
+            document.getElementById('example-code').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# print() 함수 5가지 사용법 종합 예제
+
+print("🤖 MechDog과 함께 배우는 파이썬!")
+print("=" * 40)
+
+# 1. 기본 출력
+print("1. 기본 출력 방법")
+print("Hello, Python World!")
+
+# 2. 여러 개 출력
+print("2. 여러 개 한번에 출력")
+print("MechDog", "파이썬", "학습", "시작!")
+
+# 3. 줄 바꾸지 않고 이어서 출력
+print("3. 이어서 출력하기")
+print("안녕하세요", end=" ")
+print("MechDog입니다!")
+
+# 4. 구분자 바꾸기
+print("4. 구분자 바꾸기")
+print("년", "월", "일", sep="-")
+print("사과", "바나나", "포도", sep=" | ")
+
+# 5. 변수와 f-string
+print("5. 변수 활용하기")
+student_name = "김파이썬"
+lesson_number = 1
+print(f"학생 이름: {student_name}")
+print(f"현재 레슨: {lesson_number}번째")
+print(f"{student_name}님, 레슨 {lesson_number} 화이팅!")`;
+            });
+            
+            // Show solution button
+            document.getElementById('show-solution').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# 도전 과제 정답
+# 다양한 print() 함수 사용법을 활용한 해답
+
+# 변수 정의
+my_name = "김파이썬"  # 여러분의 이름으로 바꿔보세요
+year = "2025"
+month = "06"
+day = "09"
+
+# 1. f-string으로 이름 넣기
+print(f"안녕하세요 {my_name}님!")
+
+# 2. 여러 개 출력과 sep 사용
+print("MechDog", "파이썬", "학습", sep=" ")
+print("레슨", "1", sep="")
+
+# 3. sep으로 날짜 형식 만들기
+print("오늘 날짜:", year, month, day, sep="", end="")
+print(":", year, month, day, sep="-")
+
+# 4. 기본 출력
+print("첫 번째 레슨 완료!")
+
+# 보너스: 한 줄로 더 간단하게
+print()
+print("=== 더 간단한 방법 ===")
+name = "김파이썬"
+print(f"안녕하세요 {name}님!")
+print("MechDog", "파이썬", "학습-레슨1", sep=" ")
+print("오늘", "날짜:", "2025", "06", "09", sep=" ", end="")
+print(":", "2025", "06", "09", sep="", end="")
+print(":", sep="-")
+print("첫 번째 레슨 완료!")`;
+            });
+            
+            // Quiz handlers
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const quizId = option.dataset.quiz;
+                    const isCorrect = option.dataset.answer === 'correct';
+                    handleQuizAnswer(quizId, option, isCorrect);
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

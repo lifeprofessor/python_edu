@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레슨 7: 클래스와 객체 개념 - MechDog 파이썬</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: #fff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1em;
+        }
+
+        .lesson-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .content-section h2 {
+            color: #4A90E2;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #4A90E2;
+            padding-bottom: 5px;
+        }
+
+        .code-container {
+            margin: 15px 0;
+        }
+
+        .code-editor {
+            background: #2d3748;
+            border-radius: 10px;
+            padding: 15px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            color: #e2e8f0;
+            border: none;
+            width: 100%;
+            min-height: 150px;
+            resize: vertical;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .run-button {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .run-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .output {
+            background: #1a202c;
+            color: #00ff00;
+            font-family: 'Monaco', 'Menlo', monospace;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            min-height: 100px;
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .concept-box {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #ff6b6b;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #4ecdc4;
+        }
+
+        .navigation {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            margin: 0 10px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .exercise-section {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .mechdog-demo {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            color: #2d3748;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏗️ 레슨 7: 클래스와 객체 개념</h1>
+            <p>객체 지향 프로그래밍으로 MechDog을 더 체계적으로 설계해보세요!</p>
+        </div>
+
+        <div class="lesson-content">
+            <div class="content-section">
+                <h2>🎯 클래스 기본 개념</h2>
+                <p><strong>클래스</strong>는 객체를 만들기 위한 설계도입니다. 로봇의 특성과 행동을 체계적으로 정의할 수 있습니다.</p>
+                
+                <div class="concept-box">
+                    <h4>📝 클래스와 객체</h4>
+                    <ul>
+                        <li><strong>클래스</strong>: 객체를 만들기 위한 설계도</li>
+                        <li><strong>객체</strong>: 클래스를 바탕으로 만든 실체</li>
+                        <li><strong>속성</strong>: 객체의 특성 (변수)</li>
+                        <li><strong>메서드</strong>: 객체의 행동 (함수)</li>
+                    </ul>
+                </div>
+
+                <div class="code-container">
+                    <textarea class="code-editor" id="editor1"># 간단한 로봇 클래스 정의
+class SimpleRobot:
+    """간단한 로봇 클래스"""
+    
+    def __init__(self, name):
+        """로봇 초기화 (생성자)"""
+        self.name = name
+        self.battery = 100
+        self.status = "대기"
+        print(f"🤖 {self.name} 로봇이 생성되었습니다!")
+    
+    def introduce(self):
+        """자기소개 메서드"""
+        print(f"안녕하세요! 저는 {self.name}입니다! 🐕")
+        print(f"현재 배터리: {self.battery}%")
+        print(f"상태: {self.status}")
+    
+    def bark(self):
+        """짖기 메서드"""
+        if self.battery > 10:
+            print(f"{self.name}: 멍멍! 🐕")
+            self.battery -= 5
+            self.status = "짖기"
+        else:
+            print(f"{self.name}: 배터리가 부족합니다... 😴")
+    
+    def charge(self):
+        """충전 메서드"""
+        print(f"{self.name}이 충전을 시작합니다 🔌")
+        self.battery = 100
+        self.status = "충전 완료"
+        print("충전 완료! ⚡")
+
+# 로봇 객체 생성과 사용
+print("=== 로봇 객체 생성 ===")
+my_robot = SimpleRobot("MechDoggy")
+
+print("\n=== 로봇 동작 테스트 ===")
+my_robot.introduce()
+print()
+my_robot.bark()
+my_robot.bark()
+print()
+my_robot.introduce()
+print()
+my_robot.charge()
+print()
+my_robot.introduce()</textarea>
+                    <button class="run-button" onclick="runCode('editor1', 'output1')">실행 ▶</button>
+                    <div class="output" id="output1">여기에 실행 결과가 표시됩니다</div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>🔧 속성과 메서드</h2>
+                <p>클래스의 <strong>속성</strong>(변수)과 <strong>메서드</strong>(함수)를 통해 객체의 상태와 행동을 정의합니다.</p>
+
+                <div class="code-container">
+                    <textarea class="code-editor" id="editor2"># 고급 로봇 클래스
+class AdvancedRobot:
+    """고급 로봇 클래스"""
+    
+    # 클래스 변수 (모든 객체가 공유)
+    robot_count = 0
+    
+    def __init__(self, name, model="기본형"):
+        """로봇 초기화"""
+        # 인스턴스 변수 (각 객체마다 다름)
+        self.name = name
+        self.model = model
+        self.battery = 100
+        self.position = {"x": 0, "y": 0}
+        self.sensors = {
+            "camera": True,
+            "microphone": True,
+            "distance": True
+        }
+        
+        # 클래스 변수 증가
+        AdvancedRobot.robot_count += 1
+        print(f"🤖 {self.name}({self.model}) 생성됨!")
+        print(f"📊 총 로봇 수: {AdvancedRobot.robot_count}")
+    
+    def get_info(self):
+        """로봇 정보 반환"""
+        return {
+            "이름": self.name,
+            "모델": self.model,
+            "배터리": self.battery,
+            "위치": self.position,
+            "센서": self.sensors
+        }
+    
+    def move(self, x, y):
+        """로봇 이동"""
+        if self.battery >= 10:
+            old_pos = self.position.copy()
+            self.position["x"] += x
+            self.position["y"] += y
+            self.battery -= 10
+            
+            print(f"🚶 {self.name} 이동:")
+            print(f"  이전 위치: ({old_pos['x']}, {old_pos['y']})")
+            print(f"  현재 위치: ({self.position['x']}, {self.position['y']})")
+            print(f"  배터리: {self.battery}%")
+        else:
+            print(f"❌ {self.name}: 배터리 부족으로 이동 불가")
+    
+    def scan_environment(self):
+        """환경 스캔"""
+        if self.sensors["camera"] and self.battery >= 5:
+            print(f"📷 {self.name} 환경 스캔 중...")
+            self.battery -= 5
+            
+            # 가상의 스캔 결과
+            import random
+            obstacles = random.randint(0, 3)
+            objects = random.randint(1, 5)
+            
+            print(f"  🚧 장애물: {obstacles}개")
+            print(f"  📦 객체: {objects}개")
+            print(f"  🔋 배터리: {self.battery}%")
+            
+            return {"obstacles": obstacles, "objects": objects}
+        else:
+            print(f"❌ {self.name}: 스캔 불가 (센서 오류 또는 배터리 부족)")
+            return None
+
+# 여러 로봇 객체 생성
+print("=== 고급 로봇들 생성 ===")
+robot1 = AdvancedRobot("알파", "경비형")
+robot2 = AdvancedRobot("베타", "탐사형")
+
+print("\n=== 로봇 정보 확인 ===")
+print("로봇1 정보:", robot1.get_info())
+print("로봇2 정보:", robot2.get_info())
+
+print("\n=== 로봇 동작 테스트 ===")
+robot1.move(3, 2)
+robot1.scan_environment()
+
+print()
+robot2.move(-1, 4)
+robot2.scan_environment()</textarea>
+                    <button class="run-button" onclick="runCode('editor2', 'output2')">실행 ▶</button>
+                    <div class="output" id="output2">여기에 실행 결과가 표시됩니다</div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>🔒 접근 제어와 프로퍼티</h2>
+                <p>언더스코어(_)를 사용해 접근을 제한하고, 프로퍼티로 안전하게 속성을 관리할 수 있습니다.</p>
+
+                <div class="tip-box">
+                    <h4>💡 파이썬 접근 제어</h4>
+                    <ul>
+                        <li><code>public</code>: 일반 속성/메서드</li>
+                        <li><code>_protected</code>: 내부용 (권장사항)</li>
+                        <li><code>__private</code>: 강제 비공개</li>
+                    </ul>
+                </div>
+
+                <div class="code-container">
+                    <textarea class="code-editor" id="editor3"># 보안이 강화된 로봇 클래스
+class SecureRobot:
+    """보안 기능이 있는 로봇 클래스"""
+    
+    def __init__(self, name, access_code):
+        self.name = name
+        self._access_code = access_code  # 보호된 속성
+        self.__system_key = "SECRET123"  # 비공개 속성
+        self._battery = 100
+        self._is_authorized = False
+    
+    def authenticate(self, code):
+        """인증 메서드"""
+        if code == self._access_code:
+            self._is_authorized = True
+            print(f"✅ {self.name} 인증 성공!")
+            return True
+        else:
+            print(f"❌ {self.name} 인증 실패!")
+            return False
+    
+    @property
+    def battery(self):
+        """배터리 값 읽기 (getter)"""
+        return self._battery
+    
+    @battery.setter
+    def battery(self, value):
+        """배터리 값 설정 (setter)"""
+        if self._is_authorized:
+            if 0 <= value <= 100:
+                self._battery = value
+                print(f"🔋 배터리가 {value}%로 설정되었습니다.")
+            else:
+                print("❌ 배터리 값은 0-100 사이여야 합니다.")
+        else:
+            print("❌ 인증이 필요합니다!")
+    
+    def secure_operation(self):
+        """보안 작업"""
+        if self._is_authorized:
+            print(f"🔐 {self.name} 보안 작업 실행 중...")
+            print(f"   시스템 키: {self.__system_key}")
+            return True
+        else:
+            print("❌ 인증되지 않은 접근!")
+            return False
+    
+    def get_status(self):
+        """상태 확인"""
+        return {
+            "이름": self.name,
+            "배터리": self._battery,
+            "인증됨": self._is_authorized
+        }
+
+# 보안 로봇 테스트
+print("=== 보안 로봇 테스트 ===")
+secure_bot = SecureRobot("Guardian", "1234")
+
+print("\n=== 인증 전 테스트 ===")
+print("상태:", secure_bot.get_status())
+secure_bot.battery = 80  # 인증 안됨
+secure_bot.secure_operation()  # 인증 안됨
+
+print("\n=== 인증 후 테스트 ===")
+secure_bot.authenticate("1234")  # 올바른 코드
+print("상태:", secure_bot.get_status())
+secure_bot.battery = 85  # 인증됨
+print(f"현재 배터리: {secure_bot.battery}")
+secure_bot.secure_operation()  # 인증됨
+
+print("\n=== 잘못된 인증 테스트 ===")
+secure_bot2 = SecureRobot("Sentinel", "5678")
+secure_bot2.authenticate("0000")  # 틀린 코드
+secure_bot2.battery = 90</textarea>
+                    <button class="run-button" onclick="runCode('editor3', 'output3')">실행 ▶</button>
+                    <div class="output" id="output3">여기에 실행 결과가 표시됩니다</div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>🔄 특수 메서드</h2>
+                <p>특수 메서드(매직 메서드)를 사용해 클래스의 동작을 커스터마이징할 수 있습니다.</p>
+
+                <div class="code-container">
+                    <textarea class="code-editor" id="editor4"># 특수 메서드를 가진 로봇 클래스
+class SmartRobot:
+    """특수 메서드를 가진 스마트 로봇"""
+    
+    def __init__(self, name, intelligence=50):
+        self.name = name
+        self.intelligence = intelligence
+        self.energy = 100
+        self.tasks_completed = 0
+        
+    def __str__(self):
+        """문자열 표현 (print할 때 사용)"""
+        return f"🤖 {self.name} (지능:{self.intelligence}, 에너지:{self.energy})"
+    
+    def __repr__(self):
+        """개발자용 문자열 표현"""
+        return f"SmartRobot('{self.name}', {self.intelligence})"
+    
+    def __len__(self):
+        """길이 (완료한 작업 수)"""
+        return self.tasks_completed
+    
+    def __add__(self, other):
+        """두 로봇 합치기 (+연산자)"""
+        if isinstance(other, SmartRobot):
+            combined_name = f"{self.name}+{other.name}"
+            combined_intelligence = (self.intelligence + other.intelligence) // 2
+            return SmartRobot(combined_name, combined_intelligence)
+        else:
+            return NotImplemented
+    
+    def __eq__(self, other):
+        """동등성 비교 (==연산자)"""
+        if isinstance(other, SmartRobot):
+            return self.intelligence == other.intelligence
+        return False
+    
+    def __lt__(self, other):
+        """크기 비교 (<연산자)"""
+        if isinstance(other, SmartRobot):
+            return self.intelligence < other.intelligence
+        return NotImplemented
+    
+    def complete_task(self, difficulty=1):
+        """작업 완료"""
+        if self.energy >= difficulty * 10:
+            self.energy -= difficulty * 10
+            self.tasks_completed += 1
+            self.intelligence += difficulty
+            print(f"✅ {self.name} 작업 완료! (난이도: {difficulty})")
+            print(f"   지능 +{difficulty}, 에너지 -{difficulty*10}")
+        else:
+            print(f"❌ {self.name} 에너지 부족!")
+
+# 특수 메서드 테스트
+print("=== 스마트 로봇 생성 ===")
+robot_a = SmartRobot("Alpha", 60)
+robot_b = SmartRobot("Beta", 80)
+robot_c = SmartRobot("Gamma", 60)
+
+print("=== __str__ 메서드 테스트 ===")
+print(robot_a)
+print(robot_b)
+
+print("\n=== __repr__ 메서드 테스트 ===")
+print(repr(robot_a))
+
+print("\n=== 작업 완료 및 __len__ 테스트 ===")
+robot_a.complete_task(2)
+robot_a.complete_task(1)
+print(f"Alpha 완료 작업 수: {len(robot_a)}")
+
+print("\n=== __eq__ 메서드 테스트 (동등성) ===")
+print(f"Alpha == Beta: {robot_a == robot_b}")
+print(f"Alpha == Gamma: {robot_a == robot_c}")
+
+print("\n=== __lt__ 메서드 테스트 (크기 비교) ===")
+print(f"Alpha < Beta: {robot_a < robot_b}")
+print(f"Beta < Alpha: {robot_b < robot_a}")
+
+print("\n=== __add__ 메서드 테스트 (합치기) ===")
+combined_robot = robot_a + robot_b
+print(f"합쳐진 로봇: {combined_robot}")
+
+# 로봇들을 리스트로 정렬
+print("\n=== 정렬 테스트 ===")
+robots = [robot_a, robot_b, robot_c, combined_robot]
+robots.sort()  # __lt__ 메서드 사용
+print("지능 순으로 정렬:")
+for robot in robots:
+    print(f"  {robot}")</textarea>
+                    <button class="run-button" onclick="runCode('editor4', 'output4')">실행 ▶</button>
+                    <div class="output" id="output4">여기에 실행 결과가 표시됩니다</div>
+                </div>
+            </div>
+
+            <div class="content-section exercise-section">
+                <h2>🎯 실습 과제</h2>
+                <p>지금까지 학습한 내용을 종합해서 완전한 MechDog 클래스를 설계해보세요!</p>
+
+                <div class="mechdog-demo">
+                    <h4>🐕 완전한 MechDog 클래스 설계</h4>
+                    <p>다음 기능들을 포함한 MechDog 클래스를 만들어보세요:</p>
+                    <ul>
+                        <li>🔧 기본 속성: 이름, 모델, 배터리, 위치</li>
+                        <li>🎭 기본 행동: 이동, 짖기, 앉기, 일어서기</li>
+                        <li>📊 센서 기능: 환경 스캔, 거리 측정</li>
+                        <li>⚙️ 특수 메서드: __str__, __eq__, __add__</li>
+                        <li>🔒 보안 기능: 접근 제어, 프로퍼티</li>
+                    </ul>
+                </div>
+
+                <div class="code-container">
+                    <textarea class="code-editor" id="exercise"># 🐕 완전한 MechDog 클래스를 설계해보세요!
+
+class MechDog:
+    """완전한 MechDog 클래스"""
+    
+    # 클래스 변수
+    total_dogs = 0
+    
+    def __init__(self, name, model="Standard"):
+        """MechDog 초기화"""
+        # 여기에 초기화 코드를 작성하세요
+        pass
+    
+    def __str__(self):
+        """문자열 표현"""
+        # 여기에 문자열 표현 코드를 작성하세요
+        pass
+    
+    def bark(self):
+        """짖기 메서드"""
+        # 여기에 짖기 코드를 작성하세요
+        pass
+    
+    def move(self, x, y):
+        """이동 메서드"""
+        # 여기에 이동 코드를 작성하세요
+        pass
+    
+    def sit(self):
+        """앉기 메서드"""
+        # 여기에 앉기 코드를 작성하세요
+        pass
+    
+    def scan(self):
+        """환경 스캔 메서드"""
+        # 여기에 스캔 코드를 작성하세요
+        pass
+    
+    @property
+    def battery(self):
+        """배터리 getter"""
+        # 여기에 getter 코드를 작성하세요
+        pass
+    
+    @battery.setter
+    def battery(self, value):
+        """배터리 setter"""
+        # 여기에 setter 코드를 작성하세요
+        pass
+
+# 테스트 코드
+print("=== MechDog 테스트 ===")
+dog1 = MechDog("Buddy", "Premium")
+dog2 = MechDog("Rex", "Basic")
+
+print(dog1)
+print(dog2)
+
+# 여기에 테스트 코드를 추가하세요</textarea>
+                    <button class="run-button" onclick="runCode('exercise', 'exerciseOutput')">실행 ▶</button>
+                    <div class="output" id="exerciseOutput">여기에 실행 결과가 표시됩니다</div>
+                </div>
+
+                <div class="tip-box">
+                    <h4>💡 해답 힌트</h4>
+                    <pre>def __init__(self, name, model="Standard"):
+    self.name = name
+    self.model = model
+    self._battery = 100
+    self.position = {"x": 0, "y": 0}
+    self.status = "대기"
+    MechDog.total_dogs += 1
+
+def __str__(self):
+    return f"🐕 {self.name}({self.model}) - 배터리:{self._battery}%"
+
+def bark(self):
+    if self._battery > 5:
+        print(f"{self.name}: 멍멍! 🐕")
+        self._battery -= 5
+        self.status = "짖음"
+    else:
+        print(f"{self.name}: 배터리 부족... 😴")</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="lesson6.html" class="nav-button">← 이전: 모듈과 패키지</a>
+            <a href="../index.html" class="nav-button">🏠 홈으로</a>
+            <a href="lesson8.html" class="nav-button">다음: MechDog 클래스 구조 →</a>
+        </div>
+    </div>
+
+    <script>
+        let pyodide;
+        
+        async function main() {
+            pyodide = await loadPyodide();
+        }
+        
+        main();
+
+        async function runCode(editorId, outputId) {
+            const code = document.getElementById(editorId).value;
+            const outputElement = document.getElementById(outputId);
+            
+            try {
+                outputElement.textContent = "코드 실행 중...";
+                
+                // Pyodide가 로드될 때까지 대기
+                if (!pyodide) {
+                    outputElement.textContent = "Python 환경을 로딩 중입니다...";
+                    await main();
+                }
+                
+                // 출력을 캡처하기 위한 설정
+                pyodide.runPython(`
+import sys
+from io import StringIO
+sys.stdout = StringIO()
+                `);
+                
+                // 사용자 코드 실행
+                pyodide.runPython(code);
+                
+                // 출력 결과 가져오기
+                const stdout = pyodide.runPython("sys.stdout.getvalue()");
+                outputElement.textContent = stdout || "실행 완료 (출력 없음)";
+                outputElement.style.color = "#00ff00";
+                
+            } catch (error) {
+                outputElement.textContent = `오류 발생: ${error.message}`;
+                outputElement.style.color = "#ff6b6b";
+            }
+        }
+
+        // 진도 추적
+        window.addEventListener('load', function() {
+            const currentLesson = 7;
+            let progress = JSON.parse(localStorage.getItem('pythonProgress') || '[]');
+            if (!progress.includes(currentLesson)) {
+                progress.push(currentLesson);
+                localStorage.setItem('pythonProgress', JSON.stringify(progress));
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레슨 10: 색상 인식 | MechDog 파이썬 학습</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Noto Sans KR', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .code-editor {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            border: 2px solid #404040;
+            resize: vertical;
+            min-height: 150px;
+        }
+        
+        .output-panel {
+            background: #0d1117;
+            color: #e6edf3;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            min-height: 150px;
+            border: 2px solid #30363d;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        
+        .lesson-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-sm sticky top-0 z-40 mx-4 mt-4 rounded-2xl shadow-lg">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <a href="../index.html" class="text-2xl hover:text-purple-600">🏠</a>
+                <h1 class="text-xl font-bold text-gray-800">레슨 10: 색상 인식</h1>
+                <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-sm">고급</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="lesson9.html" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm">← 이전</a>
+                <a href="lesson11.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">다음 →</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Lesson Introduction -->
+        <section class="lesson-card mb-8">
+            <div class="flex items-center mb-6">
+                <span class="text-4xl mr-4">🎨</span>
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">MechDog 색상 인식</h2>
+                    <p class="text-gray-600">카메라 센서로 색상을 감지하고 LED로 반응하기</p>
+                </div>
+            </div>
+            
+            <div class="bg-red-50 border-l-4 border-red-500 p-4">
+                <h3 class="text-lg font-bold text-red-800 mb-2">🎯 학습 목표</h3>
+                <ul class="text-red-700 space-y-1">
+                    <li>• 카메라 센서로 색상 인식하기</li>
+                    <li>• 색상별 LED 제어 프로그래밍</li>
+                    <li>• 실제 MechDog 하드웨어 코드 분석</li>
+                    <li>• 색상 기반 인터랙션 시스템 구현</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Real MechDog Code -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🔧 실제 MechDog 색상 인식 코드</h3>
+            
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <pre class="text-sm overflow-x-auto"><code># main.py - 실제 MechDog 색상 인식 코드
+import Hiwonder
+import time
+import Hiwonder_IIC
+from HW_MechDog import MechDog
+
+# 객체 초기화
+iic2 = Hiwonder_IIC.IIC(2)
+cam = Hiwonder_IIC.ESP32S3Cam(iic2)  # 카메라
+i2c1 = Hiwonder_IIC.IIC(1)
+i2csonar = Hiwonder_IIC.I2CSonar(i2c1)  # LED 제어용
+mechdog = MechDog()
+
+time.sleep(5)
+
+while True:
+    color_list = cam.color_recognition()  # 색상 인식
+    print(color_list)
+    
+    if cam.RED in color_list:  # 빨간색 감지
+        i2csonar.setRGB(0, 250, 0, 0)  # 빨간색 LED
+    
+    if cam.GREEN in color_list:  # 초록색 감지
+        i2csonar.setRGB(0, 0, 250, 0)  # 초록색 LED
+    
+    if cam.BLUE in color_list:  # 파란색 감지
+        i2csonar.setRGB(0, 0, 0, 250)  # 파란색 LED
+    
+    time.sleep(0.1)</code></pre>
+            </div>
+        </section>
+
+        <!-- Practice Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">💻 색상 인식 시뮬레이션</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <textarea id="code-editor" class="code-editor w-full h-80">
+# MechDog 색상 인식 시뮬레이션
+import random
+
+class ColorRecognition:
+    def __init__(self):
+        self.RED = "RED"
+        self.GREEN = "GREEN" 
+        self.BLUE = "BLUE"
+        self.colors = [self.RED, self.GREEN, self.BLUE]
+        
+    def color_recognition(self):
+        """랜덤 색상 감지 시뮬레이션"""
+        detected = []
+        for color in self.colors:
+            if random.random() < 0.3:  # 30% 확률
+                detected.append(color)
+        return detected
+
+class MechDogColorSystem:
+    def __init__(self):
+        self.cam = ColorRecognition()
+        self.current_led = "꺼짐"
+        
+    def setRGB(self, light, r, g, b):
+        """LED 색상 설정"""
+        if r > 0 and g == 0 and b == 0:
+            self.current_led = "빨간색"
+        elif r == 0 and g > 0 and b == 0:
+            self.current_led = "초록색"
+        elif r == 0 and g == 0 and b > 0:
+            self.current_led = "파란색"
+        else:
+            self.current_led = "꺼짐"
+        print(f"💡 LED: {self.current_led}")
+    
+    def run_detection(self):
+        """색상 감지 실행"""
+        for i in range(10):
+            print(f"\n--- 감지 {i+1} ---")
+            colors = self.cam.color_recognition()
+            print(f"🎨 감지된 색상: {colors}")
+            
+            if self.cam.RED in colors:
+                self.setRGB(0, 250, 0, 0)
+                print("🔴 빨간색 반응!")
+                
+            elif self.cam.GREEN in colors:
+                self.setRGB(0, 0, 250, 0)
+                print("🟢 초록색 반응!")
+                
+            elif self.cam.BLUE in colors:
+                self.setRGB(0, 0, 0, 250)
+                print("🔵 파란색 반응!")
+                
+            else:
+                print("⚪ 인식된 색상 없음")
+
+# 시스템 실행
+color_system = MechDogColorSystem()
+print("🤖 MechDog 색상 인식 시스템 시작!")
+color_system.run_detection()
+print("\n🎉 색상 인식 테스트 완료!")
+</textarea>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-code" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg">▶️ 실행</button>
+                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">지우기</button>
+                        <button id="advanced-code" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg">🚀 고급</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <div id="output" class="output-panel h-80">
+                        색상 인식 코드를 실행해보세요!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 정리</h3>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-6">
+                <h4 class="text-lg font-bold text-green-800 mb-3">✅ 핵심 내용</h4>
+                <ul class="text-green-700 space-y-2">
+                    <li>• <strong>카메라 센서:</strong> color_recognition()으로 색상 감지</li>
+                    <li>• <strong>색상 상수:</strong> cam.RED, cam.GREEN, cam.BLUE</li>
+                    <li>• <strong>LED 제어:</strong> setRGB(light, r, g, b)</li>
+                    <li>• <strong>실시간 처리:</strong> while 반복문으로 지속 감지</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="flex justify-between items-center">
+            <a href="lesson9.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg">← 이전</a>
+            <a href="lesson11.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg">다음 →</a>
+        </section>
+    </main>
+
+    <script>
+        let pyodide = null;
+
+        async function initPyodide() {
+            if (pyodide === null) {
+                document.getElementById('output').textContent = '파이썬 엔진 준비 중...';
+                pyodide = await loadPyodide();
+                document.getElementById('output').textContent = '준비 완료!';
+            }
+        }
+
+        async function runPythonCode(code) {
+            if (pyodide === null) await initPyodide();
+            
+            try {
+                pyodide.runPython(`
+                    import sys
+                    from io import StringIO
+                    old_stdout = sys.stdout
+                    sys.stdout = captured_output = StringIO()
+                `);
+                
+                pyodide.runPython(code);
+                
+                const output = pyodide.runPython(`
+                    sys.stdout = old_stdout
+                    captured_output.getvalue()
+                `);
+                
+                document.getElementById('output').textContent = output || '(출력 없음)';
+                
+                // Update progress
+                let progress = JSON.parse(localStorage.getItem('mechDogLearningProgress') || '{"lessonsCompleted": 0, "codesRun": 0}');
+                progress.codesRun = (progress.codesRun || 0) + 1;
+                if (progress.lessonsCompleted < 10) progress.lessonsCompleted = 10;
+                localStorage.setItem('mechDogLearningProgress', JSON.stringify(progress));
+                
+            } catch (error) {
+                document.getElementById('output').textContent = `오류:\n${error.message}`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.addEventListener('click', initPyodide, { once: true });
+            
+            document.getElementById('run-code').addEventListener('click', () => {
+                runPythonCode(document.getElementById('code-editor').value);
+            });
+            
+            document.getElementById('clear-code').addEventListener('click', () => {
+                document.getElementById('code-editor').value = '';
+                document.getElementById('output').textContent = '에디터를 지웠습니다.';
+            });
+            
+            document.getElementById('advanced-code').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# 고급 색상 인식 시스템
+import random
+
+class AdvancedColorSystem:
+    def __init__(self):
+        self.color_history = []
+        self.action_modes = {
+            "RED": "공격 모드",
+            "GREEN": "친화 모드", 
+            "BLUE": "탐색 모드"
+        }
+        
+    def detect_colors(self):
+        """다중 색상 감지"""
+        colors = []
+        for color in ["RED", "GREEN", "BLUE"]:
+            if random.random() < 0.4:
+                colors.append(color)
+        return colors
+        
+    def analyze_pattern(self):
+        """색상 패턴 분석"""
+        if len(self.color_history) >= 3:
+            recent = self.color_history[-3:]
+            if all(c == "RED" for c in recent):
+                return "🔥 연속 빨간색 - 경고 모드 활성화!"
+            elif "RED" in recent and "GREEN" in recent and "BLUE" in recent:
+                return "🌈 모든 색상 감지 - 파티 모드!"
+        return None
+        
+    def smart_response(self, colors):
+        """지능형 반응"""
+        responses = []
+        for color in colors:
+            if color in self.action_modes:
+                mode = self.action_modes[color]
+                responses.append(f"🤖 {mode} 활성화")
+                
+        # 패턴 분석
+        pattern = self.analyze_pattern()
+        if pattern:
+            responses.append(pattern)
+            
+        return responses
+        
+    def run_advanced_detection(self):
+        """고급 감지 실행"""
+        for i in range(8):
+            print(f"\n=== 스캔 {i+1} ===")
+            colors = self.detect_colors()
+            
+            if colors:
+                print(f"🎨 감지: {', '.join(colors)}")
+                self.color_history.extend(colors)
+                
+                responses = self.smart_response(colors)
+                for response in responses:
+                    print(response)
+            else:
+                print("⚪ 색상 없음")
+                
+            # 히스토리 관리 (최근 10개만 유지)
+            if len(self.color_history) > 10:
+                self.color_history = self.color_history[-10:]
+
+# 고급 시스템 실행
+advanced_system = AdvancedColorSystem()
+print("🚀 고급 색상 인식 시스템 시작!")
+advanced_system.run_advanced_detection()
+print("\n📊 색상 히스토리: " + advanced_system.color_history.join(", "))
+print("🎉 고급 시스템 테스트 완료!")`;
+            });
+        });
+    </script>
+</body>
+</html> 

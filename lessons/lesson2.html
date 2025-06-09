@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레슨 2: 변수와 데이터 타입 | MechDog 파이썬 학습</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Noto Sans KR', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .code-editor {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
+            font-size: 14px;
+            border: 2px solid #404040;
+            transition: all 0.3s ease;
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .code-editor:focus {
+            outline: none;
+            border-color: #00d9ff;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+        }
+        
+        .output-panel {
+            background: #0d1117;
+            color: #e6edf3;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            min-height: 120px;
+            border: 2px solid #30363d;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        
+        .lesson-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quiz-option {
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-option:hover {
+            background: #e5e7eb;
+            transform: translateX(8px);
+        }
+        
+        .quiz-option.correct {
+            background: #dcfce7;
+            border-color: #16a34a;
+            color: #166534;
+        }
+        
+        .quiz-option.incorrect {
+            background: #fee2e2;
+            border-color: #dc2626;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-sm sticky top-0 z-40 mx-4 mt-4 rounded-2xl shadow-lg">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <a href="../index.html" class="text-2xl hover:text-purple-600">🏠</a>
+                <h1 class="text-xl font-bold text-gray-800">레슨 2: 변수와 데이터 타입</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="lesson1.html" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm">
+                    ← 이전
+                </a>
+                <a href="lesson3.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">
+                    다음 →
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Lesson Introduction -->
+        <section class="lesson-card mb-8">
+            <div class="flex items-center mb-6">
+                <span class="text-4xl mr-4">📦</span>
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">변수와 데이터 타입</h2>
+                    <p class="text-gray-600">MechDog의 정보를 저장하고 관리하기</p>
+                </div>
+            </div>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                <h3 class="text-lg font-bold text-blue-800 mb-2">🎯 학습 목표</h3>
+                <ul class="text-blue-700 space-y-1">
+                    <li>• 변수의 개념과 사용법 이해하기</li>
+                    <li>• 다양한 데이터 타입 (문자열, 정수, 실수, 불린) 알기</li>
+                    <li>• MechDog의 속성을 변수로 저장하기</li>
+                    <li>• f-string을 사용한 문자열 포맷팅 배우기</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Theory Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📖 이론 학습</h3>
+            
+            <div class="space-y-6">
+                <div>
+                    <h4 class="text-xl font-semibold text-gray-700 mb-3">📦 변수란?</h4>
+                    <p class="text-gray-600 mb-4">
+                        변수는 데이터를 저장하는 상자와 같습니다. MechDog의 이름, 위치, 배터리 등의 정보를 저장할 수 있어요.
+                    </p>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                        <h5 class="font-semibold mb-2">변수 만들기:</h5>
+                        <code class="text-green-600">변수이름 = 값</code>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-green-700 mb-2">✅ 좋은 변수명:</h5>
+                            <div class="space-y-1 text-sm">
+                                <div><code>dog_name = "멍멍이"</code></div>
+                                <div><code>battery_level = 85</code></div>
+                                <div><code>is_moving = True</code></div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-red-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-red-700 mb-2">❌ 피해야 할 변수명:</h5>
+                            <div class="space-y-1 text-sm">
+                                <div><code>1dog = "멍멍이"</code> (숫자로 시작)</div>
+                                <div><code>dog-name = "멍멍이"</code> (하이픈 사용)</div>
+                                <div><code>print = "출력"</code> (예약어 사용)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-semibold text-gray-700 mb-3">🏷️ 데이터 타입</h4>
+                    <p class="text-gray-600 mb-4">
+                        파이썬에는 여러 종류의 데이터 타입이 있습니다. MechDog 제어에 필요한 주요 타입들을 알아보세요.
+                    </p>
+                    
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-blue-700 mb-2">📝 문자열 (str)</h5>
+                            <div class="space-y-1 text-sm">
+                                <div><code>"MechDog"</code></div>
+                                <div><code>'로보독'</code></div>
+                                <div><code>"안녕하세요"</code></div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-green-700 mb-2">🔢 정수 (int)</h5>
+                            <div class="space-y-1 text-sm">
+                                <div><code>100</code> (배터리)</div>
+                                <div><code>4</code> (다리 개수)</div>
+                                <div><code>-5</code> (음수도 가능)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-yellow-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-yellow-700 mb-2">💯 실수 (float)</h5>
+                            <div class="space-y-1 text-sm">
+                                <div><code>23.5</code> (온도)</div>
+                                <div><code>1.2</code> (속도)</div>
+                                <div><code>0.5</code> (확률)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-purple-700 mb-2">✅ 불린 (bool)</h5>
+                            <div class="space-y-1 text-sm">
+                                <div><code>True</code> (켜짐)</div>
+                                <div><code>False</code> (꺼짐)</div>
+                                <div>참/거짓만 가능</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-semibold text-gray-700 mb-3">🔗 f-string 문자열 포맷팅</h4>
+                    <p class="text-gray-600 mb-4">
+                        f-string을 사용하면 변수를 문자열 안에 쉽게 넣을 수 있습니다.
+                    </p>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h5 class="font-semibold mb-2">사용법:</h5>
+                        <code class="text-green-600">f"문자열 {변수명} 더 많은 문자열"</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">💻 실습하기</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">코드 에디터</label>
+                    <textarea 
+                        id="code-editor" 
+                        class="code-editor w-full h-80"
+                        placeholder="여기에 파이썬 코드를 작성하세요..."
+                    ># MechDog 정보를 변수로 저장하기
+
+# 문자열 변수
+dog_name = "로보독"
+owner_name = "김파이썬"
+
+# 숫자 변수
+battery_level = 85  # 배터리 잔량 (%)
+temperature = 23.5  # 온도 (℃)
+leg_count = 4       # 다리 개수
+
+# 불린 변수
+is_standing = True   # 서있는 상태
+is_charging = False  # 충전 중
+
+# MechDog 정보 출력
+print("=== MechDog 정보 ===")
+print(f"이름: {dog_name}")
+print(f"주인: {owner_name}")
+print(f"배터리: {battery_level}%")
+print(f"온도: {temperature}℃")
+print(f"다리 개수: {leg_count}개")
+print(f"서있는 상태: {is_standing}")
+print(f"충전 중: {is_charging}")
+
+# 데이터 타입 확인
+print("\n=== 데이터 타입 확인 ===")
+print(f"dog_name의 타입: {type(dog_name)}")
+print(f"battery_level의 타입: {type(battery_level)}")
+print(f"temperature의 타입: {type(temperature)}")
+print(f"is_standing의 타입: {type(is_standing)}")
+</textarea>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-code" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center">
+                            <span class="mr-2">▶️</span> 실행하기
+                        </button>
+                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            지우기
+                        </button>
+                        <button id="example-code" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            💡 다른 예제
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">실행 결과</label>
+                    <div id="output" class="output-panel h-80">
+                        실행 버튼을 눌러 코드를 실행해보세요!
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Challenge -->
+            <div class="mt-8 p-6 bg-yellow-50 rounded-xl">
+                <h4 class="text-lg font-bold text-yellow-800 mb-4">🎯 도전 과제</h4>
+                <p class="text-yellow-700 mb-4">여러분만의 MechDog 프로필을 만들어보세요:</p>
+                <ol class="text-yellow-700 space-y-1 mb-4">
+                    <li>1. MechDog의 이름 정하기</li>
+                    <li>2. 좋아하는 색상 저장하기</li>
+                    <li>3. 최고 속도 (km/h) 설정하기</li>
+                    <li>4. 충전 필요 여부 설정하기</li>
+                    <li>5. f-string으로 멋진 소개문 만들기</li>
+                </ol>
+                <button id="show-solution" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">
+                    정답 예시 보기
+                </button>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🧠 퀴즈</h3>
+            
+            <div class="space-y-6">
+                <!-- Quiz 1 -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-700 mb-3">문제 1: 변수 선언</h4>
+                    <p class="text-gray-600 mb-4">다음 중 올바른 변수 선언은?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option" data-quiz="1" data-answer="correct">dog_name = "멍멍이"</div>
+                        <div class="quiz-option" data-quiz="1" data-answer="incorrect">2dog = "멍멍이"</div>
+                        <div class="quiz-option" data-quiz="1" data-answer="incorrect">dog-name = "멍멍이"</div>
+                        <div class="quiz-option" data-quiz="1" data-answer="incorrect">dog name = "멍멍이"</div>
+                    </div>
+                    <div id="quiz-1-result" class="mt-4 text-sm font-medium hidden"></div>
+                </div>
+                
+                <!-- Quiz 2 -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-700 mb-3">문제 2: 데이터 타입</h4>
+                    <p class="text-gray-600 mb-4">변수 <code>battery = 85</code>의 데이터 타입은?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option" data-quiz="2" data-answer="incorrect">str (문자열)</div>
+                        <div class="quiz-option" data-quiz="2" data-answer="correct">int (정수)</div>
+                        <div class="quiz-option" data-quiz="2" data-answer="incorrect">float (실수)</div>
+                        <div class="quiz-option" data-quiz="2" data-answer="incorrect">bool (불린)</div>
+                    </div>
+                    <div id="quiz-2-result" class="mt-4 text-sm font-medium hidden"></div>
+                </div>
+                
+                <!-- Quiz 3 -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-700 mb-3">문제 3: f-string</h4>
+                    <p class="text-gray-600 mb-4">name = "MechDog"일 때, <code>f"안녕, {name}!"</code>의 출력 결과는?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option" data-quiz="3" data-answer="correct">안녕, MechDog!</div>
+                        <div class="quiz-option" data-quiz="3" data-answer="incorrect">안녕, {name}!</div>
+                        <div class="quiz-option" data-quiz="3" data-answer="incorrect">f"안녕, {name}!"</div>
+                        <div class="quiz-option" data-quiz="3" data-answer="incorrect">안녕, name!</div>
+                    </div>
+                    <div id="quiz-3-result" class="mt-4 text-sm font-medium hidden"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 정리</h3>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-6">
+                <h4 class="text-lg font-bold text-green-800 mb-3">✅ 이번 레슨에서 배운 내용</h4>
+                <ul class="text-green-700 space-y-2">
+                    <li>• <strong>변수:</strong> 데이터를 저장하는 상자, 변수명 = 값</li>
+                    <li>• <strong>문자열(str):</strong> 따옴표로 감싼 글자들</li>
+                    <li>• <strong>정수(int):</strong> 소수점이 없는 숫자</li>
+                    <li>• <strong>실수(float):</strong> 소수점이 있는 숫자</li>
+                    <li>• <strong>불린(bool):</strong> True 또는 False</li>
+                    <li>• <strong>f-string:</strong> f"문자열 {변수} 문자열"</li>
+                </ul>
+            </div>
+            
+            <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-6">
+                <h4 class="text-lg font-bold text-blue-800 mb-3">🚀 다음 레슨 미리보기</h4>
+                <p class="text-blue-700">
+                    다음 레슨에서는 <strong>조건문(if-else)</strong>을 배워봅시다! 
+                    MechDog이 상황에 따라 다른 행동을 하도록 만들어보겠습니다.
+                </p>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="flex justify-between items-center">
+            <a href="lesson1.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                ← 이전 레슨
+            </a>
+            <a href="lesson3.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                다음 레슨 →
+            </a>
+        </section>
+    </main>
+
+    <script>
+        let pyodide = null;
+
+        // Initialize Pyodide
+        async function initPyodide() {
+            if (pyodide === null) {
+                document.getElementById('output').textContent = '파이썬 엔진을 준비하고 있습니다...';
+                pyodide = await loadPyodide();
+                document.getElementById('output').textContent = '준비 완료! 코드를 실행해보세요.';
+            }
+        }
+
+        // Run Python code
+        async function runPythonCode(code) {
+            if (pyodide === null) {
+                await initPyodide();
+            }
+            
+            try {
+                // Capture stdout
+                pyodide.runPython(`
+                    import sys
+                    from io import StringIO
+                    old_stdout = sys.stdout
+                    sys.stdout = captured_output = StringIO()
+                `);
+                
+                // Run user code
+                pyodide.runPython(code);
+                
+                // Get output
+                const output = pyodide.runPython(`
+                    sys.stdout = old_stdout
+                    captured_output.getvalue()
+                `);
+                
+                document.getElementById('output').textContent = output || '(출력 없음)';
+                
+                // Update progress
+                updateProgress();
+                
+            } catch (error) {
+                document.getElementById('output').textContent = `오류 발생:\n${error.message}`;
+            }
+        }
+
+        // Update progress
+        function updateProgress() {
+            let progress = JSON.parse(localStorage.getItem('mechDogLearningProgress') || '{"lessonsCompleted": 0, "codesRun": 0}');
+            progress.codesRun = (progress.codesRun || 0) + 1;
+            
+            // Mark lesson 2 as completed if not already
+            if (progress.lessonsCompleted < 2) {
+                progress.lessonsCompleted = 2;
+            }
+            
+            localStorage.setItem('mechDogLearningProgress', JSON.stringify(progress));
+        }
+
+        // Quiz handling
+        function handleQuizAnswer(quizId, selectedOption, isCorrect) {
+            const options = document.querySelectorAll(`[data-quiz="${quizId}"]`);
+            const resultDiv = document.getElementById(`quiz-${quizId}-result`);
+            
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+                if (option === selectedOption) {
+                    option.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else if (option.dataset.answer === 'correct') {
+                    option.classList.add('correct');
+                }
+            });
+            
+            if (isCorrect) {
+                resultDiv.textContent = '정답입니다! 🎉';
+                resultDiv.className = 'mt-4 text-sm font-medium text-green-600';
+            } else {
+                resultDiv.textContent = '틀렸습니다. 다시 생각해보세요! 🤔';
+                resultDiv.className = 'mt-4 text-sm font-medium text-red-600';
+            }
+            
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize on first interaction
+            document.addEventListener('click', initPyodide, { once: true });
+            
+            // Run code button
+            document.getElementById('run-code').addEventListener('click', () => {
+                const code = document.getElementById('code-editor').value;
+                runPythonCode(code);
+            });
+            
+            // Clear code button
+            document.getElementById('clear-code').addEventListener('click', () => {
+                document.getElementById('code-editor').value = '';
+                document.getElementById('output').textContent = '에디터를 지웠습니다.';
+            });
+            
+            // Example code button
+            document.getElementById('example-code').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# MechDog 상태 모니터링 시스템
+
+import time
+
+# MechDog 현재 상태
+dog_name = "아인슈타인독"
+current_mode = "대기중"
+speed = 0.0
+direction = "북쪽"
+sensors_active = True
+
+print("🤖 MechDog 상태 모니터")
+print("=" * 25)
+print(f"🐕 이름: {dog_name}")
+print(f"📍 모드: {current_mode}")
+print(f"🏃 속도: {speed} m/s")
+print(f"🧭 방향: {direction}")
+print(f"📡 센서: {'활성화' if sensors_active else '비활성화'}")
+
+# 상태 변경 시뮬레이션
+print("\\n상태 변경 중...")
+current_mode = "이동중"
+speed = 1.5
+direction = "동쪽"
+
+print(f"🔄 새로운 상태: {current_mode}")
+print(f"🏃 새로운 속도: {speed} m/s")
+print(f"🧭 새로운 방향: {direction}")`;
+            });
+            
+            // Show solution button
+            document.getElementById('show-solution').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# 나만의 MechDog 프로필
+
+# 기본 정보
+my_dog_name = "썬더볼트"  # 여러분의 MechDog 이름
+favorite_color = "파란색"
+max_speed = 3.2  # km/h
+needs_charging = False
+
+# 멋진 소개문 만들기
+print("🌟 나만의 MechDog 소개 🌟")
+print("=" * 30)
+print(f"안녕하세요! 제 이름은 {my_dog_name}입니다!")
+print(f"저는 {favorite_color}을 가장 좋아해요.")
+print(f"최고 속도는 {max_speed}km/h까지 달릴 수 있답니다.")
+
+if needs_charging:
+    print("지금은 충전이 필요해요. 🔋")
+else:
+    print("배터리가 충분해서 언제든 놀 수 있어요! ⚡")
+    
+print(f"함께 즐거운 시간을 보내요! 🎉")`;
+            });
+            
+            // Quiz handlers
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const quizId = option.dataset.quiz;
+                    const isCorrect = option.dataset.answer === 'correct';
+                    handleQuizAnswer(quizId, option, isCorrect);
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

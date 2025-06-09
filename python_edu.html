@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 MechDog 제어를 위한 파이썬 기초 학습</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Noto Sans KR', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .code-editor {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
+            font-size: 14px;
+            border: 2px solid #404040;
+            transition: all 0.3s ease;
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .code-editor:focus {
+            outline: none;
+            border-color: #00d9ff;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+        }
+        
+        .output-panel {
+            background: #0d1117;
+            color: #e6edf3;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            min-height: 120px;
+            border: 2px solid #30363d;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .lesson-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .lesson-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+        }
+        
+        .completed {
+            background: linear-gradient(135deg, #a8e6cf 0%, #88d8c0 100%);
+        }
+        
+        .drag-block {
+            background: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: grab;
+            margin: 0.25rem;
+            display: inline-block;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        
+        .drag-block:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .drop-zone {
+            min-height: 100px;
+            border: 2px dashed #9ca3af;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .drop-zone.drag-over {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .quiz-option {
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-option:hover {
+            background: #e5e7eb;
+            transform: translateX(8px);
+        }
+        
+        .quiz-option.correct {
+            background: #dcfce7;
+            border-color: #16a34a;
+            color: #166534;
+        }
+        
+        .quiz-option.incorrect {
+            background: #fee2e2;
+            border-color: #dc2626;
+            color: #991b1b;
+        }
+        
+        .floating-mascot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            animation: float 3s ease-in-out infinite;
+            cursor: pointer;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .modal {
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 0.15em solid orange;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 0.15em;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: orange; }
+        }
+        
+        .particle {
+            position: absolute;
+            background: #ffd700;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particle-float 2s ease-out forwards;
+        }
+        
+        @keyframes particle-float {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.5);
+            }
+        }
+        
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="fixed top-0 left-0 w-full h-2 bg-gray-200 z-50">
+        <div id="progress-bar" class="progress-bar w-0 h-full"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-sm sticky top-2 z-40 mx-4 mt-4 rounded-2xl shadow-lg">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="text-3xl animate-bounce">🤖</div>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                    MechDog 제어 파이썬 학습
+                </h1>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-6">
+                <div class="flex items-center space-x-2 bg-gray-100 rounded-full px-4 py-2">
+                    <span class="text-sm text-gray-600">진도:</span>
+                    <span id="progress-text" class="text-sm font-bold text-purple-600">0%</span>
+                </div>
+                <div class="flex items-center space-x-2 bg-yellow-100 rounded-full px-4 py-2">
+                    <span class="text-sm">🏆</span>
+                    <span id="score-text" class="text-sm font-bold text-yellow-600">0점</span>
+                </div>
+            </div>
+            
+            <button id="reset-progress" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm transition-colors">
+                초기화
+            </button>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Welcome Section -->
+        <section class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-white mb-4 typewriter">
+                MechDog과 함께하는 코딩 여행! 🤖🚀
+            </h2>
+            <p class="text-xl text-white/90 mb-8">
+                로봇 개 MechDog을 제어하기 위한 파이썬 기초부터 실제 제어 코드까지 단계별 학습
+            </p>
+            
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+                    <div class="text-2xl mb-2">📚</div>
+                    <div class="text-white font-bold text-lg" id="lessons-completed">0/8</div>
+                    <div class="text-white/80 text-sm">레슨 완료</div>
+                </div>
+                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+                    <div class="text-2xl mb-2">🏃‍♂️</div>
+                    <div class="text-white font-bold text-lg" id="codes-run">0</div>
+                    <div class="text-white/80 text-sm">코드 실행</div>
+                </div>
+                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+                    <div class="text-2xl mb-2">🧠</div>
+                    <div class="text-white font-bold text-lg" id="quizzes-passed">0</div>
+                    <div class="text-white/80 text-sm">퀴즈 통과</div>
+                </div>
+                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+                    <div class="text-2xl mb-2">⭐</div>
+                    <div class="text-white font-bold text-lg" id="achievements">0</div>
+                    <div class="text-white/80 text-sm">성취 달성</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lesson 1: 파이썬 기초 -->
+        <section id="lesson-1" class="lesson-card mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-800 flex items-center">
+                    <span class="text-3xl mr-3">🌟</span>
+                    레슨 1: 첫 번째 파이썬 코드
+                </h3>
+                <div id="lesson-1-status" class="text-sm bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">
+                    진행 중
+                </div>
+            </div>
+            
+            <p class="text-gray-600 mb-6">
+                파이썬의 기본인 print() 함수를 사용해 "Hello, World!"를 출력해보세요. 
+                아래 에디터에서 직접 코드를 작성하고 실행할 수 있습니다!
+            </p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">코드 에디터</label>
+                    <textarea 
+                        id="editor-1" 
+                        class="code-editor w-full"
+                        placeholder="여기에 파이썬 코드를 작성하세요..."
+                    >print("Hello, World!")</textarea>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-1" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center">
+                            <span class="mr-2">▶️</span> 실행하기
+                        </button>
+                        <button id="clear-1" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            지우기
+                        </button>
+                        <button id="hint-1" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            💡 힌트
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">실행 결과</label>
+                    <div id="output-1" class="output-panel">
+                        실행 버튼을 눌러 코드를 실행해보세요!
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mini Quiz -->
+            <div class="mt-8 p-6 bg-blue-50 rounded-xl">
+                <h4 class="text-lg font-bold text-blue-800 mb-4">🧠 퀴즈: print() 함수에 대해</h4>
+                <p class="text-blue-700 mb-4">print("Hello") 를 실행하면 어떤 결과가 나올까요?</p>
+                <div class="space-y-2">
+                    <div class="quiz-option" data-quiz="1" data-answer="correct">Hello</div>
+                    <div class="quiz-option" data-quiz="1" data-answer="incorrect">"Hello"</div>
+                    <div class="quiz-option" data-quiz="1" data-answer="incorrect">print("Hello")</div>
+                    <div class="quiz-option" data-quiz="1" data-answer="incorrect">오류 발생</div>
+                </div>
+                <div id="quiz-1-result" class="mt-4 text-sm font-medium hidden"></div>
+            </div>
+        </section>
+
+        <!-- Lesson 2: 변수와 데이터 타입 -->
+        <section id="lesson-2" class="lesson-card mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-800 flex items-center">
+                    <span class="text-3xl mr-3">📦</span>
+                    레슨 2: 변수와 데이터 타입
+                </h3>
+                <div id="lesson-2-status" class="text-sm bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    대기 중
+                </div>
+            </div>
+            
+            <p class="text-gray-600 mb-6">
+                변수는 데이터를 저장하는 상자와 같습니다. 파이썬에서는 다양한 타입의 데이터를 저장할 수 있어요!
+            </p>
+            
+            <!-- 드래그 앤 드롭 코딩 -->
+            <div class="mb-6">
+                <h4 class="text-lg font-bold text-gray-700 mb-4">🎯 드래그 앤 드롭으로 코드 만들기</h4>
+                <p class="text-sm text-gray-600 mb-4">아래 블록들을 드래그해서 올바른 변수 할당 코드를 만들어보세요!</p>
+                
+                <div class="mb-4">
+                    <div class="text-sm font-medium text-gray-700 mb-2">사용 가능한 블록들:</div>
+                    <div class="flex flex-wrap gap-2">
+                        <div class="drag-block" draggable="true">name</div>
+                        <div class="drag-block" draggable="true">=</div>
+                        <div class="drag-block" draggable="true">"김파이"</div>
+                        <div class="drag-block" draggable="true">age</div>
+                        <div class="drag-block" draggable="true">17</div>
+                        <div class="drag-block" draggable="true">print(</div>
+                        <div class="drag-block" draggable="true">)</div>
+                    </div>
+                </div>
+                
+                <div class="drop-zone" id="drop-zone-2">
+                    <p class="text-gray-500 text-center">여기에 블록을 드래그해서 코드를 완성하세요</p>
+                </div>
+                
+                <button id="check-drag-2" class="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded-lg mt-4 transition-colors">
+                    코드 확인하기
+                </button>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">코드 에디터</label>
+                    <textarea 
+                        id="editor-2" 
+                        class="code-editor w-full"
+                        placeholder="변수를 만들어보세요..."
+                    ># 다양한 데이터 타입 실습
+name = "여러분의 이름"
+age = 17
+height = 165.5
+is_student = True
+
+print(f"이름: {name}")
+print(f"나이: {age}")
+print(f"키: {height}cm")
+print(f"학생 여부: {is_student}")</textarea>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-2" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center">
+                            <span class="mr-2">▶️</span> 실행하기
+                        </button>
+                        <button id="clear-2" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            지우기
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">실행 결과</label>
+                    <div id="output-2" class="output-panel">
+                        변수를 만들고 실행해보세요!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Challenge Section -->
+        <section class="lesson-card mb-8 bg-gradient-to-r from-purple-100 to-pink-100">
+            <h3 class="text-2xl font-bold text-purple-800 mb-6 flex items-center">
+                <span class="text-3xl mr-3">👤</span>
+                나만의 프로필 만들기
+            </h3>
+            
+            <p class="text-purple-700 mb-6">
+                다양한 데이터 타입을 사용해서 자신의 프로필을 만들어보세요! 
+                문자열, 정수, 실수, 불린(참/거짓) 값을 모두 사용해보겠습니다.
+            </p>
+            
+            <div class="bg-purple-50 p-4 rounded-lg mb-4">
+                <h4 class="font-bold text-purple-800 mb-2">📋 사용할 데이터 타입들:</h4>
+                <ul class="text-sm text-purple-700 space-y-1">
+                    <li>• <strong>문자열(str):</strong> 이름, 학교, 취미 등</li>
+                    <li>• <strong>정수(int):</strong> 나이, 학년 등</li>
+                    <li>• <strong>실수(float):</strong> 키, 몸무게 등</li>
+                    <li>• <strong>불린(bool):</strong> 학생 여부, 안경 착용 여부 등</li>
+                </ul>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <textarea 
+                        id="profile-editor" 
+                        class="code-editor w-full h-64"
+                        placeholder="프로필 코드를 작성해보세요..."
+                    ># 나만의 프로필 만들기
+# 다양한 데이터 타입을 사용해보세요!
+
+print("=== 🌟 나의 프로필 🌟 ===")
+
+# 문자열 변수들
+name = "김파이"
+school = "파이썬고등학교"
+hobby = "코딩"
+
+# 숫자 변수들  
+age = 17
+grade = 2
+height = 165.5
+weight = 55.2
+
+# 불린(참/거짓) 변수들
+is_student = True
+wears_glasses = False
+
+# 프로필 출력
+print(f"이름: {name}")
+print(f"나이: {age}세")
+print(f"학교: {school}")
+print(f"학년: {grade}학년")
+print(f"키: {height}cm")
+print(f"몸무게: {weight}kg")
+print(f"취미: {hobby}")
+print(f"학생 여부: {is_student}")
+print(f"안경 착용: {wears_glasses}")
+
+# 데이터 타입 확인해보기
+print("\n=== 📊 데이터 타입 확인 ===")
+print(f"name의 타입: {type(name)}")
+print(f"age의 타입: {type(age)}")
+print(f"height의 타입: {type(height)}")
+print(f"is_student의 타입: {type(is_student)}")
+</textarea>
+                    
+                    <button id="run-profile" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center mt-4">
+                        <span class="mr-2">👤</span> 프로필 실행
+                    </button>
+                </div>
+                
+                <div>
+                    <div id="profile-output" class="output-panel h-64">
+                        프로필 코드를 작성하고 실행해보세요!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Achievement Panel -->
+        <section class="lesson-card mb-8 bg-gradient-to-r from-yellow-100 to-orange-100">
+            <h3 class="text-2xl font-bold text-orange-800 mb-6 flex items-center">
+                <span class="text-3xl mr-3">🏆</span>
+                성취 시스템
+            </h3>
+            
+            <div class="grid md:grid-cols-3 gap-4">
+                <div id="achievement-first-code" class="achievement-card bg-white p-4 rounded-xl text-center opacity-50">
+                    <div class="text-3xl mb-2">🌟</div>
+                    <h4 class="font-bold text-gray-700">첫 코드 실행</h4>
+                    <p class="text-sm text-gray-500">첫 번째 파이썬 코드를 실행하세요</p>
+                </div>
+                
+                <div id="achievement-variable-master" class="achievement-card bg-white p-4 rounded-xl text-center opacity-50">
+                    <div class="text-3xl mb-2">📦</div>
+                    <h4 class="font-bold text-gray-700">변수 마스터</h4>
+                    <p class="text-sm text-gray-500">5개 이상의 변수를 사용하세요</p>
+                </div>
+                
+                <div id="achievement-quiz-champion" class="achievement-card bg-white p-4 rounded-xl text-center opacity-50">
+                    <div class="text-3xl mb-2">🧠</div>
+                    <h4 class="font-bold text-gray-700">퀴즈 챔피언</h4>
+                    <p class="text-sm text-gray-500">모든 퀴즈를 정답으로 맞히세요</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MechDog Introduction Section -->
+        <section class="lesson-card mb-8 bg-gradient-to-r from-blue-100 to-cyan-100">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-800 flex items-center">
+                    <span class="text-3xl mr-3">🤖</span>
+                    MechDog 소개
+                </h3>
+                <div class="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
+                    특별 강의
+                </div>
+            </div>
+            
+            <p class="text-gray-600 mb-6">
+                MechDog은 파이썬으로 제어할 수 있는 로봇 개입니다. 기본적인 파이썬 문법을 배우고 나면 
+                실제로 MechDog을 움직이고, 명령을 내리고, 센서 데이터를 읽을 수 있어요!
+            </p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-xl">
+                    <h4 class="text-lg font-bold mb-4 text-blue-800">🎯 MechDog으로 할 수 있는 것들</h4>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>앞뒤좌우 이동</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>고개 돌리기</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>앉기/일어서기</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>손 흔들기</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>LED 색상 변경</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>음성 출력</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>센서 데이터 읽기</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl">
+                    <h4 class="text-lg font-bold mb-4 text-purple-800">📚 필요한 파이썬 지식</h4>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>변수와 데이터 타입</li>
+                        <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>함수 정의와 호출</li>
+                        <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>조건문 (if-else)</li>
+                        <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>반복문 (for, while)</li>
+                        <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>클래스와 객체</li>
+                        <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>모듈 import</li>
+                        <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>파일 입출력</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lesson: MechDog 기본 제어 -->
+        <section id="lesson-mechdog-basic" class="lesson-card mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-800 flex items-center">
+                    <span class="text-3xl mr-3">🎮</span>
+                    레슨: MechDog 기본 제어
+                </h3>
+                <div id="lesson-mechdog-basic-status" class="text-sm bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    대기 중
+                </div>
+            </div>
+            
+            <p class="text-gray-600 mb-6">
+                MechDog의 기본적인 움직임을 제어하는 방법을 배워보세요. 
+                파이썬 클래스와 메서드를 사용해서 로봇을 움직여봅시다!
+            </p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">MechDog 제어 코드</label>
+                    <textarea 
+                        id="editor-mechdog-basic" 
+                        class="code-editor w-full h-64"
+                        placeholder="MechDog 제어 코드를 작성해보세요..."
+                    ># MechDog 기본 제어 예제
+# (실제 하드웨어 없이도 코드를 작성해볼 수 있습니다)
+
+class MechDog:
+    def __init__(self, name="멍멍이"):
+        self.name = name
+        self.position = [0, 0]  # x, y 좌표
+        self.is_sitting = False
+        print(f"🤖 {self.name}이 준비되었습니다!")
+    
+    def move_forward(self, distance=1):
+        self.position[1] += distance
+        print(f"🐕 {self.name}이 {distance}만큼 앞으로 이동했습니다.")
+        print(f"현재 위치: {self.position}")
+    
+    def move_backward(self, distance=1):
+        self.position[1] -= distance  
+        print(f"🐕 {self.name}이 {distance}만큼 뒤로 이동했습니다.")
+        print(f"현재 위치: {self.position}")
+    
+    def turn_left(self):
+        print(f"🔄 {self.name}이 왼쪽으로 돌았습니다.")
+    
+    def turn_right(self):
+        print(f"🔄 {self.name}이 오른쪽으로 돌았습니다.")
+    
+    def sit(self):
+        if not self.is_sitting:
+            self.is_sitting = True
+            print(f"🪑 {self.name}이 앉았습니다.")
+        else:
+            print(f"🤖 {self.name}은 이미 앉아있습니다.")
+    
+    def stand(self):
+        if self.is_sitting:
+            self.is_sitting = False
+            print(f"🚶 {self.name}이 일어섰습니다.")
+        else:
+            print(f"🤖 {self.name}은 이미 서있습니다.")
+    
+    def wave_hand(self):
+        print(f"👋 {self.name}이 손을 흔들고 있습니다!")
+
+# MechDog 생성 및 제어
+my_dog = MechDog("로보독")
+
+# 기본 동작들 실행
+my_dog.move_forward(2)
+my_dog.turn_right()
+my_dog.move_forward(1)
+my_dog.sit()
+my_dog.wave_hand()
+my_dog.stand()
+my_dog.move_backward(1)
+
+print("\n🎉 MechDog 기본 제어 완료!")
+</textarea>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-mechdog-basic" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center">
+                            <span class="mr-2">🤖</span> 실행하기
+                        </button>
+                        <button id="clear-mechdog-basic" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            지우기
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">실행 결과</label>
+                    <div id="output-mechdog-basic" class="output-panel h-64">
+                        MechDog 제어 코드를 실행해보세요!
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MechDog Quiz -->
+            <div class="mt-8 p-6 bg-blue-50 rounded-xl">
+                <h4 class="text-lg font-bold text-blue-800 mb-4">🧠 퀴즈: MechDog 클래스</h4>
+                <p class="text-blue-700 mb-4">MechDog 클래스에서 새로운 인스턴스를 만들 때 사용하는 메서드는?</p>
+                <div class="space-y-2">
+                    <div class="quiz-option" data-quiz="mechdog-1" data-answer="correct">__init__()</div>
+                    <div class="quiz-option" data-quiz="mechdog-1" data-answer="incorrect">__new__()</div>
+                    <div class="quiz-option" data-quiz="mechdog-1" data-answer="incorrect">create()</div>
+                    <div class="quiz-option" data-quiz="mechdog-1" data-answer="incorrect">start()</div>
+                </div>
+                <div id="quiz-mechdog-1-result" class="mt-4 text-sm font-medium hidden"></div>
+            </div>
+        </section>
+
+        <!-- Lesson: MechDog 센서 활용 -->
+        <section id="lesson-mechdog-sensors" class="lesson-card mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-800 flex items-center">
+                    <span class="text-3xl mr-3">📡</span>
+                    레슨: MechDog 센서 활용
+                </h3>
+                <div id="lesson-mechdog-sensors-status" class="text-sm bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    대기 중
+                </div>
+            </div>
+            
+            <p class="text-gray-600 mb-6">
+                MechDog의 다양한 센서를 활용해서 주변 환경을 감지하고 반응하는 스마트한 로봇을 만들어보세요!
+            </p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">센서 활용 코드</label>
+                    <textarea 
+                        id="editor-mechdog-sensors" 
+                        class="code-editor w-full h-80"
+                        placeholder="MechDog 센서 코드를 작성해보세요..."
+                    ># MechDog 센서 활용 예제
+import random
+import time
+
+class MechDogSensor:
+    def __init__(self, name="스마트독"):
+        self.name = name
+        self.battery_level = 100
+        self.temperature = 25.0
+        print(f"🤖 센서가 장착된 {self.name}이 준비되었습니다!")
+    
+    def get_distance(self):
+        """거리 센서 - 앞쪽 장애물까지의 거리 측정"""
+        distance = random.randint(10, 200)  # 10~200cm 랜덤 값
+        print(f"📏 거리 센서: {distance}cm")
+        return distance
+    
+    def get_temperature(self):
+        """온도 센서 - 주변 온도 측정"""
+        self.temperature = round(random.uniform(20.0, 35.0), 1)
+        print(f"🌡️ 온도 센서: {self.temperature}°C")
+        return self.temperature
+    
+    def get_light_level(self):
+        """조도 센서 - 주변 밝기 측정"""
+        light = random.randint(0, 1000)  # 0~1000 lux
+        print(f"💡 조도 센서: {light} lux")
+        return light
+    
+    def check_battery(self):
+        """배터리 레벨 확인"""
+        print(f"🔋 배터리: {self.battery_level}%")
+        return self.battery_level
+    
+    def smart_navigation(self):
+        """스마트 네비게이션 - 센서 데이터 기반 자동 이동"""
+        print("\n🧠 스마트 네비게이션 시작!")
+        
+        for step in range(5):  # 5단계 이동
+            print(f"\n--- 단계 {step + 1} ---")
+            
+            # 센서 데이터 수집
+            distance = self.get_distance()
+            light = self.get_light_level()
+            temp = self.get_temperature()
+            
+            # 조건에 따른 행동 결정
+            if distance < 30:
+                print("⚠️  장애물 감지! 회전합니다.")
+                self.turn_around()
+            elif light < 100:
+                print("🌙 어두워서 LED를 켭니다.")
+                self.turn_on_led("white")
+            elif temp > 30:
+                print("🔥 온도가 높아서 쉬어갑니다.")
+                self.rest()
+            else:
+                print("✅ 안전! 앞으로 이동합니다.")
+                self.move_forward()
+            
+            # 배터리 소모 시뮬레이션
+            self.battery_level -= random.randint(1, 3)
+            
+            if self.battery_level < 20:
+                print("🪫 배터리가 부족합니다! 충전이 필요해요.")
+                break
+    
+    def turn_around(self):
+        print("🔄 180도 회전")
+    
+    def turn_on_led(self, color):
+        print(f"💡 LED를 {color} 색으로 켭니다")
+    
+    def rest(self):
+        print("😴 잠시 휴식을 취합니다")
+    
+    def move_forward(self):
+        print("🐕 앞으로 이동")
+
+# 스마트 MechDog 실행
+smart_dog = MechDogSensor("아인슈타인독")
+
+# 개별 센서 테스트
+print("=== 센서 개별 테스트 ===")
+smart_dog.get_distance()
+smart_dog.get_temperature()
+smart_dog.get_light_level()
+smart_dog.check_battery()
+
+# 스마트 네비게이션 실행
+smart_dog.smart_navigation()
+
+print(f"\n🎉 {smart_dog.name}의 센서 미션 완료!")
+</textarea>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-mechdog-sensors" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center">
+                            <span class="mr-2">📡</span> 실행하기
+                        </button>
+                        <button id="clear-mechdog-sensors" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            지우기
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">실행 결과</label>
+                    <div id="output-mechdog-sensors" class="output-panel h-80">
+                        센서 활용 코드를 실행해보세요!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Project Section -->
+        <section class="lesson-card mb-8 bg-gradient-to-r from-green-100 to-emerald-100">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-800 flex items-center">
+                    <span class="text-3xl mr-3">🚀</span>
+                    최종 프로젝트: 나만의 MechDog AI
+                </h3>
+                <div class="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full">
+                    도전 과제
+                </div>
+            </div>
+            
+            <p class="text-gray-600 mb-6">
+                지금까지 배운 모든 파이썬 지식을 활용해서 나만의 특별한 MechDog AI를 만들어보세요!
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl">
+                    <h4 class="text-lg font-bold mb-4 text-green-800">🎯 프로젝트 목표</h4>
+                    <ul class="space-y-2 text-gray-700 text-sm">
+                        <li>• 사용자와 상호작용</li>
+                        <li>• 음성 명령 인식</li>
+                        <li>• 패턴 학습 기능</li>
+                        <li>• 감정 표현</li>
+                        <li>• 게임 기능</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl">
+                    <h4 class="text-lg font-bold mb-4 text-blue-800">💻 사용 기술</h4>
+                    <ul class="space-y-2 text-gray-700 text-sm">
+                        <li>• 클래스와 상속</li>
+                        <li>• 파일 입출력</li>
+                        <li>• 예외 처리</li>
+                        <li>• 모듈 활용</li>
+                        <li>• 데이터 구조</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl">
+                    <h4 class="text-lg font-bold mb-4 text-purple-800">🏆 기대 효과</h4>
+                    <ul class="space-y-2 text-gray-700 text-sm">
+                        <li>• 파이썬 실력 향상</li>
+                        <li>• 로봇 공학 이해</li>
+                        <li>• 창의적 사고 개발</li>
+                        <li>• 문제 해결 능력</li>
+                        <li>• 협업 경험</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Floating Mascot -->
+    <div class="floating-mascot text-6xl" id="mascot" title="MechDog 도우미를 클릭하세요!">
+        🤖
+    </div>
+
+    <!-- Mascot Chat Modal -->
+    <div id="mascot-modal" class="fixed inset-0 modal hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md mx-4 shadow-2xl">
+            <div class="text-center">
+                <div class="text-6xl mb-4">🤖</div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">MechDog 도우미</h3>
+                <p class="text-gray-600 mb-6" id="mascot-message">
+                    안녕하세요! MechDog 제어를 위한 파이썬 학습을 도와드릴게요. 
+                    궁금한 것이 있으면 언제든 말씀해주세요!
+                </p>
+                <div class="flex space-x-4">
+                    <button id="mascot-hint" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        💡 힌트 받기
+                    </button>
+                    <button id="mascot-close" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        닫기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Python Loading Modal -->
+    <div id="python-loading" class="fixed inset-0 modal hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 text-center">
+            <div class="loading-spinner"></div>
+            <p class="text-gray-700 mt-4">파이썬 엔진을 준비하고 있습니다...</p>
+            <p class="text-sm text-gray-500 mt-2">처음 로딩 시 시간이 걸릴 수 있습니다.</p>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let pyodide = null;
+        let userProgress = {
+            lessonsCompleted: 0,
+            codesRun: 0,
+            quizzesPassed: 0,
+            achievements: 0,
+            score: 0
+        };
+
+        // Load from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('pythonLearningProgress');
+            if (saved) {
+                userProgress = { ...userProgress, ...JSON.parse(saved) };
+                updateUI();
+            }
+        }
+
+        // Save to localStorage
+        function saveProgress() {
+            localStorage.setItem('pythonLearningProgress', JSON.stringify(userProgress));
+        }
+
+        // Update UI elements
+        function updateUI() {
+            document.getElementById('lessons-completed').textContent = `${userProgress.lessonsCompleted}/12`;
+            document.getElementById('codes-run').textContent = userProgress.codesRun;
+            document.getElementById('quizzes-passed').textContent = userProgress.quizzesPassed;
+            document.getElementById('achievements').textContent = userProgress.achievements;
+            document.getElementById('score-text').textContent = `${userProgress.score}점`;
+            
+            const progressPercent = (userProgress.lessonsCompleted / 12) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('progress-text').textContent = `${Math.round(progressPercent)}%`;
+        }
+
+        // Initialize Pyodide
+        async function initPyodide() {
+            if (pyodide) return;
+            
+            document.getElementById('python-loading').classList.remove('hidden');
+            document.getElementById('python-loading').classList.add('flex');
+            
+            try {
+                pyodide = await loadPyodide();
+                console.log('Pyodide loaded successfully');
+            } catch (error) {
+                console.error('Failed to load Pyodide:', error);
+                alert('파이썬 엔진 로딩에 실패했습니다. 페이지를 새로고침해주세요.');
+            } finally {
+                document.getElementById('python-loading').classList.add('hidden');
+                document.getElementById('python-loading').classList.remove('flex');
+            }
+        }
+
+        // Run Python code
+        async function runPythonCode(code, outputElementId) {
+            if (!pyodide) {
+                await initPyodide();
+            }
+            
+            const outputElement = document.getElementById(outputElementId);
+            outputElement.textContent = '실행 중...';
+            
+            try {
+                // Capture stdout
+                pyodide.runPython(`
+import sys
+from io import StringIO
+sys.stdout = StringIO()
+                `);
+                
+                // Run user code
+                pyodide.runPython(code);
+                
+                // Get output
+                const output = pyodide.runPython("sys.stdout.getvalue()");
+                outputElement.textContent = output || '실행 완료! (출력 없음)';
+                
+                // Update progress
+                userProgress.codesRun++;
+                userProgress.score += 10;
+                saveProgress();
+                updateUI();
+                
+                // Create particle effect
+                createParticleEffect(outputElement);
+                
+                // Check for achievements
+                checkAchievements();
+                
+            } catch (error) {
+                outputElement.textContent = `오류 발생:\n${error.message}`;
+                outputElement.style.color = '#ef4444';
+                setTimeout(() => {
+                    outputElement.style.color = '#e6edf3';
+                }, 3000);
+            }
+        }
+
+        // Create particle effect
+        function createParticleEffect(element) {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.width = '8px';
+                    particle.style.height = '8px';
+                    particle.style.left = Math.random() * element.offsetWidth + 'px';
+                    particle.style.top = '10px';
+                    
+                    element.style.position = 'relative';
+                    element.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 2000);
+                }, i * 100);
+            }
+        }
+
+        // Check achievements
+        function checkAchievements() {
+            // First code achievement
+            if (userProgress.codesRun >= 1 && !document.getElementById('achievement-first-code').classList.contains('achieved')) {
+                unlockAchievement('achievement-first-code', '첫 코드 실행 성취 달성! 🎉');
+            }
+            
+            // Variable master achievement
+            if (userProgress.codesRun >= 5 && !document.getElementById('achievement-variable-master').classList.contains('achieved')) {
+                unlockAchievement('achievement-variable-master', '변수 마스터 성취 달성! 📦✨');
+            }
+            
+            // Quiz champion achievement
+            if (userProgress.quizzesPassed >= 3 && !document.getElementById('achievement-quiz-champion').classList.contains('achieved')) {
+                unlockAchievement('achievement-quiz-champion', '퀴즈 챔피언 성취 달성! 🧠👑');
+            }
+        }
+
+        // Unlock achievement
+        function unlockAchievement(achievementId, message) {
+            const achievement = document.getElementById(achievementId);
+            achievement.classList.remove('opacity-50');
+            achievement.classList.add('achieved', 'bg-gradient-to-r', 'from-yellow-200', 'to-yellow-300');
+            achievement.style.transform = 'scale(1.05)';
+            
+            userProgress.achievements++;
+            userProgress.score += 50;
+            saveProgress();
+            updateUI();
+            
+            // Show achievement notification
+            showNotification(message);
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-20 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Quiz system
+        function handleQuizAnswer(quizId, selectedOption, isCorrect) {
+            const options = document.querySelectorAll(`[data-quiz="${quizId}"]`);
+            const resultDiv = document.getElementById(`quiz-${quizId}-result`);
+            
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+                if (option === selectedOption) {
+                    option.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else if (option.dataset.answer === 'correct') {
+                    option.classList.add('correct');
+                }
+            });
+            
+            if (isCorrect) {
+                resultDiv.textContent = '정답입니다! 🎉';
+                resultDiv.className = 'mt-4 text-sm font-medium text-green-600';
+                userProgress.quizzesPassed++;
+                userProgress.score += 20;
+            } else {
+                resultDiv.textContent = '틀렸습니다. 다시 생각해보세요! 🤔';
+                resultDiv.className = 'mt-4 text-sm font-medium text-red-600';
+            }
+            
+            resultDiv.classList.remove('hidden');
+            saveProgress();
+            updateUI();
+            checkAchievements();
+        }
+
+        // Drag and drop system
+        let draggedElement = null;
+
+        function setupDragAndDrop() {
+            document.querySelectorAll('.drag-block').forEach(block => {
+                block.addEventListener('dragstart', (e) => {
+                    draggedElement = e.target;
+                    e.target.style.opacity = '0.5';
+                });
+                
+                block.addEventListener('dragend', (e) => {
+                    e.target.style.opacity = '1';
+                });
+            });
+
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('drag-over');
+                });
+                
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('drag-over');
+                });
+                
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('drag-over');
+                    
+                    if (draggedElement) {
+                        const cloned = draggedElement.cloneNode(true);
+                        cloned.draggable = false;
+                        cloned.classList.add('bg-green-500');
+                        zone.appendChild(cloned);
+                        
+                        // Add space after each block
+                        zone.appendChild(document.createTextNode(' '));
+                    }
+                });
+            });
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProgress();
+            setupDragAndDrop();
+            
+            // Initialize Pyodide on first interaction
+            document.addEventListener('click', initPyodide, { once: true });
+            
+            // Run buttons
+            document.getElementById('run-1').addEventListener('click', () => {
+                const code = document.getElementById('editor-1').value;
+                runPythonCode(code, 'output-1');
+            });
+            
+            document.getElementById('run-2').addEventListener('click', () => {
+                const code = document.getElementById('editor-2').value;
+                runPythonCode(code, 'output-2');
+            });
+            
+            document.getElementById('run-profile').addEventListener('click', () => {
+                const code = document.getElementById('profile-editor').value;
+                runPythonCode(code, 'profile-output');
+            });
+            
+            // MechDog buttons
+            document.getElementById('run-mechdog-basic').addEventListener('click', () => {
+                const code = document.getElementById('editor-mechdog-basic').value;
+                runPythonCode(code, 'output-mechdog-basic');
+            });
+            
+            document.getElementById('run-mechdog-sensors').addEventListener('click', () => {
+                const code = document.getElementById('editor-mechdog-sensors').value;
+                runPythonCode(code, 'output-mechdog-sensors');
+            });
+            
+            // Clear buttons
+            document.getElementById('clear-1').addEventListener('click', () => {
+                document.getElementById('editor-1').value = '';
+                document.getElementById('output-1').textContent = '에디터를 지웠습니다.';
+            });
+            
+            document.getElementById('clear-2').addEventListener('click', () => {
+                document.getElementById('editor-2').value = '';
+                document.getElementById('output-2').textContent = '에디터를 지웠습니다.';
+            });
+            
+            document.getElementById('clear-mechdog-basic').addEventListener('click', () => {
+                document.getElementById('editor-mechdog-basic').value = '';
+                document.getElementById('output-mechdog-basic').textContent = 'MechDog 에디터를 지웠습니다.';
+            });
+            
+            document.getElementById('clear-mechdog-sensors').addEventListener('click', () => {
+                document.getElementById('editor-mechdog-sensors').value = '';
+                document.getElementById('output-mechdog-sensors').textContent = '센서 에디터를 지웠습니다.';
+            });
+            
+            // Hint buttons
+            document.getElementById('hint-1').addEventListener('click', () => {
+                alert('💡 힌트: print() 함수 안에 따옴표를 사용해서 텍스트를 넣어보세요!');
+            });
+            
+            // Quiz handlers
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const quizId = option.dataset.quiz;
+                    const isCorrect = option.dataset.answer === 'correct';
+                    handleQuizAnswer(quizId, option, isCorrect);
+                });
+            });
+            
+            // Mascot modal
+            document.getElementById('mascot').addEventListener('click', () => {
+                document.getElementById('mascot-modal').classList.remove('hidden');
+                document.getElementById('mascot-modal').classList.add('flex');
+            });
+            
+            document.getElementById('mascot-close').addEventListener('click', () => {
+                document.getElementById('mascot-modal').classList.add('hidden');
+                document.getElementById('mascot-modal').classList.remove('flex');
+            });
+            
+            document.getElementById('mascot-hint').addEventListener('click', () => {
+                const hints = [
+                    "MechDog 클래스에서 __init__ 메서드는 로봇의 초기 상태를 설정해요!",
+                    "센서 데이터는 random 모듈을 사용해서 시뮬레이션할 수 있어요.",
+                    "클래스의 메서드를 호출할 때는 객체.메서드() 형태로 사용하세요.",
+                    "조건문(if-else)을 사용해서 센서 값에 따라 다른 동작을 하게 만들어보세요!",
+                    "반복문(for, while)을 사용하면 MechDog이 연속 동작을 할 수 있어요.",
+                    "변수는 데이터를 저장하는 상자예요! name = '값' 형태로 만들어보세요.",
+                    "print() 함수는 괄호 안의 내용을 화면에 보여줍니다.",
+                    "f-string을 사용하면 변수를 쉽게 출력할 수 있어요: f'안녕 {name}'"
+                ];
+                const randomHint = hints[Math.floor(Math.random() * hints.length)];
+                document.getElementById('mascot-message').textContent = randomHint;
+            });
+            
+            // Reset progress
+            document.getElementById('reset-progress').addEventListener('click', () => {
+                if (confirm('정말로 모든 진도를 초기화하시겠습니까?')) {
+                    localStorage.removeItem('pythonLearningProgress');
+                    location.reload();
+                }
+            });
+            
+            // Drag and drop check
+            document.getElementById('check-drag-2').addEventListener('click', () => {
+                const dropZone = document.getElementById('drop-zone-2');
+                const blocks = Array.from(dropZone.children).filter(child => child.classList.contains('drag-block'));
+                const code = blocks.map(block => block.textContent).join(' ');
+                
+                if (code.includes('name') && code.includes('=') && code.includes('"')) {
+                    showNotification('드래그 앤 드롭 성공! 🎉');
+                    userProgress.score += 30;
+                    saveProgress();
+                    updateUI();
+                } else {
+                    alert('코드가 완전하지 않습니다. 다시 시도해보세요!');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
