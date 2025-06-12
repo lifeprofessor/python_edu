@@ -293,9 +293,8 @@ print(f"is_standing의 타입: {type(is_standing)}")
                 <ol class="text-yellow-700 space-y-1 mb-4">
                     <li>1. MechDog의 이름 정하기</li>
                     <li>2. 좋아하는 색상 저장하기</li>
-                    <li>3. 최고 속도 (km/h) 설정하기</li>
-                    <li>4. 충전 필요 여부 설정하기</li>
-                    <li>5. f-string으로 멋진 소개문 만들기</li>
+                    <li>3. 최고 속도 (km/h) 설정하기</li>                 
+                    <li>4. f-string으로 멋진 소개문 만들기</li>
                 </ol>
                 <button id="show-solution" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">
                     정답 예시 보기
@@ -337,7 +336,7 @@ print(f"is_standing의 타입: {type(is_standing)}")
                 <!-- Quiz 3 -->
                 <div>
                     <h4 class="text-lg font-semibold text-gray-700 mb-3">문제 3: f-string</h4>
-                    <p class="text-gray-600 mb-4">name = "MechDog"일 때, <code>f"안녕, {name}!"</code>의 출력 결과는?</p>
+                    <p class="text-gray-600 mb-4">name = "MechDog"일 때, <code>print(f"안녕, {name}!")</code>의 출력 결과는?</p>
                     <div class="space-y-2">
                         <div class="quiz-option" data-quiz="3" data-answer="correct">안녕, MechDog!</div>
                         <div class="quiz-option" data-quiz="3" data-answer="incorrect">안녕, {name}!</div>
@@ -526,7 +525,6 @@ print(f"🧭 새로운 방향: {direction}")`;
 my_dog_name = "썬더볼트"  # 여러분의 MechDog 이름
 favorite_color = "파란색"
 max_speed = 3.2  # km/h
-needs_charging = False
 
 # 멋진 소개문 만들기
 print("🌟 나만의 MechDog 소개 🌟")
@@ -534,12 +532,6 @@ print("=" * 30)
 print(f"안녕하세요! 제 이름은 {my_dog_name}입니다!")
 print(f"저는 {favorite_color}을 가장 좋아해요.")
 print(f"최고 속도는 {max_speed}km/h까지 달릴 수 있답니다.")
-
-if needs_charging:
-    print("지금은 충전이 필요해요. 🔋")
-else:
-    print("배터리가 충분해서 언제든 놀 수 있어요! ⚡")
-    
 print(f"함께 즐거운 시간을 보내요! 🎉")`;
             });
             
