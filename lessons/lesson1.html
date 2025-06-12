@@ -574,39 +574,24 @@ print(f"{student_name}님, 레슨 {lesson_number} 화이팅!")`;
             // Show solution button
             document.getElementById('show-solution').addEventListener('click', () => {
                 document.getElementById('code-editor').value = `# 도전 과제 정답
+
 # 다양한 print() 함수 사용법을 활용한 해답
 
 # 변수 정의
-my_name = "김파이썬"  # 여러분의 이름으로 바꿔보세요
-year = "2025"
-month = "06"
-day = "09"
+my_name = "공주"  # 여러분의 이름으로 바꿔보세요
 
 # 1. f-string으로 이름 넣기
 print(f"안녕하세요 {my_name}님!")
 
 # 2. 여러 개 출력과 sep 사용
-print("MechDog", "파이썬", "학습", sep=" ")
-print("레슨", "1", sep="")
+print("MechDog", "파이썬", "학습-레슨1", sep=" ")
 
 # 3. sep으로 날짜 형식 만들기
-print("오늘 날짜:", year, month, day, sep="", end="")
-print(":", year, month, day, sep="-")
+print("오늘 날짜:", end="")
+print("2025", "06", "13", sep="-")
 
 # 4. 기본 출력
 print("첫 번째 레슨 완료!")
-
-# 보너스: 한 줄로 더 간단하게
-print()
-print("=== 더 간단한 방법 ===")
-name = "김파이썬"
-print(f"안녕하세요 {name}님!")
-print("MechDog", "파이썬", "학습-레슨1", sep=" ")
-print("오늘", "날짜:", "2025", "06", "09", sep=" ", end="")
-print(":", "2025", "06", "09", sep="", end="")
-print(":", sep="-")
-print("첫 번째 레슨 완료!")`;
-            });
             
             // Quiz handlers
             document.querySelectorAll('.quiz-option').forEach(option => {
