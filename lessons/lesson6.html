@@ -108,16 +108,18 @@
             box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
         }
 
-        .output {
-            background: #1a202c;
-            color: #00ff00;
-            font-family: 'Monaco', 'Menlo', monospace;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 10px;
-            min-height: 100px;
+        .output-panel {
+            background: #0d1117;
+            color: #e6edf3;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            min-height: 120px;
+            border: 2px solid #30363d;
             white-space: pre-wrap;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            resize: vertical;
         }
 
         .concept-box {
@@ -247,7 +249,7 @@ random_patrol()
 print()
 system_status()</textarea>
                     <button class="run-button" onclick="runCode('editor1', 'output1')">실행 ▶</button>
-                    <div class="output" id="output1">여기에 실행 결과가 표시됩니다</div>
+                    <div class="output-panel" id="output1">여기에 실행 결과가 표시됩니다</div>
                 </div>
             </div>
 
@@ -300,7 +302,7 @@ def calculate_optimal_path():
 analyze_sensor_data()
 calculate_optimal_path()</textarea>
                     <button class="run-button" onclick="runCode('editor2', 'output2')">실행 ▶</button>
-                    <div class="output" id="output2">여기에 실행 결과가 표시됩니다</div>
+                    <div class="output-panel" id="output2">여기에 실행 결과가 표시됩니다</div>
                 </div>
             </div>
 
@@ -375,7 +377,7 @@ mission_scheduler()
 activity_log()
 mission_timer()</textarea>
                     <button class="run-button" onclick="runCode('editor3', 'output3')">실행 ▶</button>
-                    <div class="output" id="output3">여기에 실행 결과가 표시됩니다</div>
+                    <div class="output-panel" id="output3">여기에 실행 결과가 표시됩니다</div>
                 </div>
             </div>
 
@@ -476,7 +478,7 @@ patrol_route_generator()
 random_response_system()
 decision_maker()</textarea>
                     <button class="run-button" onclick="runCode('editor4', 'output4')">실행 ▶</button>
-                    <div class="output" id="output4">여기에 실행 결과가 표시됩니다</div>
+                    <div class="output-panel" id="output4">여기에 실행 결과가 표시됩니다</div>
                 </div>
             </div>
 
@@ -565,7 +567,7 @@ def comprehensive_system():
 # 시스템 실행
 comprehensive_system()</textarea>
                     <button class="run-button" onclick="runCode('exercise', 'exerciseOutput')">실행 ▶</button>
-                    <div class="output" id="exerciseOutput">여기에 실행 결과가 표시됩니다</div>
+                    <div class="output-panel" id="exerciseOutput">여기에 실행 결과가 표시됩니다</div>
                 </div>
 
                 <div class="tip-box">
