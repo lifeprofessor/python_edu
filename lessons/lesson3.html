@@ -191,6 +191,7 @@ print("🎉 상태 분석 완료!")
                         <button id="run-code" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg">▶️ 실행</button>
                         <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">지우기</button>
                         <button id="example-code" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">💡 예제</button>
+                        <button id="touch-example" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg">🤖 터치 센서 활용 예제</button>
                     </div>
                 </div>
                 
@@ -338,6 +339,64 @@ elif mode == "야간":
     print("💡 LED 켜기, 저속 이동")
 else:
     print("🚶 정상 이동, 환경 탐색")`;
+            });
+            
+            document.getElementById('touch-example').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# MechDog 터치 버튼 동작 시퀀스 (Touch-detail.py 기반)
+
+# 버튼 터치 상태 시뮬레이션
+button_pressed = True
+current_action = 1  # 1: 앉기, 2: 엎드리기, 3: 서기
+
+print("🤖 MechDog 터치 버튼 동작 시스템")
+print("버튼을 누르면 순서대로 동작이 바뀝니다!")
+print()
+
+# 버튼이 눌렸을 때의 동작 처리
+if button_pressed:
+    print("👆 버튼이 눌렸습니다!")
+    
+    if current_action == 1:
+        print("🎯 1단계 동작 실행 중...")
+        print("🐕 MechDog이 앉는 자세를 취합니다")
+        print("⏱️ 1.5초 대기 중...")
+        current_action = 2
+        print("✅ 앉기 완료! 다음 동작: 엎드리기")
+        
+    elif current_action == 2:
+        print("🎯 2단계 동작 실행 중...")
+        print("🦮 MechDog이 엎드리는 자세를 취합니다")
+        print("⏱️ 1.5초 대기 중...")
+        current_action = 3
+        print("✅ 엎드리기 완료! 다음 동작: 서기")
+        
+    else:
+        print("🎯 3단계 동작 실행 중...")
+        print("🐾 MechDog이 서는 자세를 취합니다")
+        print("⏱️ 1.5초 대기 중...")
+        current_action = 1
+        print("✅ 서기 완료! 다시 처음으로 돌아갑니다")
+    
+    print("\\n📋 현재 동작 순서:")
+    print("1️⃣ 앉기 (sit_down)")
+    print("2️⃣ 엎드리기 (go_prone)") 
+    print("3️⃣ 서기 (stand_four_legs)")
+    print("🔄 1로 돌아가서 반복")
+
+    # 실제 코드에서는 이렇게 동작합니다:
+    # if enter_flag == 1:  # 버튼이 눌렸다면
+    #     if action_num == 1:
+    #         mechdog.action_run("sit_down")
+    #         time.sleep(1.5)
+    #         action_num += 1
+    #     elif action_num == 2:
+    #         mechdog.action_run("go_prone")
+    #         time.sleep(1.5)
+    #     else:
+    #         mechdog.action_run("stand_four_legs")
+    #         time.sleep(1.5)
+    #         action_num = 1
+    #     enter_flag = 0  # 버튼 상태 초기화"`;
             });
             
             document.getElementById('show-challenge').addEventListener('click', () => {
