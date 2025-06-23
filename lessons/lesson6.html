@@ -3,111 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>레슨 6: 모듈과 패키지 활용 - MechDog 파이썬</title>
+    <title>레슨 6: 모듈과 패키지 활용 | MechDog 파이썬 학습</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Noto Sans KR', sans-serif;
             min-height: 100vh;
-            color: #333;
-            line-height: 1.6;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .header h1 {
-            color: #fff;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.1em;
-        }
-
-        .lesson-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .content-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .content-section h2 {
-            color: #4A90E2;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-            border-bottom: 2px solid #4A90E2;
-            padding-bottom: 5px;
-        }
-
-        .code-container {
-            margin: 15px 0;
-        }
-
+        
         .code-editor {
-            background: #2d3748;
-            border-radius: 10px;
-            padding: 15px;
-            font-family: 'Monaco', 'Menlo', monospace;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
             font-size: 14px;
-            color: #e2e8f0;
-            border: none;
-            width: 100%;
-            min-height: 150px;
+            border: 2px solid #404040;
             resize: vertical;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            min-height: 120px;
         }
-
-        .run-button {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 10px 5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-        }
-
-        .run-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-        }
-
+        
         .output-panel {
             background: #0d1117;
             color: #e6edf3;
@@ -121,385 +40,375 @@
             overflow-y: auto;
             resize: vertical;
         }
-
-        .concept-box {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 15px 0;
-            border-left: 5px solid #ff6b6b;
-        }
-
-        .tip-box {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 15px 0;
-            border-left: 5px solid #4ecdc4;
-        }
-
-        .navigation {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .nav-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-decoration: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            margin: 0 10px;
-            display: inline-block;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .nav-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .exercise-section {
-            grid-column: 1 / -1;
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-        }
-
-        .mechdog-demo {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 10px 0;
-            font-family: monospace;
-            color: #2d3748;
-        }
-
-        @media (max-width: 768px) {
-            .lesson-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-            }
+        
+        .lesson-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
     </style>
+
+            </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📦 레슨 6: 모듈과 패키지 활용</h1>
-            <p>파이썬의 강력한 라이브러리들을 활용해 MechDog을 더 똑똑하게 만들어보세요!</p>
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-sm sticky top-0 z-40 mx-4 mt-4 rounded-2xl shadow-lg">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <a href="../index.html" class="text-2xl hover:text-purple-600">🏠</a>
+                <h1 class="text-xl font-bold text-gray-800">레슨 6: 모듈과 패키지</h1>
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">중급</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="lesson5.html" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm">← 이전</a>
+                <a href="lesson7.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">다음 →</a>
+            </div>
         </div>
+    </nav>
 
-        <div class="lesson-content">
-            <div class="content-section">
-                <h2>📚 모듈 import하기</h2>
-                <p><strong>모듈</strong>은 다른 파일의 함수와 변수를 사용할 수 있게 해주는 파이썬의 핵심 기능입니다.</p>
-                
-                <div class="concept-box">
-                    <h4>📝 모듈 import 방법</h4>
-                    <pre>import 모듈이름
-from 모듈이름 import 함수이름
-import 모듈이름 as 별명</pre>
+    <main class="container mx-auto px-4 py-8">
+        <!-- Lesson Introduction -->
+        <section class="lesson-card mb-8">
+            <div class="flex items-center mb-6">
+                <span class="text-4xl mr-4">📦</span>
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">모듈과 패키지 활용</h2>
+                    <p class="text-gray-600">MechDog의 강력한 기능들을 모듈로 관리하고 활용하기</p>
                 </div>
+            </div>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                <h3 class="text-lg font-bold text-blue-800 mb-2">🎯 학습 목표</h3>
+                <ul class="text-blue-700 space-y-1">
+                    <li>• 모듈 import와 패키지 사용법 이해하기</li>
+                    <li>• MechDog 실제 코드에서 모듈 활용 방법 배우기</li>
+                    <li>• 시간, 수학, 랜덤 모듈 활용하기</li>
+                    <li>• 센서 데이터 처리를 위한 모듈 조합 사용법</li>
+                </ul>
+            </div>
+        </section>
 
-                <div class="code-container">
-                    <textarea class="code-editor" id="editor1"># 기본 모듈들 사용하기
+        <!-- Theory Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📖 모듈과 패키지 배우기</h3>
+            
+            <!-- 모듈의 개념 설명 -->
+            <div class="bg-purple-50 border-l-4 border-purple-500 p-6 mb-6">
+                <h4 class="text-lg font-bold text-purple-800 mb-3">🤔 모듈이란 무엇일까요?</h4>
+                <p class="text-purple-700 mb-3">모듈은 <strong>다른 파일의 코드를 가져와서 사용하는 기능</strong>입니다. 마치 친구가 만든 레시피를 빌려와서 요리하는 것처럼, 다른 사람이 만든 코드를 가져와서 사용할 수 있습니다.</p>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <h5 class="font-semibold text-purple-700 mb-2">🏠 실생활 비유</h5>
+                    <ul class="text-purple-700 space-y-1 text-sm">
+                        <li>• <strong>도서관</strong>: 필요한 책을 빌려와서 사용</li>
+                        <li>• <strong>공구함</strong>: 필요한 도구를 꺼내서 사용</li>
+                        <li>• <strong>부품상자</strong>: 필요한 부품을 찾아서 조립</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- MechDog 모듈 구조 -->
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-6 mb-6">
+                <h4 class="text-lg font-bold text-blue-800 mb-3">🤖 MechDog 모듈 구조</h4>
+                <p class="text-blue-700 mb-3">실제 MechDog 코드에서는 이런 모듈들을 사용합니다:</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-blue-700 mb-2">📝 기본 모듈들</h5>
+                        <pre class="text-sm"><code>import Hiwonder      # 로봇 제어
+import time          # 시간 관리
+from HW_MechDog import MechDog  # 로봇 클래스</code></pre>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-blue-700 mb-2">🎯 센서 모듈들</h5>
+                        <pre class="text-sm"><code>import Hiwonder_IIC  # I2C 통신
+from HW_MechDog import MechDog
+import math          # 수학 계산</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- import 방법들 -->
+            <div class="bg-green-50 border-l-4 border-green-500 p-6 mb-6">
+                <h4 class="text-lg font-bold text-green-800 mb-3">📥 import 방법들</h4>
+                <p class="text-green-700 mb-3">모듈을 가져오는 방법은 여러 가지가 있습니다:</p>
+                
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-green-700 mb-2">📝 전체 가져오기</h5>
+                        <pre class="text-sm"><code>import math
+result = math.sqrt(16)</code></pre>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-green-700 mb-2">🎯 부분 가져오기</h5>
+                        <pre class="text-sm"><code>from math import sqrt
+result = sqrt(16)</code></pre>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-green-700 mb-2">🏷️ 별명 사용하기</h5>
+                        <pre class="text-sm"><code>import math as m
+result = m.sqrt(16)</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">💻 MechDog 모듈 실습</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <textarea id="code-editor" class="code-editor w-full h-96"># 🤖 MechDog 모듈 시스템 배우기
+
+print("📦 MechDog 모듈 시스템 학습!")
+print("실제 MechDog 코드에서 사용하는 모듈들을 배워봅시다!")
+print()
+
+# 1. 기본 모듈 import 방법들
+print("=== 1. 기본 모듈 import 방법들 ===")
+
+# 방법 1: 전체 모듈 가져오기
 import math
-import random
 import time
+import random
 from datetime import datetime
 
-def calculate_robot_movement():
-    """수학 모듈을 사용한 로봇 이동 계산"""
-    print("📐 MechDog 이동 경로 계산")
-    
-    # 원주율 사용
-    radius = 5
-    circumference = 2 * math.pi * radius
-    print(f"🔄 반지름 {radius}m 원형 경로: {circumference:.2f}m")
-    
-    # 삼각함수 사용 (45도 각도)
-    angle = math.radians(45)
-    x = math.cos(angle) * 10
-    y = math.sin(angle) * 10
-    print(f"📍 45도 방향 10m 이동 시 좌표: ({x:.2f}, {y:.2f})")
-
-def random_patrol():
-    """랜덤 모듈을 사용한 순찰 패턴"""
-    print("🎲 랜덤 순찰 패턴 생성")
-    
-    directions = ["북쪽", "남쪽", "동쪽", "서쪽"]
-    for i in range(3):
-        direction = random.choice(directions)
-        distance = random.randint(1, 10)
-        print(f"  {i+1}. {direction}으로 {distance}m 이동")
-
-def system_status():
-    """시간 모듈을 사용한 시스템 상태"""
-    now = datetime.now()
-    print(f"🕐 현재 시간: {now.strftime('%Y-%m-%d %H:%M:%S')}")
-    print(f"⚡ 시스템 가동 시작!")
-
-# 함수들 실행
-calculate_robot_movement()
+print("✅ 모듈들을 성공적으로 가져왔습니다!")
+print(f"   - math 모듈: {type(math)}")
+print(f"   - time 모듈: {type(time)}")
+print(f"   - random 모듈: {type(random)}")
+print(f"   - datetime 클래스: {type(datetime)}")
 print()
-random_patrol()
-print()
-system_status()</textarea>
-                    <button class="run-button" onclick="runCode('editor1', 'output1')">실행 ▶</button>
-                    <div class="output-panel" id="output1">여기에 실행 결과가 표시됩니다</div>
-                </div>
-            </div>
 
-            <div class="content-section">
-                <h2>🔢 수치 계산 모듈</h2>
-                <p>MechDog의 센서 데이터 처리와 경로 계산을 위한 수치 계산 라이브러리들을 사용해보세요.</p>
+# 2. MechDog 스타일 센서 데이터 처리 시뮬레이션
+print("=== 2. MechDog 센서 데이터 처리 시뮬레이션 ===")
 
-                <div class="code-container">
-                    <textarea class="code-editor" id="editor2"># 통계와 수치 계산
-import statistics
-import math
-
-def analyze_sensor_data():
-    """센서 데이터 통계 분석"""
-    print("📊 MechDog 센서 데이터 분석")
+# MechDog의 실제 코드에서 영감을 받은 센서 처리
+class MechDogSensor:
+    """MechDog 센서 클래스 (시뮬레이션)"""
+    def __init__(self):
+        self.name = "MechDog Sensor"
+        print(f"🔧 {self.name} 초기화 완료")
     
-    # 거리 센서 데이터 (cm)
-    distance_readings = [25, 30, 28, 35, 22, 40, 18, 33, 29, 26]
+    def get_distance(self):
+        """거리 센서 시뮬레이션 (실제로는 초음파 센서)"""
+        # 실제 MechDog에서는 i2csonar.getDistance() 사용
+        distance = random.randint(10, 100)
+        return distance
     
-    print(f"📏 측정 데이터: {distance_readings}")
-    print(f"📈 평균값: {statistics.mean(distance_readings):.1f}cm")
-    print(f"📊 중간값: {statistics.median(distance_readings)}cm")
-    print(f"📐 표준편차: {statistics.stdev(distance_readings):.1f}cm")
-    print(f"🔽 최솟값: {min(distance_readings)}cm")
-    print(f"🔼 최댓값: {max(distance_readings)}cm")
-
-def calculate_optimal_path():
-    """최적 경로 계산"""
-    print("\n🎯 최적 경로 계산")
-    
-    # 목표 지점들 (x, y 좌표)
-    waypoints = [(0, 0), (3, 4), (8, 6), (5, 2)]
-    total_distance = 0
-    
-    print("📍 경유지:")
-    for i, (x, y) in enumerate(waypoints):
-        print(f"  지점 {i+1}: ({x}, {y})")
-    
-    print("\n📏 구간별 거리:")
-    for i in range(len(waypoints) - 1):
-        x1, y1 = waypoints[i]
-        x2, y2 = waypoints[i + 1]
-        distance = math.sqrt((x2-x1)**2 + (y2-y1)**2)
-        total_distance += distance
-        print(f"  지점 {i+1} → 지점 {i+2}: {distance:.2f}m")
-    
-    print(f"\n🚀 총 이동 거리: {total_distance:.2f}m")
-
-# 함수 실행
-analyze_sensor_data()
-calculate_optimal_path()</textarea>
-                    <button class="run-button" onclick="runCode('editor2', 'output2')">실행 ▶</button>
-                    <div class="output-panel" id="output2">여기에 실행 결과가 표시됩니다</div>
-                </div>
-            </div>
-
-            <div class="content-section">
-                <h2>🕐 시간과 날짜 모듈</h2>
-                <p>MechDog의 스케줄링과 로그 기록을 위한 시간 관련 모듈들을 활용해보세요.</p>
-
-                <div class="code-container">
-                    <textarea class="code-editor" id="editor3"># 시간과 날짜 처리
-from datetime import datetime, timedelta
-import time
-
-def mission_scheduler():
-    """임무 스케줄러"""
-    print("📅 MechDog 임무 스케줄")
-    
-    # 현재 시간
-    now = datetime.now()
-    print(f"🕐 현재 시간: {now.strftime('%H:%M:%S')}")
-    
-    # 임무 시간 계산
-    missions = [
-        ("순찰", 30),    # 30분 후
-        ("점검", 60),    # 1시간 후
-        ("충전", 120),   # 2시간 후
-    ]
-    
-    print("\n📋 예정된 임무:")
-    for mission_name, minutes in missions:
-        mission_time = now + timedelta(minutes=minutes)
-        print(f"  🔔 {mission_name}: {mission_time.strftime('%H:%M')}")
-
-def activity_log():
-    """활동 로그 기록"""
-    print("\n📝 활동 로그")
-    
-    activities = [
-        "시스템 시작",
-        "센서 초기화",
-        "카메라 활성화",
-        "순찰 시작"
-    ]
-    
-    base_time = datetime.now()
-    
-    for i, activity in enumerate(activities):
-        # 각 활동마다 5초씩 간격
-        activity_time = base_time + timedelta(seconds=i*5)
-        timestamp = activity_time.strftime('%H:%M:%S')
-        print(f"  [{timestamp}] ✅ {activity}")
-
-def mission_timer():
-    """임무 타이머"""
-    print("\n⏱️ 임무 타이머 시뮬레이션")
-    
-    mission_duration = 5  # 5초 임무
-    print(f"🎯 {mission_duration}초 임무 시작!")
-    
-    start_time = time.time()
-    
-    # 실제로는 time.sleep()을 사용하지만, 
-    # 브라우저에서는 시뮬레이션으로 대체
-    for i in range(mission_duration):
-        elapsed = i + 1
-        remaining = mission_duration - elapsed
-        print(f"  ⏰ 경과시간: {elapsed}초, 남은시간: {remaining}초")
-    
-    print("✅ 임무 완료!")
-
-# 함수들 실행
-mission_scheduler()
-activity_log()
-mission_timer()</textarea>
-                    <button class="run-button" onclick="runCode('editor3', 'output3')">실행 ▶</button>
-                    <div class="output-panel" id="output3">여기에 실행 결과가 표시됩니다</div>
-                </div>
-            </div>
-
-            <div class="content-section">
-                <h2>🎲 랜덤과 선택 모듈</h2>
-                <p>MechDog의 다양한 행동 패턴과 의사결정을 위한 랜덤 모듈을 활용해보세요.</p>
-
-                <div class="tip-box">
-                    <h4>💡 랜덤 모듈 주요 함수</h4>
-                    <ul>
-                        <li><code>random.randint(a, b)</code>: a~b 사이의 정수</li>
-                        <li><code>random.choice(list)</code>: 리스트에서 하나 선택</li>
-                        <li><code>random.shuffle(list)</code>: 리스트 순서 섞기</li>
-                    </ul>
-                </div>
-
-                <div class="code-container">
-                    <textarea class="code-editor" id="editor4"># 랜덤 모듈 활용
-import random
-
-def random_behavior():
-    """랜덤 행동 패턴"""
-    print("🎭 MechDog 랜덤 행동 생성기")
-    
-    behaviors = [
-        "꼬리 흔들기", "앉기", "짖기", "돌기", 
-        "엎드리기", "손 흔들기", "고개 끄덕이기"
-    ]
-    
-    print("🎯 오늘의 랜덤 행동 3가지:")
-    for i in range(3):
-        behavior = random.choice(behaviors)
-        intensity = random.randint(1, 5)
-        print(f"  {i+1}. {behavior} (강도: {intensity}/5)")
-
-def patrol_route_generator():
-    """순찰 경로 생성기"""
-    print("\n🗺️ 랜덤 순찰 경로 생성")
-    
-    locations = ["A구역", "B구역", "C구역", "D구역", "E구역"]
-    
-    # 순찰 순서를 랜덤하게 섞기
-    patrol_route = locations.copy()
-    random.shuffle(patrol_route)
-    
-    print("📍 오늘의 순찰 순서:")
-    for i, location in enumerate(patrol_route):
-        duration = random.randint(5, 15)
-        print(f"  {i+1}. {location} (예상 시간: {duration}분)")
-
-def random_response_system():
-    """랜덤 응답 시스템"""
-    print("\n🗣️ 방문자 응대 시스템")
-    
-    greetings = [
-        "안녕하세요! 환영합니다! 🐕",
-        "멍멍! 반갑습니다! 🎉",
-        "어서오세요! 좋은 하루예요! ☀️",
-        "환영해요! 무엇을 도와드릴까요? 🤖"
-    ]
-    
-    visitors = ["방문자1", "방문자2", "방문자3"]
-    
-    for visitor in visitors:
-        greeting = random.choice(greetings)
-        friendliness = random.randint(70, 100)
-        print(f"👋 {visitor}에게: {greeting}")
-        print(f"   친밀도: {friendliness}%")
-        print()
-
-def decision_maker():
-    """의사결정 시스템"""
-    print("🤔 MechDog 의사결정 시뮬레이션")
-    
-    situations = [
-        "낯선 소음 감지",
-        "방문자 발견", 
-        "배터리 30% 남음",
-        "비가 오기 시작함"
-    ]
-    
-    for situation in situations:
-        # 랜덤하게 대응 결정
-        urgency = random.randint(1, 10)
-        if urgency <= 3:
-            response = "관찰 계속"
-        elif urgency <= 7:
-            response = "주의 깊게 모니터링"
+    def set_led_color(self, distance):
+        """거리에 따른 LED 색상 설정 (실제 MechDog 로직)"""
+        if distance < 15:
+            color = "빨강"
+            rgb = (255, 0, 0)
+        elif distance > 40:
+            color = "파랑" 
+            rgb = (0, 0, 153)
         else:
-            response = "즉시 대응 필요"
-            
-        print(f"🚨 상황: {situation}")
-        print(f"   위험도: {urgency}/10 → {response}")
+            color = "노랑"
+            rgb = (253, 208, 0)
+        
+        print(f"💡 LED 색상: {color} {rgb}")
+        return color
 
-# 함수들 실행
-random_behavior()
-patrol_route_generator()
-random_response_system()
-decision_maker()</textarea>
-                    <button class="run-button" onclick="runCode('editor4', 'output4')">실행 ▶</button>
-                    <div class="output-panel" id="output4">여기에 실행 결과가 표시됩니다</div>
+# 센서 객체 생성 및 테스트
+sensor = MechDogSensor()
+print()
+
+# 실제 MechDog 코드와 유사한 동작 루프
+print("🔄 센서 데이터 처리 시뮬레이션 (5회)")
+for i in range(5):
+    distance = sensor.get_distance()
+    color = sensor.set_led_color(distance)
+    print(f"   측정 {i+1}: 거리 {distance}cm → LED {color}")
+
+print()
+
+# 3. 수학 모듈을 활용한 MechDog 이동 계산
+print("=== 3. MechDog 이동 계산 시스템 ===")
+
+def calculate_movement_distance(x1, y1, x2, y2):
+    """두 점 사이의 거리 계산 (실제 MechDog 경로 계산에 사용)"""
+    distance = math.sqrt((x2-x1)**2 + (y2-y1)**2)
+    return distance
+
+def calculate_rotation_angle(distance):
+    """거리에 따른 회전 각도 계산"""
+    # 실제 MechDog의 transform 함수에서 사용하는 각도 계산
+    angle = math.atan(distance / 10) * 180 / math.pi
+    return angle
+
+# MechDog 이동 시뮬레이션
+start_pos = (0, 0)
+end_pos = (30, 40)
+
+distance = calculate_movement_distance(*start_pos, *end_pos)
+angle = calculate_rotation_angle(distance)
+
+print(f"🚶 MechDog 이동 계산:")
+print(f"   시작점: {start_pos}")
+print(f"   목표점: {end_pos}")
+print(f"   이동거리: {distance:.2f}cm")
+print(f"   회전각도: {angle:.2f}도")
+print()
+
+# 4. 시간 모듈을 활용한 MechDog 동작 스케줄링
+print("=== 4. MechDog 동작 스케줄링 ===")
+
+class MechDogScheduler:
+    """MechDog 동작 스케줄러"""
+    def __init__(self):
+        self.actions = []
+        print("⏰ MechDog 스케줄러 초기화")
+    
+    def add_action(self, action, delay_seconds):
+        """동작 추가"""
+        schedule_time = datetime.now()
+        self.actions.append({
+            'action': action,
+            'delay': delay_seconds,
+            'scheduled_time': schedule_time
+        })
+        print(f"📋 동작 추가: {action} (지연: {delay_seconds}초)")
+    
+    def execute_schedule(self):
+        """스케줄 실행 시뮬레이션"""
+        print("🎬 동작 시퀀스 실행:")
+        for i, action_data in enumerate(self.actions):
+            print(f"   {i+1}. {action_data['action']}")
+            # 실제로는 time.sleep(action_data['delay']) 사용
+            print(f"      → {action_data['delay']}초 대기 중...")
+
+# 스케줄러 테스트
+scheduler = MechDogScheduler()
+scheduler.add_action("기본 자세 설정", 2)
+scheduler.add_action("앞으로 이동", 3)
+scheduler.add_action("몸 높이 변경", 1)
+scheduler.add_action("LED 색상 변경", 1)
+
+scheduler.execute_schedule()
+print()
+
+print("🎉 MechDog 모듈 시스템 학습 완료!")
+print("실제 MechDog 코드에서 이런 방식으로 모듈들을 활용합니다!")</textarea>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-code" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg">▶️ 실행</button>
+                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">지우기</button>
+                        <button id="basic-import" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">📦 기본 import</button>
+                        <button id="mechdog-modules" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg">🤖 MechDog 모듈</button>
+                    </div>
+                    
+                    <div class="flex space-x-2 mt-2">
+                        <button id="sensor-example" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg">📡 센서 모듈</button>
+                        <button id="math-example" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">🔢 수학 모듈</button>
+                        <button id="time-example" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg">⏰ 시간 모듈</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <div id="output" class="output-panel h-96">
+                        MechDog 모듈 코드를 실행해보세요!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Real MechDog Code Examples -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🤖 실제 MechDog 코드 분석</h3>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6 mb-6">
+                <h4 class="text-lg font-bold text-yellow-800 mb-3">📁 MechDog-Code 디렉토리 구조</h4>
+                <div class="bg-white p-4 rounded-lg border">
+                    <pre class="text-sm">MechDog-Code/
+├── 4.2 Motion Control Course/     # 동작 제어 코드
+│   ├── change_body_height-detail.py
+│   ├── forward_backward-detail.py  
+│   └── wheel-detail.py
+├── 4.3 Advanced Development Game Courses/  # 센서 게임 코드
+│   ├── ultrasonic_ranging-detail.py
+│   ├── light_perception-detail.py
+│   └── Touch-detail.py</pre>
                 </div>
             </div>
 
-            <div class="content-section exercise-section">
-                <h2>🎯 실습 과제</h2>
-                <p>다양한 모듈을 조합해서 MechDog의 종합 관리 시스템을 만들어보세요!</p>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 몸체 높이 변경 코드 -->
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h4 class="font-bold text-blue-800 mb-2">🔧 change_body_height-detail.py</h4>
+                    <pre class="text-sm bg-white p-3 rounded overflow-x-auto"><code>import Hiwonder  # 로봇 조종 도구
+import time      # 시간 지연 기능
+from HW_MechDog import MechDog  # MechDog 클래스
 
-                <div class="mechdog-demo">
-                    <h4>🤖 MechDog 종합 관리 시스템</h4>
-                    <p>다음 기능들을 포함한 시스템을 만들어보세요:</p>
-                    <ul>
-                        <li>📊 센서 데이터 통계 분석</li>
-                        <li>🕐 일일 스케줄 관리</li>
-                        <li>🎲 랜덤 행동 패턴 생성</li>
-                        <li>📍 최적 경로 계산</li>
-                        <li>📝 활동 로그 기록</li>
-                    </ul>
+mechdog = MechDog()  # 로봇 객체 생성
+
+# 몸체 높이 변경 함수
+mechdog.transform([0, 0, 20], [0, 0, 0], 1000)
+# [x, y, z] 위치, [roll, pitch, yaw] 각도, 시간(ms)</code></pre>
                 </div>
 
-                <div class="code-container">
-                    <textarea class="code-editor" id="exercise"># 🤖 MechDog 종합 관리 시스템
+                <!-- 초음파 센서 코드 -->
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h4 class="font-bold text-green-800 mb-2">📡 ultrasonic_ranging-detail.py</h4>
+                    <pre class="text-sm bg-white p-3 rounded overflow-x-auto"><code>import Hiwonder_IIC  # I2C 통신 모듈
+from HW_MechDog import MechDog
+
+# I2C 초음파 센서 설정
+i2c1 = Hiwonder_IIC.IIC(1)
+i2csonar = Hiwonder_IIC.I2CSonar(i2c1)
+
+# 거리 측정 및 LED 제어
+distance = i2csonar.getDistance()
+if distance < 15:
+    i2csonar.setRGB(0, 0xff, 0x00, 0x00)  # 빨강</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenge -->
+        <section class="lesson-card mb-8">
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6">
+                <h4 class="text-lg font-bold text-yellow-800 mb-4">🎯 도전 과제</h4>
+                <p class="text-yellow-700 mb-4">실제 MechDog 코드를 분석하고 개선해보세요:</p>
+                <ol class="text-yellow-700 space-y-1 mb-4">
+                    <li>1. <code>MechDogController</code>: 전체 로봇을 제어하는 클래스</li>
+                    <li>2. <code>SensorModule</code>: 센서 데이터를 처리하는 모듈</li>
+                    <li>3. <code>MovementModule</code>: 이동과 자세를 제어하는 모듈</li>
+                    <li>4. <code>LEDModule</code>: LED 색상과 패턴을 제어하는 모듈</li>
+                </ol>
+                <button id="show-challenge" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">도전 과제 보기</button>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 정리</h3>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-6">
+                <h4 class="text-lg font-bold text-green-800 mb-3">✅ 핵심 내용</h4>
+                <ul class="text-green-700 space-y-2">
+                    <li>• <strong>모듈 import:</strong> <code>import 모듈명</code>, <code>from 모듈명 import 함수명</code></li>
+                    <li>• <strong>MechDog에서 활용:</strong> Hiwonder, HW_MechDog, Hiwonder_IIC 등</li>
+                    <li>• <strong>수학 모듈:</strong> 이동 거리 계산, 각도 변환</li>
+                    <li>• <strong>시간 모듈:</strong> 동작 스케줄링, 로그 기록</li>
+                    <li>• <strong>센서 처리:</strong> 거리 측정, LED 제어, 데이터 분석</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="flex justify-between items-center">
+            <a href="lesson5.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg">← 이전</a>
+            <a href="lesson7.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg">다음 →</a>
+        </section>
+    </main>
 import random
 import statistics
 import math
@@ -515,21 +424,21 @@ def comprehensive_system():
     print(f"🕐 시스템 시작: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
     
     # 2. 센서 데이터 시뮬레이션 및 분석
-    print("\n📊 센서 데이터 분석")
+    print("📊 센서 데이터 분석")
     sensor_data = [random.randint(10, 50) for _ in range(10)]
     print(f"📡 수집된 데이터: {sensor_data}")
     print(f"📈 평균값: {statistics.mean(sensor_data):.1f}")
     print(f"📊 중간값: {statistics.median(sensor_data)}")
     
     # 3. 오늘의 임무 스케줄 생성
-    print("\n📅 오늘의 임무 스케줄")
+    print("📅 오늘의 임무 스케줄")
     missions = ["순찰", "점검", "청소", "대기"]
     for i, mission in enumerate(missions):
         mission_time = start_time + timedelta(hours=i+1)
         print(f"  {mission_time.strftime('%H:%M')} - {mission}")
     
     # 4. 랜덤 순찰 경로 생성
-    print("\n🗺️ 순찰 경로")
+    print("🗺️ 순찰 경로")
     zones = ["현관", "거실", "주방", "안뜰"]
     random.shuffle(zones)
     for i, zone in enumerate(zones):
@@ -538,7 +447,7 @@ def comprehensive_system():
     # 5. 경로 거리 계산 (가상 좌표)
     coordinates = [(0, 0), (5, 3), (8, 7), (2, 9)]
     total_distance = 0
-    print("\n📏 이동 거리 계산")
+    print("📏 이동 거리 계산")
     for i in range(len(coordinates)-1):
         x1, y1 = coordinates[i]
         x2, y2 = coordinates[i+1]
@@ -548,7 +457,7 @@ def comprehensive_system():
     print(f"🚀 총 거리: {total_distance:.2f}m")
     
     # 6. 시스템 상태 리포트
-    print("\n📋 시스템 상태")
+    print("📋 시스템 상태")
     battery = random.randint(60, 100)
     temperature = random.randint(20, 30)
     print(f"🔋 배터리: {battery}%")
@@ -562,7 +471,7 @@ def comprehensive_system():
         status = "🔴 주의"
     
     print(f"⚡ 시스템 상태: {status}")
-    print("\n✅ 시스템 초기화 완료!")
+    print("✅ 시스템 초기화 완료!")
 
 # 시스템 실행
 comprehensive_system()</textarea>
@@ -590,56 +499,807 @@ comprehensive_system()</textarea>
     </div>
 
     <script>
-        let pyodide;
-        
-        async function main() {
-            pyodide = await loadPyodide();
-        }
-        
-        main();
+        let pyodide = null;
 
-        async function runCode(editorId, outputId) {
-            const code = document.getElementById(editorId).value;
-            const outputElement = document.getElementById(outputId);
+        async function initPyodide() {
+            if (pyodide === null) {
+                document.getElementById('output').textContent = '파이썬 엔진 준비 중...';
+                pyodide = await loadPyodide();
+                document.getElementById('output').textContent = '준비 완료!';
+            }
+        }
+
+        async function runPythonCode(code) {
+            if (pyodide === null) await initPyodide();
             
             try {
-                outputElement.textContent = "코드 실행 중...";
-                
-                // Pyodide가 로드될 때까지 대기
-                if (!pyodide) {
-                    outputElement.textContent = "Python 환경을 로딩 중입니다...";
-                    await main();
-                }
-                
-                // 출력을 캡처하기 위한 설정
                 pyodide.runPython(`
-import sys
-from io import StringIO
-sys.stdout = StringIO()
+                    import sys
+                    from io import StringIO
+                    old_stdout = sys.stdout
+                    sys.stdout = captured_output = StringIO()
                 `);
                 
-                // 사용자 코드 실행
                 pyodide.runPython(code);
                 
-                // 출력 결과 가져오기
-                const stdout = pyodide.runPython("sys.stdout.getvalue()");
-                outputElement.textContent = stdout || "실행 완료 (출력 없음)";
-                outputElement.style.color = "#00ff00";
+                const output = pyodide.runPython(`
+                    sys.stdout = old_stdout
+                    captured_output.getvalue()
+                `);
+                
+                document.getElementById('output').textContent = output || '(출력 없음)';
+                
+                // Update progress
+                let progress = JSON.parse(localStorage.getItem('mechDogLearningProgress') || '{"lessonsCompleted": 0, "codesRun": 0}');
+                progress.codesRun = (progress.codesRun || 0) + 1;
+                if (progress.lessonsCompleted < 6) progress.lessonsCompleted = 6;
+                localStorage.setItem('mechDogLearningProgress', JSON.stringify(progress));
                 
             } catch (error) {
-                outputElement.textContent = `오류 발생: ${error.message}`;
-                outputElement.style.color = "#ff6b6b";
+                document.getElementById('output').textContent = `오류:\n${error.message}`;
             }
         }
 
-        // 진도 추적
-        window.addEventListener('load', function() {
-            const currentLesson = 6;
-            let progress = JSON.parse(localStorage.getItem('pythonProgress') || '[]');
-            if (!progress.includes(currentLesson)) {
-                progress.push(currentLesson);
-                localStorage.setItem('pythonProgress', JSON.stringify(progress));
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            document.addEventListener('click', initPyodide, { once: true });
+            
+            document.getElementById('run-code').addEventListener('click', () => {
+                runPythonCode(document.getElementById('code-editor').value);
+            });
+            
+            document.getElementById('clear-code').addEventListener('click', () => {
+                document.getElementById('code-editor').value = '';
+                document.getElementById('output').textContent = '에디터를 지웠습니다.';
+            });
+            
+            document.getElementById('basic-import').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# 📦 기본 모듈 import 예제
+
+print("🤖 MechDog 기본 모듈 학습")
+print("다양한 방법으로 모듈을 가져와보세요!")
+print()
+
+# 1. 전체 모듈 가져오기
+print("=== 1. 전체 모듈 가져오기 ===")
+import math
+import random
+import time
+
+print("✅ 모듈 import 성공!")
+print(f"math 모듈: {math}")
+print(f"random 모듈: {random}")
+print(f"time 모듈: {time}")
+print()
+
+# 수학 모듈 사용해보기
+print("🔢 math 모듈 사용:")
+print(f"π (파이): {math.pi:.3f}")
+print(f"√16: {math.sqrt(16)}")
+print(f"sin(30°): {math.sin(math.radians(30)):.3f}")
+print()
+
+# 랜덤 모듈 사용해보기
+print("🎲 random 모듈 사용:")
+print(f"1~10 사이 랜덤 숫자: {random.randint(1, 10)}")
+print(f"0~1 사이 랜덤 실수: {random.random():.3f}")
+
+colors = ["빨강", "파랑", "초록", "노랑"]
+print(f"랜덤 색상: {random.choice(colors)}")
+print()
+
+# 2. 부분 가져오기
+print("=== 2. 부분 가져오기 ===")
+from datetime import datetime
+from math import sqrt, pi
+
+current_time = datetime.now()
+print(f"현재 시간: {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
+print(f"sqrt(25) = {sqrt(25)}")
+print(f"π = {pi:.5f}")
+print()
+
+# 3. 별명 사용하기
+print("=== 3. 별명 사용하기 ===")
+import random as rnd
+import math as m
+
+print(f"별명으로 사용: rnd.randint(1, 100) = {rnd.randint(1, 100)}")
+print(f"별명으로 사용: m.cos(0) = {m.cos(0)}")
+
+print("🎉 기본 모듈 import 완료!")`;
+            });
+            
+            document.getElementById('mechdog-modules').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# 🤖 MechDog 스타일 모듈 시스템
+
+print("🔧 MechDog 모듈 시스템 시뮬레이션")
+print("실제 MechDog에서 사용하는 방식을 따라해보세요!")
+print()
+
+# 실제 MechDog에서는 이런 식으로 모듈을 사용합니다:
+# import Hiwonder
+# import time
+# from HW_MechDog import MechDog
+
+# 시뮬레이션을 위한 클래스들
+class MechDogSimulator:
+    """MechDog 시뮬레이터 클래스"""
+    def __init__(self):
+        self.name = "MechDog"
+        self.position = [0, 0, 0]  # x, y, z
+        self.pose = "default"
+        print(f"🤖 {self.name} 초기화 완료")
+    
+    def set_default_pose(self):
+        """기본 자세 설정"""
+        self.pose = "default"
+        print("📐 기본 자세로 설정")
+    
+    def move(self, distance, angle):
+        """이동 명령"""
+        print(f"🚶 {distance}cm 거리, {angle}도 각도로 이동")
+        # 실제로는 하드웨어를 제어하지만 여기서는 시뮬레이션
+        
+    def transform(self, position, rotation, duration):
+        """자세 변환"""
+        x, y, z = position
+        roll, pitch, yaw = rotation
+        print(f"🔄 자세 변환: 위치({x}, {y}, {z}), 회전({roll}, {pitch}, {yaw})")
+        print(f"   소요 시간: {duration}ms")
+
+class HiwonderIIC:
+    """I2C 통신 시뮬레이터"""
+    def __init__(self, port):
+        self.port = port
+        print(f"🔌 I2C 포트 {port} 초기화")
+
+class I2CSonar:
+    """초음파 센서 시뮬레이터"""
+    def __init__(self, i2c):
+        self.i2c = i2c
+        print("📡 초음파 센서 초기화")
+    
+    def getDistance(self):
+        """거리 측정 (시뮬레이션)"""
+        import random
+        distance = random.randint(10, 100)
+        return distance
+    
+    def setRGB(self, index, r, g, b):
+        """LED 색상 설정"""
+        print(f"💡 LED {index}: RGB({r}, {g}, {b})")
+
+# MechDog 시스템 초기화 (실제 코드 스타일)
+print("=== MechDog 시스템 초기화 ===")
+mechdog = MechDogSimulator()
+i2c1 = HiwonderIIC(1)
+sonar = I2CSonar(i2c1)
+
+# 기본 동작 시퀀스
+print("=== 기본 동작 시퀀스 ===")
+mechdog.set_default_pose()
+
+# 이동 테스트
+mechdog.move(50, -16)  # 50cm 앞으로, 오른쪽으로 16도
+
+# 자세 변환 테스트
+mechdog.transform([0, 0, 20], [0, 0, 0], 1000)  # 20mm 위로
+
+# 센서 테스트
+print("=== 센서 테스트 ===")
+for i in range(3):
+    distance = sonar.getDistance()
+    print(f"측정 {i+1}: {distance}cm")
+    
+    # 거리에 따른 LED 색상 변경 (실제 MechDog 로직)
+    if distance < 15:
+        sonar.setRGB(0, 255, 0, 0)  # 빨강 - 위험
+    elif distance > 40:
+        sonar.setRGB(0, 0, 0, 255)  # 파랑 - 안전
+    else:
+        sonar.setRGB(0, 255, 255, 0)  # 노랑 - 주의
+
+print("🎉 MechDog 모듈 시스템 테스트 완료!")
+print("실제 하드웨어에서는 이런 방식으로 동작합니다!")`;
+            });
+            
+            document.getElementById('sensor-example').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# 📡 MechDog 센서 모듈 활용
+
+print("📡 MechDog 센서 시스템")
+print("실제 센서 데이터 처리 방식을 배워보세요!")
+print()
+
+import random
+import math
+from datetime import datetime
+
+# 센서 데이터 처리 클래스
+class SensorDataProcessor:
+    """센서 데이터 처리기"""
+    def __init__(self):
+        self.history = []
+        print("🔧 센서 데이터 처리기 초기화")
+    
+    def process_distance_data(self, distance):
+        """거리 데이터 처리"""
+        self.history.append({
+            'distance': distance,
+            'timestamp': datetime.now(),
+            'status': self.classify_distance(distance)
+        })
+        return self.classify_distance(distance)
+    
+    def classify_distance(self, distance):
+        """거리 분류"""
+        if distance < 15:
+            return "위험"
+        elif distance < 30:
+            return "주의"
+        elif distance < 50:
+            return "안전"
+        else:
+            return "여유"
+    
+    def get_statistics(self):
+        """통계 정보"""
+        if not self.history:
+            return "데이터 없음"
+        
+        distances = [data['distance'] for data in self.history]
+        return {
+            'count': len(distances),
+            'average': sum(distances) / len(distances),
+            'min': min(distances),
+            'max': max(distances)
+        }
+
+# 실제 MechDog 스타일 센서 시뮬레이션
+class MechDogSensorArray:
+    """MechDog 센서 배열"""
+    def __init__(self):
+        self.processor = SensorDataProcessor()
+        print("🤖 MechDog 센서 배열 초기화")
+    
+    def scan_environment(self, scan_count=5):
+        """환경 스캔"""
+        print("🔄 환경 스캔 시작...")
+        results = []
+        
+        for i in range(scan_count):
+            # 시뮬레이션된 거리 데이터
+            distance = random.randint(5, 100)
+            status = self.processor.process_distance_data(distance)
+            
+            print(f"  스캔 {i+1}: {distance}cm ({status})")
+            results.append({'distance': distance, 'status': status})
+        
+        return results
+    
+    def adaptive_behavior(self, scan_results):
+        """적응형 행동 결정"""
+        print("🧠 적응형 행동 결정:")
+        
+        # 가장 가까운 장애물 찾기
+        min_distance = min(result['distance'] for result in scan_results)
+        
+        if min_distance < 15:
+            action = "후진"
+            led_color = "빨강"
+        elif min_distance < 30:
+            action = "정지"
+            led_color = "노랑"
+        elif min_distance < 50:
+            action = "천천히 전진"
+            led_color = "초록"
+        else:
+            action = "정상 속도 전진"
+            led_color = "파랑"
+        
+        print(f"  최근접 거리: {min_distance}cm")
+        print(f"  결정된 행동: {action}")
+        print(f"  LED 색상: {led_color}")
+        
+        return action, led_color
+
+# 센서 시스템 테스트
+print("=== MechDog 센서 시스템 테스트 ===")
+sensor_array = MechDogSensorArray()
+print()
+
+# 환경 스캔 실행
+scan_data = sensor_array.scan_environment(8)
+print()
+
+# 적응형 행동 결정
+action, led_color = sensor_array.adaptive_behavior(scan_data)
+print()
+
+# 센서 데이터 통계
+stats = sensor_array.processor.get_statistics()
+print("📊 센서 데이터 통계:")
+print(f"  측정 횟수: {stats['count']}회")
+print(f"  평균 거리: {stats['average']:.1f}cm")
+print(f"  최소 거리: {stats['min']}cm")
+print(f"  최대 거리: {stats['max']}cm")
+print()
+
+# 실제 MechDog 코드에서 영감을 받은 거리 기반 LED 제어
+print("=== 거리 기반 LED 제어 시뮬레이션 ===")
+print("(실제 MechDog 코드: i2csonar.setRGB(0, r, g, b))")
+
+for i, result in enumerate(scan_data[:3]):
+    distance = result['distance']
+    print(f"거리 {distance}cm:")
+    
+    if distance < 15:
+        print(f"  → setRGB(0, 255, 0, 0)  # 빨강")
+    elif distance > 40:
+        print(f"  → setRGB(0, 0, 0, 153)  # 파랑")
+    else:
+        print(f"  → setRGB(0, 253, 208, 0)  # 노랑")
+
+print("🎉 센서 모듈 활용 완료!")
+print("실제 MechDog에서는 이런 방식으로 센서 데이터를 처리합니다!")`;
+            });
+            
+            document.getElementById('math-example').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# 🔢 MechDog 수학 모듈 활용
+
+print("🔢 MechDog 수학 계산 시스템")
+print("실제 로봇 이동과 자세 제어에 필요한 수학을 배워보세요!")
+print()
+
+import math
+
+# 이동 거리 계산 (실제 MechDog에서 사용)
+class MovementCalculator:
+    """이동 계산기"""
+    def __init__(self):
+        print("📐 이동 계산기 초기화")
+    
+    def calculate_distance(self, x1, y1, x2, y2):
+        """두 점 사이의 거리 계산"""
+        distance = math.sqrt((x2-x1)**2 + (y2-y1)**2)
+        return distance
+    
+    def calculate_angle(self, x1, y1, x2, y2):
+        """두 점 사이의 각도 계산"""
+        angle_rad = math.atan2(y2-y1, x2-x1)
+        angle_deg = math.degrees(angle_rad)
+        return angle_deg
+    
+    def calculate_circular_path(self, radius):
+        """원형 경로 계산"""
+        circumference = 2 * math.pi * radius
+        return circumference
+
+# 자세 제어 계산 (실제 MechDog transform 함수에서 사용)
+class PoseCalculator:
+    """자세 계산기"""
+    def __init__(self):
+        print("🤸 자세 계산기 초기화")
+    
+    def degrees_to_radians(self, degrees):
+        """도를 라디안으로 변환"""
+        return math.radians(degrees)
+    
+    def radians_to_degrees(self, radians):
+        """라디안을 도로 변환"""
+        return math.degrees(radians)
+    
+    def calculate_leg_position(self, height, angle):
+        """다리 위치 계산 (삼각함수 사용)"""
+        x = height * math.cos(math.radians(angle))
+        y = height * math.sin(math.radians(angle))
+        return x, y
+
+# 계산기 초기화
+movement_calc = MovementCalculator()
+pose_calc = PoseCalculator()
+print()
+
+# 실제 MechDog 이동 시나리오
+print("=== MechDog 이동 시나리오 ===")
+waypoints = [
+    (0, 0, "시작점"),
+    (30, 40, "중간점"),
+    (60, 20, "목표점")
+]
+
+print("📍 경유지:")
+for i, (x, y, name) in enumerate(waypoints):
+    print(f"  {i+1}. {name}: ({x}, {y})")
+
+print("🧮 이동 계산:")
+total_distance = 0
+for i in range(len(waypoints)-1):
+    x1, y1, name1 = waypoints[i]
+    x2, y2, name2 = waypoints[i+1]
+    
+    distance = movement_calc.calculate_distance(x1, y1, x2, y2)
+    angle = movement_calc.calculate_angle(x1, y1, x2, y2)
+    total_distance += distance
+    
+    print(f"  {name1} → {name2}:")
+    print(f"    거리: {distance:.2f}cm")
+    print(f"    각도: {angle:.1f}도")
+
+print(f"🚀 총 이동 거리: {total_distance:.2f}cm")
+print()
+
+# 자세 제어 계산
+print("=== MechDog 자세 제어 계산 ===")
+print("(실제 transform 함수에서 사용하는 계산)")
+
+# 다양한 자세의 다리 위치 계산
+poses = [
+    (20, 45, "기본 자세"),
+    (30, 30, "높은 자세"), 
+    (15, 60, "낮은 자세")
+]
+
+print("🦵 다리 위치 계산:")
+for height, angle, pose_name in poses:
+    x, y = pose_calc.calculate_leg_position(height, angle)
+    print(f"  {pose_name} (높이: {height}cm, 각도: {angle}도):")
+    print(f"    X 위치: {x:.2f}cm")
+    print(f"    Y 위치: {y:.2f}cm")
+
+print()
+
+# 원형 순찰 경로 계산
+print("=== 원형 순찰 경로 계산 ===")
+patrol_radii = [50, 100, 150]
+
+print("⭕ 다양한 순찰 반경:")
+for radius in patrol_radii:
+    circumference = movement_calc.calculate_circular_path(radius)
+    print(f"  반지름 {radius}cm: 둘레 {circumference:.2f}cm")
+
+print()
+
+# 각도 변환 예제
+print("=== 각도 변환 (도 ↔ 라디안) ===")
+angles_deg = [0, 30, 45, 90, 180]
+
+print("📐 각도 변환:")
+for deg in angles_deg:
+    rad = pose_calc.degrees_to_radians(deg)
+    back_to_deg = pose_calc.radians_to_degrees(rad)
+    print(f"  {deg}도 = {rad:.4f} 라디안 = {back_to_deg}도")
+
+print()
+
+# 실제 MechDog에서 자주 사용하는 삼각함수 값들
+print("=== 자주 사용하는 삼각함수 값 ===")
+important_angles = [0, 30, 45, 60, 90]
+
+print("📊 삼각함수 값:")
+for angle in important_angles:
+    rad = math.radians(angle)
+    sin_val = math.sin(rad)
+    cos_val = math.cos(rad)
+    print(f"  {angle}도: sin = {sin_val:.3f}, cos = {cos_val:.3f}")
+
+print("🎉 수학 모듈 활용 완료!")
+print("실제 MechDog에서는 이런 계산들로 정확한 움직임을 만듭니다!")`;
+            });
+            
+            document.getElementById('time-example').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# ⏰ MechDog 시간 모듈 활용
+
+print("⏰ MechDog 시간 관리 시스템")
+print("실제 로봇의 스케줄링과 타이밍을 배워보세요!")
+print()
+
+import time
+from datetime import datetime, timedelta
+
+# 실제 MechDog에서 사용하는 시간 관리
+class MechDogScheduler:
+    """MechDog 스케줄러 (실제 코드 스타일)"""
+    def __init__(self):
+        self.start_time = datetime.now()
+        self.mission_queue = []
+        print(f"📅 MechDog 스케줄러 시작: {self.start_time.strftime('%H:%M:%S')}")
+    
+    def add_mission(self, mission_name, delay_seconds, duration_seconds):
+        """임무 추가"""
+        scheduled_time = datetime.now() + timedelta(seconds=delay_seconds)
+        self.mission_queue.append({
+            'name': mission_name,
+            'scheduled_time': scheduled_time,
+            'duration': duration_seconds,
+            'status': '대기중'
+        })
+        print(f"📋 임무 추가: {mission_name} ({scheduled_time.strftime('%H:%M:%S')} 예정)")
+    
+    def execute_mission(self, mission):
+        """임무 실행 시뮬레이션"""
+        print(f"🎬 {mission['name']} 실행 중... ({mission['duration']}초)")
+        # 실제로는 time.sleep(mission['duration']) 사용
+        # 여기서는 시뮬레이션으로 대체
+        mission['status'] = '완료'
+        return True
+    
+    def get_mission_status(self):
+        """임무 상태 확인"""
+        current_time = datetime.now()
+        print(f"📊 현재 시간: {current_time.strftime('%H:%M:%S')}")
+        print("📋 임무 상태:")
+        
+        for i, mission in enumerate(self.mission_queue):
+            time_diff = (mission['scheduled_time'] - current_time).total_seconds()
+            if time_diff > 0:
+                print(f"  {i+1}. {mission['name']}: {time_diff:.0f}초 후 시작 예정")
+            else:
+                print(f"  {i+1}. {mission['name']}: 실행 가능")
+
+# 로그 시스템 (실제 MechDog 활동 기록)
+class ActivityLogger:
+    """활동 로거"""
+    def __init__(self):
+        self.logs = []
+        print("📝 활동 로거 초기화")
+    
+    def log_activity(self, activity, level="INFO"):
+        """활동 기록"""
+        timestamp = datetime.now()
+        log_entry = {
+            'timestamp': timestamp,
+            'activity': activity,
+            'level': level
+        }
+        self.logs.append(log_entry)
+        
+        # 실제 MechDog 로그 형식
+        time_str = timestamp.strftime('%H:%M:%S')
+        print(f"[{time_str}] {level}: {activity}")
+    
+    def get_logs_summary(self):
+        """로그 요약"""
+        if not self.logs:
+            return "로그 없음"
+        
+        levels = {}
+        for log in self.logs:
+            level = log['level']
+            levels[level] = levels.get(level, 0) + 1
+        
+        return levels
+
+# 타이밍 제어 (실제 MechDog의 정밀한 동작 제어)
+class TimingController:
+    """타이밍 컨트롤러"""
+    def __init__(self):
+        print("⏱️ 타이밍 컨트롤러 초기화")
+    
+    def precise_delay(self, milliseconds):
+        """정밀 지연 (실제로는 하드웨어 타이밍 제어)"""
+        seconds = milliseconds / 1000.0
+        print(f"⏳ {milliseconds}ms 정밀 지연")
+        # 실제로는 time.sleep(seconds)
+        return seconds
+    
+    def measure_execution_time(self, task_name):
+        """실행 시간 측정"""
+        start_time = time.time()
+        print(f"⏰ {task_name} 시작")
+        
+        # 시뮬레이션된 작업 시간
+        import random
+        simulated_work_time = random.uniform(0.1, 0.5)
+        # 실제로는 time.sleep(simulated_work_time)
+        
+        end_time = start_time + simulated_work_time
+        execution_time = end_time - start_time
+        
+        print(f"✅ {task_name} 완료 (실행시간: {execution_time:.3f}초)")
+        return execution_time
+
+# 시스템 초기화
+print("=== MechDog 시간 시스템 초기화 ===")
+scheduler = MechDogScheduler()
+logger = ActivityLogger()
+timer = TimingController()
+print()
+
+# 실제 MechDog 동작 시나리오
+print("=== MechDog 일일 스케줄 설정 ===")
+
+# 실제 MechDog가 수행할 수 있는 임무들
+daily_missions = [
+    ("시스템 자가진단", 5, 10),
+    ("환경 센서 체크", 15, 5),
+    ("순찰 루트 1", 30, 120),
+    ("배터리 상태 확인", 45, 3),
+    ("LED 시스템 테스트", 60, 8),
+    ("순찰 루트 2", 90, 180)
+]
+
+# 스케줄 등록
+for mission_name, delay, duration in daily_missions:
+    scheduler.add_mission(mission_name, delay, duration)
+    logger.log_activity(f"스케줄 등록: {mission_name}")
+
+print()
+
+# 스케줄 상태 확인
+scheduler.get_mission_status()
+print()
+
+# 정밀 타이밍 테스트 (실제 MechDog transform 함수와 유사)
+print("=== 정밀 타이밍 제어 테스트 ===")
+timing_tests = [
+    ("자세 변환", 1000),  # 1초
+    ("LED 색상 변경", 500),  # 0.5초
+    ("센서 데이터 읽기", 100),  # 0.1초
+    ("이동 명령 전송", 50)   # 0.05초
+]
+
+for task, delay_ms in timing_tests:
+    timer.precise_delay(delay_ms)
+    execution_time = timer.measure_execution_time(task)
+    logger.log_activity(f"{task} 실행완료", "INFO")
+
+print()
+
+# 시스템 성능 모니터링
+print("=== 시스템 성능 모니터링 ===")
+uptime = datetime.now() - scheduler.start_time
+print(f"🕐 시스템 가동 시간: {uptime.total_seconds():.1f}초")
+
+log_summary = logger.get_logs_summary()
+print("📊 로그 요약:")
+for level, count in log_summary.items():
+    print(f"  {level}: {count}건")
+
+print()
+
+# 실제 MechDog 코드 스타일의 메인 루프 시뮬레이션
+print("=== 메인 루프 시뮬레이션 ===")
+print("(실제 MechDog의 while True 루프와 유사)")
+
+loop_iterations = 5
+for i in range(loop_iterations):
+    current_time = datetime.now()
+    print(f"루프 {i+1}: {current_time.strftime('%H:%M:%S.%f')[:-3]}")
+    
+    # 센서 읽기 시뮬레이션
+    timer.measure_execution_time("센서 데이터 읽기")
+    logger.log_activity("센서 데이터 처리 완료")
+    
+    # 0.1초 간격 (실제로는 time.sleep(0.1))
+    timer.precise_delay(100)
+
+print("🎉 시간 모듈 활용 완료!")
+print("실제 MechDog에서는 이런 방식으로 정밀한 타이밍을 제어합니다!")`;
+            });
+            
+            document.getElementById('show-challenge').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# 🎯 도전 과제: MechDog 모듈 시스템 구축
+
+print("🏗️ MechDog 모듈 시스템 구축 도전!")
+print("실제 MechDog처럼 모듈화된 시스템을 만들어보세요!")
+print()
+
+# 여기에 코드를 작성하세요!
+
+# 1. MechDogController 클래스
+class MechDogController:
+    """전체 로봇을 제어하는 메인 컨트롤러"""
+    def __init__(self):
+        # 여기에 초기화 코드를 작성하세요
+        # 힌트: 각 모듈들을 초기화해야 합니다
+        pass
+    
+    def start_system(self):
+        """시스템 시작"""
+        # 여기에 시스템 시작 코드를 작성하세요
+        pass
+    
+    def shutdown_system(self):
+        """시스템 종료"""
+        # 여기에 시스템 종료 코드를 작성하세요
+        pass
+
+# 2. SensorModule 클래스
+class SensorModule:
+    """센서 데이터를 처리하는 모듈"""
+    def __init__(self):
+        # 여기에 센서 초기화 코드를 작성하세요
+        pass
+    
+    def read_distance(self):
+        """거리 센서 읽기"""
+        # 여기에 거리 센서 읽기 코드를 작성하세요
+        # 힌트: random 모듈 사용
+        pass
+    
+    def process_sensor_data(self, data):
+        """센서 데이터 처리"""
+        # 여기에 센서 데이터 처리 로직을 작성하세요
+        pass
+
+# 3. MovementModule 클래스
+class MovementModule:
+    """이동과 자세를 제어하는 모듈"""
+    def __init__(self):
+        # 여기에 이동 모듈 초기화 코드를 작성하세요
+        pass
+    
+    def move_forward(self, distance):
+        """전진"""
+        # 여기에 전진 코드를 작성하세요
+        pass
+    
+    def move_backward(self, distance):
+        """후진"""
+        # 여기에 후진 코드를 작성하세요
+        pass
+    
+    def turn(self, angle):
+        """회전"""
+        # 여기에 회전 코드를 작성하세요
+        pass
+    
+    def change_height(self, height):
+        """높이 변경"""
+        # 여기에 높이 변경 코드를 작성하세요 
+        # 힌트: 실제 MechDog의 transform 함수 참고
+        pass
+
+# 4. LEDModule 클래스
+class LEDModule:
+    """LED 색상과 패턴을 제어하는 모듈"""
+    def __init__(self):
+        # 여기에 LED 모듈 초기화 코드를 작성하세요
+        pass
+    
+    def set_color(self, r, g, b):
+        """LED 색상 설정"""
+        # 여기에 LED 색상 설정 코드를 작성하세요
+        pass
+    
+    def set_status_color(self, status):
+        """상태에 따른 LED 색상 설정"""
+        # 여기에 상태별 LED 색상 코드를 작성하세요
+        # 힌트: if-elif-else 사용
+        pass
+
+# 시스템 테스트 코드
+print("=== 시스템 테스트 ===")
+
+# MechDog 시스템 생성
+# controller = MechDogController()
+# controller.start_system()
+
+# 센서 테스트
+# sensor = SensorModule()
+# distance = sensor.read_distance()
+# sensor.process_sensor_data(distance)
+
+# 이동 테스트  
+# movement = MovementModule()
+# movement.move_forward(30)
+# movement.turn(45)
+# movement.change_height(20)
+
+# LED 테스트
+# led = LEDModule()
+# led.set_color(255, 0, 0)  # 빨강
+# led.set_status_color("warning")
+
+print("✅ 도전 과제 완료!")
+print("각 클래스의 메서드들을 구현해보세요!")
+
+# 추가 도전 과제:
+# 1. 모든 모듈을 통합해서 작동하는 시스템 만들기
+# 2. 센서 데이터에 따라 자동으로 동작하는 AI 로직 추가
+# 3. 시간에 따른 스케줄링 기능 추가
+# 4. 로그 기록 기능 추가`;
+            });
         });
     </script>
 </body>
