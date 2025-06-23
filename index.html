@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>서대전여고-파이썬 학습</title>
+    <title>서대전여고 파이썬 학습 - 로그인</title>
     <link rel="icon" href="./favicon.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,30 +15,43 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: 'Noto Sans KR', sans-serif;
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .lesson-card {
+        .login-container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            box-shadow: 0 16px 64px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
         }
         
-        .lesson-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
-        }
-        
-        .floating-mascot {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
+        .floating-robot {
             animation: float 3s ease-in-out infinite;
-            cursor: pointer;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .mechdog-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .mechdog-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
         
         @keyframes float {
@@ -46,353 +59,207 @@
             50% { transform: translateY(-20px); }
         }
         
-        .level-beginner { border-left: 4px solid #10b981; }
-        .level-intermediate { border-left: 4px solid #f59e0b; }
-        .level-advanced { border-left: 4px solid #ef4444; }
+        .login-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin: 1rem 0;
+        }
         
-        .progress-bar {
-            height: 8px;
-            background: linear-gradient(90deg, #00d9ff, #00ff88);
-            border-radius: 4px;
-            transition: width 0.5s ease;
+        .login-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .sparkle {
+            position: absolute;
+            color: #fbbf24;
+            animation: sparkle 2s infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
 <body>
-    <!-- Progress Bar -->
-    <div class="fixed top-0 left-0 w-full h-2 bg-gray-200 z-50">
-        <div id="progress-bar" class="progress-bar w-0 h-full"></div>
-    </div>
-
-    <!-- Header -->
-    <header class="bg-white/90 backdrop-blur-sm sticky top-2 z-40 mx-4 mt-4 rounded-2xl shadow-lg">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <div class="text-3xl animate-bounce">🤖</div>
-                <h1 class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                    서대전여고 방과후학교 - MechDog 로봇 제어를 위한 파이썬 학습
-                </h1>
+    <div class="login-container">
+        <div class="floating-robot">
+            <img src="mechdog.jpg" alt="MechDog" class="mechdog-image">
+        </div>
+        <h1 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
+            서대전여고 파이썬 학습
+        </h1>
+        <p class="text-gray-600 mb-6">
+            MechDog과 함께하는 코딩 여행에 오신 것을 환영합니다!
+        </p>
+        
+        <form id="loginForm">
+            <div class="mb-4">
+                <label for="password" class="block text-left text-gray-700 font-medium mb-2">
+                    🔐 비밀번호를 입력하세요
+                </label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    class="login-input" 
+                    placeholder="비밀번호 입력"
+                    maxlength="4"
+                >
             </div>
             
-            <div class="hidden md:flex items-center space-x-6">
-                <div class="flex items-center space-x-2 bg-gray-100 rounded-full px-4 py-2">
-                    <span class="text-sm text-gray-600">진도:</span>
-                    <span id="progress-text" class="text-sm font-bold text-purple-600">0%</span>
-                </div>
-                <div class="flex items-center space-x-2 bg-yellow-100 rounded-full px-4 py-2">
-                    <span class="text-sm">🏆</span>
-                    <span id="score-text" class="text-sm font-bold text-yellow-600">0점</span>
-                </div>
-            </div>
-            
-            <button id="reset-progress" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm transition-colors">
-                초기화
+            <button type="submit" class="login-button">
+                🚀 학습 시작하기
             </button>
-        </nav>
-    </header>
-
-    <main class="container mx-auto px-4 py-8">
-        <!-- Welcome Section -->
-        <section class="text-center mb-12">
-            <h2 class="text-4xl font-bold text-white mb-4">
-                MechDog과 함께하는 코딩 여행! 🤖🚀
-            </h2>
-            <p class="text-xl text-white/90 mb-8">
-                로봇 개 MechDog을 제어하기 위한 파이썬 기초부터 실제 제어 코드까지 단계별 학습
-            </p>
             
-            <!-- Quick Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
-                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-4">
-                    <div class="text-2xl mb-2">📚</div>
-                    <div class="text-white font-bold text-lg" id="lessons-completed">0/12</div>
-                    <div class="text-white/80 text-sm">레슨 완료</div>
-                </div>
-                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-4">
-                    <div class="text-2xl mb-2">🏃‍♂️</div>
-                    <div class="text-white font-bold text-lg" id="codes-run">0</div>
-                    <div class="text-white/80 text-sm">코드 실행</div>
-                </div>
-                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-4">
-                    <div class="text-2xl mb-2">🧠</div>
-                    <div class="text-white font-bold text-lg" id="quizzes-passed">0</div>
-                    <div class="text-white/80 text-sm">퀴즈 통과</div>
-                </div>
-                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-4">
-                    <div class="text-2xl mb-2">⭐</div>
-                    <div class="text-white font-bold text-lg" id="achievements">0</div>
-                    <div class="text-white/80 text-sm">성취 달성</div>
-                </div>
+            <div id="errorMessage" class="error-message">
+                ❌ 비밀번호가 올바르지 않습니다. 다시 시도해주세요.
             </div>
-        </section>
-
-        <!-- Learning Path -->
-        <section class="mb-12">
-            <h3 class="text-3xl font-bold text-white text-center mb-8">📖 학습 로드맵</h3>
-            
-            <!-- Beginner Level -->
-            <div class="mb-8">
-                <h4 class="text-xl font-bold text-green-300 mb-4 flex items-center">
-                    <span class="bg-green-500 text-white px-2 py-1 rounded mr-3 text-sm">초급</span>
-                    파이썬 기초 문법
-                </h4>
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Lesson 1 -->
-                    <a href="lessons/lesson1.html" class="lesson-card level-beginner block">
-                        <div class="text-3xl mb-3">🌟</div>
-                        <h5 class="text-lg font-bold mb-2">레슨 1: 첫 번째 코드</h5>
-                        <p class="text-gray-600 text-sm mb-3">print() 함수와 기본 출력</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">기초</span>
-                            <span class="text-xs text-gray-500">15분</span>
-                        </div>
-                    </a>
-                    
-                    <!-- Lesson 2 -->
-                    <a href="lessons/lesson2.html" class="lesson-card level-beginner block">
-                        <div class="text-3xl mb-3">📦</div>
-                        <h5 class="text-lg font-bold mb-2">레슨 2: 변수와 데이터</h5>
-                        <p class="text-gray-600 text-sm mb-3">변수 생성과 데이터 타입</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">기초</span>
-                            <span class="text-xs text-gray-500">20분</span>
-                        </div>
-                    </a>
-                    
-                    <!-- Lesson 3 -->
-                    <a href="lessons/lesson3.html" class="lesson-card level-beginner block">
-                        <div class="text-3xl mb-3">🔄</div>
-                        <h5 class="text-lg font-bold mb-2">레슨 3: 조건문</h5>
-                        <p class="text-gray-600 text-sm mb-3">if-else로 조건 판단하기</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">기초</span>
-                            <span class="text-xs text-gray-500">25분</span>
-                        </div>
-                    </a>
-                    
-                    <!-- Lesson 4 -->
-                    <a href="lessons/lesson4.html" class="lesson-card level-beginner block">
-                        <div class="text-3xl mb-3">🔁</div>
-                        <h5 class="text-lg font-bold mb-2">레슨 4: 반복문</h5>
-                        <p class="text-gray-600 text-sm mb-3">for, while로 반복 작업</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">기초</span>
-                            <span class="text-xs text-gray-500">30분</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Intermediate Level -->
-            <div class="mb-8">
-                <h4 class="text-xl font-bold text-yellow-300 mb-4 flex items-center">
-                    <span class="bg-yellow-500 text-white px-2 py-1 rounded mr-3 text-sm">중급</span>
-                    함수와 모듈
-                </h4>
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Lesson 5 -->
-                    <a href="lessons/lesson5.html" class="lesson-card level-intermediate block">
-                        <div class="text-3xl mb-3">⚙️</div>
-                        <h5 class="text-lg font-bold mb-2">레슨 5: 함수 만들기</h5>
-                        <p class="text-gray-600 text-sm mb-3">함수 정의와 호출 방법</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">중급</span>
-                            <span class="text-xs text-gray-500">25분</span>
-                        </div>
-                    </a>
-                    
-                    <!-- Lesson 6 -->
-                    <a href="lessons/lesson6.html" class="lesson-card level-intermediate block">
-                        <div class="text-3xl mb-3">📚</div>
-                        <h5 class="text-lg font-bold mb-2">레슨 6: 모듈 사용하기</h5>
-                        <p class="text-gray-600 text-sm mb-3">import와 라이브러리 활용</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">중급</span>
-                            <span class="text-xs text-gray-500">20분</span>
-                        </div>
-                    </a>
-                    
-                    <!-- Lesson 7 -->
-                    <a href="lessons/lesson7.html" class="lesson-card level-intermediate block">
-                        <div class="text-3xl mb-3">🏗️</div>
-                        <h5 class="text-lg font-bold mb-2">레슨 7: 클래스와 객체</h5>
-                        <p class="text-gray-600 text-sm mb-3">객체지향 프로그래밍 기초</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">중급</span>
-                            <span class="text-xs text-gray-500">35분</span>
-                        </div>
-                    </a>
-                    
-                    <!-- Lesson 8 -->
-                    <a href="lessons/lesson8.html" class="lesson-card level-intermediate block">
-                        <div class="text-3xl mb-3">🤖</div>
-                        <h5 class="text-lg font-bold mb-2">레슨 8: MechDog 소개</h5>
-                        <p class="text-gray-600 text-sm mb-3">MechDog 클래스와 기본 제어</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">중급</span>
-                            <span class="text-xs text-gray-500">30분</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Advanced Level -->
-            <div class="mb-8">
-                <h4 class="text-xl font-bold text-red-300 mb-4 flex items-center">
-                    <span class="bg-red-500 text-white px-2 py-1 rounded mr-3 text-sm">고급</span>
-                    실제 MechDog 제어
-                </h4>
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Lesson 9 -->
-                    <a href="lessons/lesson9.html" class="lesson-card level-advanced block">
-                        <div class="text-3xl mb-3">📡</div>
-                        <h5 class="text-lg font-bold mb-2">레슨 9: 센서 활용</h5>
-                        <p class="text-gray-600 text-sm mb-3">초음파, 터치 센서 사용법</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">고급</span>
-                            <span class="text-xs text-gray-500">40분</span>
-                        </div>
-                    </a>
-                    
-                    <!-- Lesson 10 -->
-                    <a href="lessons/lesson10.html" class="lesson-card level-advanced block">
-                        <div class="text-3xl mb-3">🎨</div>
-                        <h5 class="text-lg font-bold mb-2">레슨 10: 색상 인식</h5>
-                        <p class="text-gray-600 text-sm mb-3">카메라와 LED 제어</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">고급</span>
-                            <span class="text-xs text-gray-500">35분</span>
-                        </div>
-                    </a>
-                    
-                    <!-- Lesson 11 -->
-                    <a href="lessons/lesson11.html" class="lesson-card level-advanced block">
-                        <div class="text-3xl mb-3">🎤</div>
-                        <h5 class="text-lg font-bold mb-2">레슨 11: 음성 제어</h5>
-                        <p class="text-gray-600 text-sm mb-3">음성 인식으로 MechDog 제어</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">고급</span>
-                            <span class="text-xs text-gray-500">45분</span>
-                        </div>
-                    </a>
-                    
-                    <!-- Lesson 12 -->
-                    <a href="lessons/lesson12.html" class="lesson-card level-advanced block">
-                        <div class="text-3xl mb-3">🚀</div>
-                        <h5 class="text-lg font-bold mb-2">레슨 12: 최종 프로젝트</h5>
-                        <p class="text-gray-600 text-sm mb-3">나만의 MechDog AI 만들기</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">고급</span>
-                            <span class="text-xs text-gray-500">60분</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Additional Resources -->
-        <section class="lesson-card mb-8">
-            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                <span class="text-3xl mr-3">📋</span>
-                MechDog 학습을 위한 주요 정보
-            </h3>
-            
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="bg-blue-50 p-6 rounded-xl">
-                    <h4 class="text-lg font-bold mb-3 text-blue-800">🔗 참고 링크</h4>
-                    <ul class="space-y-2 text-sm text-blue-700">
-                        <li>• <a href="https://padlet.com/warmars1987/25-10t4eabv1h1tv692/wish/dMA1W8D81bxAW4OV" class="hover:underline"  target="_blank">MechDog Tutorials-한글 매뉴얼</a></li>
-                        <li>• <a href="https://colab.research.google.com/drive/1qcCWxJz3ISDb1KCWmgnPs_dFnHyPytwv?usp=sharing" class="hover:underline" target="_blank">MechDog 튜토리얼 전체 소스코드 (Colab)</a></li>
-                        <li>• <a href="https://drive.google.com/file/d/1Bk8vKnxtrT83BiGmeuxymtM7NkdSaL41/view?usp=sharing" class="hover:underline"  target="_blank">MechDog 로봇 제어 및 센서 활용 매뉴얼</a></li>
-                        <li>• <a href="https://www.hiwonder.com/collections/quadruped-robot/products/mechdog?variant=41223374110807" class="hover:underline" target="_blank">Hiwonder-MechDog 공식 홈페이지</a></li>
-                        <li>• <a href="https://wikidocs.net/43" class="hover:underline" target="_blank">왕초보를 위한 Python: 쉽게 풀어 쓴 기초 문법과 실습</a></li>
-                    </ul>
-                </div>
-                
-                <div class="bg-green-50 p-6 rounded-xl">
-                    <h4 class="text-lg font-bold mb-3 text-green-800">💡 학습 팁</h4>
-                    <ul class="space-y-2 text-sm text-green-700">
-                        <li>• 코드를 직접 타이핑해보세요</li>
-                        <li>• 오류가 나면 천천히 확인해보세요</li>
-                        <li>• 궁금한 점은 즉시 찾아보세요</li>
-                        <li>• 쉽게 풀어주는 파이썬 선생님에게 질문하세요</li>
-
-                    </ul>
-                </div>
-                
-                <div class="bg-purple-50 p-6 rounded-xl">
-                    <h4 class="text-lg font-bold mb-3 text-purple-800">🎯 학습 목표</h4>
-                    <ul class="space-y-2 text-sm text-purple-700">
-                        <li>• 파이썬 기본 문법을 활용해 간단한 프로그램 작성하기</li>
-                        <li>• MechDog 로봇을 움직이고 기본 동작 제어하기</li>
-                        <li>• 센서를 활용해 주변 환경을 감지하는 프로그램 만들기</li>
-                        <li>• 음성 명령으로 로봇을 조작하는 기능 구현하기</li>
-                        <li>• 배운 내용을 바탕으로 나만의 로봇 동작 시퀀스 만들기</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Floating Mascot -->
-    <div class="floating-mascot text-6xl" id="mascot" title="MechDog 도우미를 클릭하세요!">
-        🤖
+        </form>
+        
+        <div class="mt-6 text-sm text-gray-500">
+            <p>💡 힌트: 숫자 4자리입니다</p>
+        </div>
     </div>
+
+    <!-- Sparkle Effects -->
+    <div id="sparkles"></div>
 
     <script>
-        // Global state
-        let userProgress = {
-            lessonsCompleted: 0,
-            codesRun: 0,
-            quizzesPassed: 0,
-            achievements: 0,
-            score: 0
-        };
+        const loginForm = document.getElementById('loginForm');
+        const passwordInput = document.getElementById('password');
+        const errorMessage = document.getElementById('errorMessage');
+        const correctPassword = '1004';
 
-        // Load from localStorage
-        function loadProgress() {
-            const saved = localStorage.getItem('mechDogLearningProgress');
-            if (saved) {
-                userProgress = { ...userProgress, ...JSON.parse(saved) };
-                updateUI();
+        // 로그인 폼 제출 처리
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const enteredPassword = passwordInput.value;
+            
+            if (enteredPassword === correctPassword) {
+                // 성공 효과
+                createSparkles();
+                showSuccessMessage();
+                
+                // 잠시 후 home.html로 이동
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 1500);
+            } else {
+                // 실패 처리
+                showError();
+                shakeContainer();
+                passwordInput.value = '';
+            }
+        });
+
+        // 에러 메시지 표시
+        function showError() {
+            errorMessage.style.display = 'block';
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        // 성공 메시지 표시
+        function showSuccessMessage() {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white p-4 rounded-lg text-lg font-bold z-50';
+            successDiv.innerHTML = '🎉 로그인 성공! 학습 페이지로 이동합니다...';
+            document.body.appendChild(successDiv);
+        }
+
+        // 컨테이너 흔들기 효과
+        function shakeContainer() {
+            const container = document.querySelector('.login-container');
+            container.style.animation = 'none';
+            container.offsetHeight; // 리플로우 강제 실행
+            container.style.animation = 'shake 0.5s ease-in-out';
+            
+            setTimeout(() => {
+                container.style.animation = '';
+            }, 500);
+        }
+
+        // 반짝이는 효과 생성
+        function createSparkles() {
+            const sparklesContainer = document.getElementById('sparkles');
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.innerHTML = '✨';
+                    sparkle.style.left = Math.random() * 100 + '%';
+                    sparkle.style.top = Math.random() * 100 + '%';
+                    sparklesContainer.appendChild(sparkle);
+                    
+                    setTimeout(() => {
+                        sparkle.remove();
+                    }, 2000);
+                }, i * 100);
             }
         }
 
-        // Save to localStorage
-        function saveProgress() {
-            localStorage.setItem('mechDogLearningProgress', JSON.stringify(userProgress));
-        }
+        // 숫자만 입력 허용
+        passwordInput.addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
 
-        // Update UI elements
-        function updateUI() {
-            document.getElementById('lessons-completed').textContent = `${userProgress.lessonsCompleted}/12`;
-            document.getElementById('codes-run').textContent = userProgress.codesRun;
-            document.getElementById('quizzes-passed').textContent = userProgress.quizzesPassed;
-            document.getElementById('achievements').textContent = userProgress.achievements;
-            document.getElementById('score-text').textContent = `${userProgress.score}점`;
-            
-            const progressPercent = (userProgress.lessonsCompleted / 12) * 100;
-            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
-            document.getElementById('progress-text').textContent = `${Math.round(progressPercent)}%`;
-        }
+        // Enter 키로 포커스 이동
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginForm.dispatchEvent(new Event('submit'));
+            }
+        });
 
-        // Event listeners
-        document.addEventListener('DOMContentLoaded', () => {
-            loadProgress();
-            
-            // Reset progress
-            document.getElementById('reset-progress').addEventListener('click', () => {
-                if (confirm('정말로 모든 진도를 초기화하시겠습니까?')) {
-                    localStorage.removeItem('mechDogLearningProgress');
-                    location.reload();
-                }
-            });
-            
-            // Mascot click
-            document.getElementById('mascot').addEventListener('click', () => {
-                alert('🤖 안녕하세요! MechDog과 함께 파이썬을 배워봅시다!');
-            });
+        // 페이지 로드 시 비밀번호 입력란에 포커스
+        window.addEventListener('load', function() {
+            passwordInput.focus();
         });
     </script>
+
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+    </style>
 </body>
 </html> 
