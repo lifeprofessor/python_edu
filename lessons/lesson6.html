@@ -49,8 +49,6 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
     </style>
-
-            </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -376,15 +374,21 @@ if distance < 15:
         <section class="lesson-card mb-8">
             <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6">
                 <h4 class="text-lg font-bold text-yellow-800 mb-4">🎯 도전 과제</h4>
-                <p class="text-yellow-700 mb-4">배운 모듈들을 사용해서 재미있는 MechDog 놀이를 만들어보세요:</p>
+                <p class="text-yellow-700 mb-4">배운 모듈들을 사용해서 재미있는 MechDog 놀이를 직접 완성해보세요!</p>
+                <div class="bg-yellow-100 p-3 rounded-lg mb-4">
+                    <p class="text-yellow-800 font-semibold mb-2">🧩 도전 방식:</p>
+                    <ul class="text-yellow-700 text-sm space-y-1">
+                        <li>• TODO 주석을 찾아서 코드를 완성하세요</li>
+                        <li>• 힌트를 참고해서 스스로 구현해보세요</li>
+                        <li>• 각 함수를 완성한 후 주석을 해제해서 테스트하세요</li>
+                    </ul>
+                </div>
                 <ol class="text-yellow-700 space-y-1 mb-4">
                     <li>1. 🎮 <strong>가위바위보 게임</strong>: random 모듈로 MechDog와 게임하기</li>
                     <li>2. 🚨 <strong>센서 경보 시스템</strong>: 거리 측정으로 경보 시스템 만들기</li>
-                    <li>3. 📚 <strong>수학 선생님</strong>: math 모듈로 수학 문제 내기</li>
-                    <li>4. ⏰ <strong>시간 관리사</strong>: datetime 모듈로 시간 관리 도우미</li>
-                    <li>5. 🎪 <strong>보너스 놀이터</strong>: 모든 기능을 합친 종합 놀이 프로그램</li>
+                    <li>3. 📚 <strong>수학 선생님</strong>: random과 연산으로 수학 문제 만들기</li>
                 </ol>
-                <button id="show-challenge" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">도전 과제 보기</button>
+                <button id="show-challenge" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">🚀 도전 과제 시작하기</button>
             </div>
         </section>
 
@@ -410,94 +414,6 @@ if distance < 15:
             <a href="lesson7.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg">다음 →</a>
         </section>
     </main>
-import random
-import statistics
-import math
-from datetime import datetime, timedelta
-
-def comprehensive_system():
-    """MechDog 종합 관리 시스템"""
-    print("🤖 MechDog 종합 관리 시스템 v1.0")
-    print("=" * 40)
-    
-    # 1. 시스템 시작 시간 기록
-    start_time = datetime.now()
-    print(f"🕐 시스템 시작: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
-    
-    # 2. 센서 데이터 시뮬레이션 및 분석
-    print("📊 센서 데이터 분석")
-    sensor_data = [random.randint(10, 50) for _ in range(10)]
-    print(f"📡 수집된 데이터: {sensor_data}")
-    print(f"📈 평균값: {statistics.mean(sensor_data):.1f}")
-    print(f"📊 중간값: {statistics.median(sensor_data)}")
-    
-    # 3. 오늘의 임무 스케줄 생성
-    print("📅 오늘의 임무 스케줄")
-    missions = ["순찰", "점검", "청소", "대기"]
-    for i, mission in enumerate(missions):
-        mission_time = start_time + timedelta(hours=i+1)
-        print(f"  {mission_time.strftime('%H:%M')} - {mission}")
-    
-    # 4. 랜덤 순찰 경로 생성
-    print("🗺️ 순찰 경로")
-    zones = ["현관", "거실", "주방", "안뜰"]
-    random.shuffle(zones)
-    for i, zone in enumerate(zones):
-        print(f"  {i+1}. {zone}")
-    
-    # 5. 경로 거리 계산 (가상 좌표)
-    coordinates = [(0, 0), (5, 3), (8, 7), (2, 9)]
-    total_distance = 0
-    print("📏 이동 거리 계산")
-    for i in range(len(coordinates)-1):
-        x1, y1 = coordinates[i]
-        x2, y2 = coordinates[i+1]
-        distance = math.sqrt((x2-x1)**2 + (y2-y1)**2)
-        total_distance += distance
-        print(f"  구간 {i+1}: {distance:.2f}m")
-    print(f"🚀 총 거리: {total_distance:.2f}m")
-    
-    # 6. 시스템 상태 리포트
-    print("📋 시스템 상태")
-    battery = random.randint(60, 100)
-    temperature = random.randint(20, 30)
-    print(f"🔋 배터리: {battery}%")
-    print(f"🌡️ 온도: {temperature}°C")
-    
-    if battery > 80:
-        status = "🟢 최적"
-    elif battery > 50:
-        status = "🟡 양호"
-    else:
-        status = "🔴 주의"
-    
-    print(f"⚡ 시스템 상태: {status}")
-    print("✅ 시스템 초기화 완료!")
-
-# 시스템 실행
-comprehensive_system()</textarea>
-                    <button class="run-button" onclick="runCode('exercise', 'exerciseOutput')">실행 ▶</button>
-                    <div class="output-panel" id="exerciseOutput">여기에 실행 결과가 표시됩니다</div>
-                </div>
-
-                <div class="tip-box">
-                    <h4>💡 추가 도전 과제</h4>
-                    <p>다음 모듈들도 활용해보세요:</p>
-                    <ul>
-                        <li><code>collections.Counter</code>: 데이터 빈도 계산</li>
-                        <li><code>itertools</code>: 반복자 도구</li>
-                        <li><code>json</code>: 설정 파일 처리</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="navigation">
-            <a href="lesson5.html" class="nav-button">← 이전: 함수</a>
-            <a href="../index.html" class="nav-button">🏠 홈으로</a>
-            <a href="lesson7.html" class="nav-button">다음: 클래스와 객체 →</a>
-        </div>
-    </div>
 
     <script>
         let pyodide = null;
@@ -1097,30 +1013,7 @@ def show_current_time():
 show_current_time()
 print()
 
-# 2. MechDog 일과표
-print("=== MechDog 일과표 ===")
-
-def create_schedule():
-    """MechDog의 하루 일과를 만드는 함수"""
-    activities = [
-        ("아침 스트레칭", "07:00", "😊"),
-        ("산책하기", "08:30", "🚶"),
-        ("놀이시간", "10:00", "🎮"),
-        ("점심 충전", "12:00", "🔋"),
-        ("오후 순찰", "14:00", "👮"),
-        ("친구들과 놀기", "16:00", "👫"),
-        ("저녁 정리시간", "18:00", "🧹"),
-        ("밤 휴식", "21:00", "😴")
-    ]
-    
-    print("📋 MechDog의 하루 일과:")
-    for activity, time, emoji in activities:
-        print(f"{emoji} {time} - {activity}")
-
-create_schedule()
-print()
-
-# 3. 카운트다운 게임
+# 2. 카운트다운 게임
 print("=== 카운트다운 게임 ===")
 
 def countdown_game(seconds):
@@ -1139,56 +1032,7 @@ def countdown_game(seconds):
 countdown_game(5)
 print()
 
-# 4. 미래 시간 계산하기
-print("=== 미래 시간 계산하기 ===")
-
-def future_time_calculator():
-    """미래 시간을 계산하는 함수"""
-    now = datetime.now()
-    
-    future_times = [
-        (1, "1시간 후"),
-        (24, "내일 이 시간"),
-        (168, "일주일 후"),  # 24 * 7 = 168시간
-    ]
-    
-    print("🔮 미래 시간 예측:")
-    for hours, description in future_times:
-        future = now + timedelta(hours=hours)
-        print(f"{description}: {future.strftime('%m월 %d일 %H시 %M분')}")
-
-future_time_calculator()
-print()
-
-# 5. 나이 계산기
-print("=== MechDog 나이 계산기 ===")
-
-def calculate_age():
-    """MechDog가 태어난 지 얼마나 됐는지 계산"""
-    # MechDog가 태어난 날 (가상)
-    birth_date = datetime(2023, 6, 15)  # 2023년 6월 15일
-    now = datetime.now()
-    
-    age_days = (now - birth_date).days
-    age_months = age_days // 30  # 대략적인 월 계산
-    
-    print(f"🤖 MechDog 생일: {birth_date.strftime('%Y년 %m월 %d일')}")
-    print(f"📅 오늘까지: {age_days}일")
-    print(f"📊 대략: {age_months}개월")
-    
-    if age_days < 30:
-        age_comment = "아직 아기 로봇이에요! 👶"
-    elif age_days < 365:
-        age_comment = "귀여운 어린 로봇이에요! 🧒"
-    else:
-        age_comment = "멋진 어른 로봇이에요! 🤖"
-    
-    print(f"💭 {age_comment}")
-
-calculate_age()
-print()
-
-# 6. 시간 퀴즈
+# 3. 시간 퀴즈
 print("=== 시간 퀴즈 ===")
 
 def time_quiz():
@@ -1207,80 +1051,7 @@ def time_quiz():
 
 time_quiz()
 
-# 7. 재미있는 시간 놀이
-print("=== 재미있는 시간 놀이 ===")
-
-def time_games():
-    """시간과 관련된 재미있는 놀이들"""
-    
-    # 랜덤 시간 만들기
-    random_hour = random.randint(0, 23)
-    random_minute = random.randint(0, 59)
-    
-    print(f"🎲 랜덤 시간: {random_hour:02d}:{random_minute:02d}")
-    
-    # 시간대 맞추기
-    if 6 <= random_hour < 12:
-        time_period = "아침"
-        activity = "아침 운동"
-    elif 12 <= random_hour < 18:
-        time_period = "오후"
-        activity = "오후 산책"
-    elif 18 <= random_hour < 22:
-        time_period = "저녁"
-        activity = "저녁 놀이"
-    else:
-        time_period = "밤"
-        activity = "조용한 휴식"
-    
-    print(f"🌅 이 시간은 {time_period}이에요!")
-    print(f"🎯 MechDog가 할 일: {activity}")
-    
-    # 계절 맞추기
-    now = datetime.now()
-    month = now.month
-    
-    if 3 <= month <= 5:
-        season = "봄 🌸"
-    elif 6 <= month <= 8:
-        season = "여름 ☀️"
-    elif 9 <= month <= 11:
-        season = "가을 🍂"
-    else:
-        season = "겨울 ❄️"
-    
-    print(f"🍃 지금은 {season}이에요!")
-
-time_games()
-print()
-
-# 8. 시간 저축 게임
-print("=== 시간 저축 게임 ===")
-
-def time_savings():
-    """시간을 절약하는 방법들"""
-    time_saving_tips = [
-        ("정리 정돈", "3분", "물건을 제자리에 두면 찾는 시간 절약!"),
-        ("미리 준비", "5분", "내일 할 일을 미리 준비해두기!"),
-        ("빠른 결정", "2분", "간단한 일은 바로바로 결정하기!"),
-        ("계획 세우기", "10분", "하루 계획을 세우면 효율적!")
-    ]
-    
-    print("💰 시간 저축 비법:")
-    total_saved = 0
-    
-    for tip, saved_time, description in time_saving_tips:
-        minutes = int(saved_time.replace('분', ''))
-        total_saved += minutes
-        print(f"✨ {tip}: {saved_time} 절약")
-        print(f"   💡 {description}")
-    
-    print(f"\\n🎉 총 절약 시간: {total_saved}분!")
-    print("이 시간으로 더 재미있는 일을 할 수 있어요!")
-
-time_savings()
-
-print("\\n🎉 시간 놀이 완료!")
+print("🎉 시간 놀이 완료!")
 print("시간 모듈을 사용하면 MechDog가 시간을 잘 관리할 수 있어요!")`;
             });
             
@@ -1291,9 +1062,12 @@ print("🎮 MechDog와 함께하는 재미있는 도전!")
 print("배운 모듈들을 사용해서 재미있는 프로그램을 만들어보세요!")
 print()
 
-import random
-import math
-from datetime import datetime
+# 필요한 모듈들을 import하세요
+# TODO: 아래 주석을 해제하고 필요한 모듈들을 import하세요
+# import random
+# import math  
+# from datetime import datetime
+
 
 # 🏆 도전 과제 1: MechDog 가위바위보 게임
 print("=== 도전 과제 1: 가위바위보 게임 ===")
@@ -1302,15 +1076,28 @@ def mechdog_rps_game():
     """MechDog와 가위바위보 게임하기"""
     choices = ["가위", "바위", "보"]
     
-    # 여기에 코드를 작성해보세요!
-    # 힌트 1: random.choice(choices) 사용
-    # 힌트 2: 사용자 선택과 MechDog 선택 비교하기
-    # 힌트 3: 승부 결과 출력하기
-    
     print("🤖 MechDog: 가위바위보 게임을 해봅시다!")
-    # 여기서 게임 로직을 완성해보세요!
     
-mechdog_rps_game()
+    # TODO 1: MechDog이 랜덤하게 선택하도록 만드세요
+    # 힌트: random.choice(choices) 사용
+    mechdog_choice = "바위"  # 여기를 수정하세요!
+    
+    # TODO 2: 사용자도 랜덤하게 선택하도록 만드세요 (시뮬레이션용)
+    user_choice = "가위"     # 여기를 수정하세요!
+    
+    print(f"MechDog 선택: {mechdog_choice}")
+    print(f"당신의 선택: {user_choice}")
+    
+    # TODO 3: 승부 결과를 판정하세요
+    # 힌트: if문을 사용해서 비기기, MechDog 승리, 사용자 승리 구분
+    # 바위 > 가위, 가위 > 보, 보 > 바위
+    
+    # 여기에 승부 판정 코드를 작성하세요
+    
+
+# 함수 호출해서 테스트하세요
+# mechdog_rps_game()
+
 print()
 
 # 🏆 도전 과제 2: MechDog 센서 경보 시스템
@@ -1319,15 +1106,29 @@ print("=== 도전 과제 2: 센서 경보 시스템 ===")
 def create_alarm_system():
     """거리에 따른 경보 시스템 만들기"""
     
-    # 여기에 코드를 작성해보세요!
-    # 힌트 1: 거리 측정 함수 만들기
-    # 힌트 2: 거리별로 다른 경보 출력
-    # 힌트 3: 5번 연속 측정해서 결과 보여주기
-    
     print("🚨 MechDog 경보 시스템 가동!")
-    # 여기서 경보 시스템을 완성해보세요!
     
-create_alarm_system()
+    # TODO 1: 5번 반복해서 센서 측정을 시뮬레이션하세요
+    # 힌트: for i in range(5) 사용
+    for i in range(5):  # 이 줄을 추가하고 아래 내용을 완성하세요
+        # TODO 2: 5cm~50cm 사이의 랜덤한 거리를 생성하세요
+        # 힌트: random.randint(5, 50) 사용
+        distance = 25  # 여기를 수정하세요!
+        
+        print(f"측정 {i+1}: {distance}cm")  # 측정 횟수 추가됨
+        
+        # TODO 3: 거리에 따른 경보 레벨을 설정하세요
+        # 10cm 미만: 🔴 위험! 즉시 멈추세요!
+        # 20cm 미만: 🟡 주의! 천천히 움직이세요!
+        # 그 외: 🟢 안전! 정상 이동 가능합니다!
+        
+        # 여기에 if-elif-else 조건문을 작성하세요
+        print("🟡 주의! 천천히 움직이세요!")  # 임시 출력, 나중에 조건문으로 바꾸세요
+        
+    
+# 함수 호출해서 테스트하세요
+# create_alarm_system()
+
 print()
 
 # 🏆 도전 과제 3: MechDog 수학 선생님
@@ -1336,82 +1137,39 @@ print("=== 도전 과제 3: 수학 선생님 ===")
 def math_teacher():
     """MechDog가 수학 문제를 내주는 함수"""
     
-    # 여기에 코드를 작성해보세요!
-    # 힌트 1: 랜덤으로 두 숫자 만들기
-    # 힌트 2: 덧셈, 뺄셈 문제 내기
-    # 힌트 3: 정답 계산해서 보여주기
-    
     print("📚 MechDog 선생님의 수학 시간!")
-    # 여기서 수학 문제를 완성해보세요!
     
-math_teacher()
-print()
+    # TODO 1: 3문제를 내도록 반복문을 만드세요
+    # 힌트: for i in range(3) 사용
+    for i in range(3):  # 이 줄을 추가하고 아래 내용을 완성하세요
+        # TODO 2: 1~10 사이의 랜덤한 두 숫자를 만드세요
+        # 힌트: random.randint(1, 10) 사용
+        num1 = 5  # 여기를 수정하세요!
+        num2 = 3  # 여기를 수정하세요!
+        
+        # TODO 3: +, -, * 중 하나를 랜덤하게 선택하세요
+        # 힌트: random.choice(['+', '-', '*']) 사용
+        operation = "+"  # 여기를 수정하세요!
+        
+        # TODO 4: 연산에 따른 정답을 계산하세요
+        # 힌트: if-elif-else 사용해서 각 연산별로 계산
+        
+        # 여기에 정답 계산 코드를 작성하세요 (임시로 덧셈만 계산)
+        answer = num1 + num2  # 나중에 조건문으로 바꾸세요!
+        
+        print(f"문제 {i+1}: {num1} {operation} {num2} = ?")  # 문제 번호 추가됨
+        print(f"정답: {answer}")
+        print()
 
-# 🏆 도전 과제 4: MechDog 시간 관리사
-print("=== 도전 과제 4: 시간 관리사 ===")
-
-def time_manager():
-    """MechDog가 시간을 관리해주는 함수"""
-    
-    # 여기에 코드를 작성해보세요!
-    # 힌트 1: 현재 시간 가져오기
-    # 힌트 2: 시간대별 추천 활동 만들기
-    # 힌트 3: 오늘 날짜와 요일 출력하기
-    
-    print("⏰ MechDog 시간 관리사 서비스!")
-    # 여기서 시간 관리 기능을 완성해보세요!
-    
-time_manager()
-print()
-
-# 🏆 보너스 도전 과제: MechDog 종합 놀이터
-print("=== 보너스 도전: MechDog 종합 놀이터 ===")
-
-def mechdog_playground():
-    """모든 기능을 합친 종합 놀이 프로그램"""
-    
-    print("🎪 MechDog 종합 놀이터에 오신 걸 환영합니다!")
-    print()
-    
-    # 여기에 여러분만의 창의적인 코드를 작성해보세요!
-    # 다음 기능들을 조합해보세요:
-    # - 랜덤 숫자 게임
-    # - 거리 센서 놀이  
-    # - 간단한 수학 계산
-    # - 시간 관련 기능
-    # - 재미있는 메시지 출력
-    
-    activities = [
-        "🎲 주사위 던지기",
-        "📏 거리 측정 게임", 
-        "🧮 계산기 놀이",
-        "⏰ 시간 맞추기",
-        "🎨 색깔 바꾸기"
-    ]
-    
-    print("🎯 오늘의 추천 활동:")
-    for i, activity in enumerate(activities):
-        print(f"  {i+1}. {activity}")
-    
-    # 여기서 더 재미있는 기능들을 추가해보세요!
-    
-mechdog_playground()
+# 함수 호출해서 테스트하세요
+# math_teacher()
 
 print()
-print("🎉 도전 과제 안내")
-print("=" * 40)
-print("👆 위의 함수들을 완성해보세요!")
-print()
-print("💡 도움말:")
-print("• random.randint(1, 10) : 1~10 사이 랜덤 숫자")
-print("• random.choice(['A', 'B']) : 리스트에서 랜덤 선택")
-print("• math.sqrt(16) : 제곱근 계산")
-print("• datetime.now() : 현재 시간")
-print("• if-elif-else : 조건 분기")
-print("• for 반복문 : 여러 번 실행")
-print()
-print("🌟 창의적으로 코드를 완성해보세요!")
-print("완성되면 실행해서 MechDog와 놀아보아요!")`;
+print("🤔 위의 TODO를 모두 완성하면 도전 과제 완료!")
+print("각 함수의 주석을 해제하고 실행해보세요!")
+
+# 💡 추가 도전: 본인만의 창의적인 MechDog 기능을 만들어보세요!
+# 예: 날씨 예보, 간단한 계산기, 운세보기 등`;
             });
         });
     </script>
