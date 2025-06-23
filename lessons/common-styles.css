@@ -1,0 +1,296 @@
+/* MechDog 파이썬 학습 - 공통 스타일 */
+
+/* 기본 페이지 스타일 */
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Noto Sans KR', sans-serif;
+    min-height: 100vh;
+}
+
+/* CodeMirror 커스터마이징 */
+.CodeMirror {
+    height: 300px;
+    border-radius: 12px;
+    border: 2px solid #404040;
+    font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: all 0.3s ease;
+    resize: vertical;
+    overflow: hidden;
+    min-height: 200px;
+    max-height: 600px;
+}
+
+.CodeMirror:hover {
+    border-color: #00d9ff;
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+}
+
+.CodeMirror-focused {
+    border-color: #00d9ff !important;
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.3) !important;
+}
+
+/* 라인 번호 스타일 */
+.CodeMirror-linenumber {
+    color: #6272a4;
+    font-size: 13px;
+}
+
+/* 선택된 라인 하이라이트 */
+.CodeMirror-activeline-background {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* CodeMirror 스크롤바 설정 - 가로만 제거, 세로는 유지 */
+.CodeMirror-scroll {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+/* 가로 스크롤바만 숨기기 */
+.CodeMirror-hscrollbar {
+    display: none !important;
+}
+
+.CodeMirror-scrollbar-filler,
+.CodeMirror-gutter-filler {
+    display: none !important;
+}
+
+/* 세로 스크롤바 스타일링 */
+.CodeMirror-vscrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar-track {
+    background: #1f2937;
+    border-radius: 4px;
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 4px;
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* 기존 textarea 스타일 (CodeMirror 미적용 시 백업) */
+.code-editor {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    border-radius: 12px;
+    padding: 1.5rem;
+    font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
+    font-size: 14px;
+    border: 2px solid #404040;
+    transition: all 0.3s ease;
+    resize: vertical;
+    min-height: 200px;
+    max-height: 600px;
+}
+
+.code-editor:focus {
+    outline: none;
+    border-color: #00d9ff;
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+}
+
+/* 출력 패널 */
+.output-panel {
+    background: #0d1117;
+    color: #e6edf3;
+    border-radius: 12px;
+    padding: 1.5rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    min-height: 200px;
+    max-height: 600px;
+    border: 2px solid #30363d;
+    white-space: pre-wrap;
+    overflow-y: auto;
+    resize: vertical;
+}
+
+/* 레슨 카드 */
+.lesson-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* 퀴즈 옵션 */
+.quiz-option {
+    background: #f3f4f6;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quiz-option:hover {
+    background: #e5e7eb;
+    transform: translateX(8px);
+}
+
+.quiz-option.correct {
+    background: #dcfce7;
+    border-color: #16a34a;
+    color: #166534;
+}
+
+.quiz-option.incorrect {
+    background: #fee2e2;
+    border-color: #dc2626;
+    color: #991b1b;
+}
+
+/* 버튼 스타일 개선 */
+.btn-primary {
+    background: linear-gradient(45deg, #10b981, #059669);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #059669, #047857);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #3b82f6, #2563eb);
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(45deg, #2563eb, #1d4ed8);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, #f59e0b, #d97706);
+    transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(45deg, #d97706, #b45309);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+.btn-danger {
+    background: linear-gradient(45deg, #ef4444, #dc2626);
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(45deg, #dc2626, #b91c1c);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* 에디터 기능 설명 박스 */
+.editor-info {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    background-color: #f9fafb;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+}
+
+.editor-info .font-semibold {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.editor-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.editor-info li {
+    margin: 0.25rem 0;
+}
+
+/* 반응형 디자인 개선 */
+@media (max-width: 768px) {
+    .CodeMirror {
+        height: 250px;
+    }
+    
+    .output-panel {
+        min-height: 250px;
+    }
+    
+    .lesson-card {
+        padding: 1.5rem;
+    }
+}
+
+/* 애니메이션 효과 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.lesson-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* 추가 유틸리티 클래스 */
+.syntax-highlight-blue { color: #3b82f6; }
+.syntax-highlight-green { color: #10b981; }
+.syntax-highlight-gray { color: #6b7280; }
+.syntax-highlight-purple { color: #8b5cf6; }
+.syntax-highlight-yellow { color: #f59e0b; }
+.syntax-highlight-red { color: #ef4444; }
+
+/* 스크롤바 스타일 */
+.output-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.output-panel::-webkit-scrollbar-track {
+    background: #1f2937;
+    border-radius: 4px;
+}
+
+.output-panel::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 4px;
+}
+
+.output-panel::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* 로딩 애니메이션 */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+} 

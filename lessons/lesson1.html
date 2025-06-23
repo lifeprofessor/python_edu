@@ -6,84 +6,19 @@
     <title>레슨 1: 첫 번째 코드 | MechDog 파이썬 학습</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    
+    <!-- CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/monokai.min.css">
+    
+    <!-- CodeMirror JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/python/python.min.js"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     
-    <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Noto Sans KR', sans-serif;
-            min-height: 100vh;
-        }
-        
-        .code-editor {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            border-radius: 12px;
-            padding: 1.5rem;
-            font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
-            font-size: 14px;
-            border: 2px solid #404040;
-            transition: all 0.3s ease;
-            resize: vertical;
-            min-height: 120px;
-        }
-        
-        .code-editor:focus {
-            outline: none;
-            border-color: #00d9ff;
-            box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
-        }
-        
-        .output-panel {
-            background: #0d1117;
-            color: #e6edf3;
-            border-radius: 12px;
-            padding: 1.5rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 14px;
-            min-height: 120px;
-            border: 2px solid #30363d;
-            white-space: pre-wrap;
-            overflow-y: auto;
-            resize: vertical;
-        }
-        
-        .lesson-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-        
-        .quiz-option {
-            background: #f3f4f6;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 1rem;
-            margin: 0.5rem 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .quiz-option:hover {
-            background: #e5e7eb;
-            transform: translateX(8px);
-        }
-        
-        .quiz-option.correct {
-            background: #dcfce7;
-            border-color: #16a34a;
-            color: #166534;
-        }
-        
-        .quiz-option.incorrect {
-            background: #fee2e2;
-            border-color: #dc2626;
-            color: #991b1b;
-        }
-    </style>
+    <!-- 공통 스타일 -->
+    <link rel="stylesheet" href="common-styles.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -265,52 +200,53 @@
         <!-- Practice Section -->
         <section class="lesson-card mb-8">
             <h3 class="text-2xl font-bold text-gray-800 mb-4">💻 실습하기</h3>
+            <p class="text-gray-600 mb-4">✨ <strong>VSCode 스타일의 코드 에디터</strong>를 사용해보세요! 함수, 문자열, 주석이 자동으로 색칠됩니다.</p>
             
             <div class="grid md:grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">코드 에디터</label>
-                    <textarea 
-                        id="code-editor" 
-                        class="code-editor w-full"
-                        placeholder="여기에 파이썬 코드를 작성하세요..."
-                    ># print() 함수의 다양한 사용법 실습
-# 1. 기본 출력
-print("Hello, World!")
-print("안녕하세요, MechDog!")
-
-# 2. 여러 개 출력 (쉼표로 구분)
-print("안녕", "나는", "파이썬", "학습자야")
-
-# 3. 줄 바꾸지 않기 (end 사용)
-print("MechDog이", end=" ")
-print("안녕하고 있어요!")
-
-# 4. 구분자 바꾸기 (sep 사용)
-print("2025", "06", "09", sep="-")
-print("파이썬", "학습", "재미있어요", sep=" ★ ")
-
-# 5. 변수와 f-string 사용
-name = "학습자"
-robot = "MechDog"
-print(f"안녕하세요 {name}님! {robot}과 함께 파이썬을 배워봅시다!")</textarea>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        🎨 코드 에디터 (문법 강조 지원)
+                    </label>
+                    <div id="code-editor-container">
+                        <!-- CodeMirror will be initialized here -->
+                    </div>
                     
                     <div class="flex space-x-2 mt-4">
-                        <button id="run-code" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center">
+                        <button id="run-code" class="btn-primary text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center">
                             <span class="mr-2">▶️</span> 실행하기
                         </button>
                         <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
-                            지우기
+                            🗑️ 지우기
                         </button>
                         <button id="example-code" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
                             💡 예제 보기
                         </button>
                     </div>
+                    
+                    <!-- 에디터 기능 설명 -->
+                    <div class="editor-info">
+                        <div class="font-semibold">🎯 에디터 기능:</div>
+                        <ul>
+                            <li>• <span class="syntax-highlight-blue">파란색</span>: 함수와 키워드</li>
+                            <li>• <span class="syntax-highlight-green">초록색</span>: 문자열</li>
+                            <li>• <span class="syntax-highlight-gray">회색</span>: 주석</li>
+                            <li>• <span class="syntax-highlight-purple">보라색</span>: 숫자</li>
+                            <li>• 라인 번호 표시</li>
+                            <li>• 현재 줄 하이라이트</li>
+                        </ul>
+                    </div>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">실행 결과</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">🖥️ 실행 결과</label>
                     <div id="output" class="output-panel">
                         실행 버튼을 눌러 코드를 실행해보세요!
+                        
+💡 코드 에디터에서 다음 기능들을 확인해보세요:
+• 함수명이 파란색으로 표시됩니다
+• 문자열이 초록색으로 표시됩니다  
+• 주석이 회색으로 표시됩니다
+• 라인 번호가 표시됩니다
                     </div>
                 </div>
             </div>
@@ -323,7 +259,7 @@ print(f"안녕하세요 {name}님! {robot}과 함께 파이썬을 배워봅시�
                 <div class="bg-gray-800 text-green-400 p-3 rounded font-mono text-sm mb-4">
                     <div>안녕하세요 [여러분의 이름]님!</div>
                     <div>MechDog 파이썬 학습-레슨1</div>
-                    <div>오늘 날짜: 2025-06-09</div>
+                    <div>오늘 날짜: 2025-06-13</div>
                     <div>첫 번째 레슨 완료!</div>
                 </div>
                 
@@ -414,6 +350,7 @@ print(f"안녕하세요 {name}님! {robot}과 함께 파이썬을 배워봅시�
                     <li>• <strong>문자열:</strong> 따옴표(" " 또는 ' ')로 감싸서 표현</li>
                     <li>• <strong>첫 번째 코드:</strong> "Hello, World!" 출력 성공</li>
                     <li>• <strong>MechDog 연결:</strong> 로봇 제어의 첫 걸음</li>
+                    <li>• <strong>코드 에디터:</strong> VSCode 스타일의 문법 강조 사용법</li>
                 </ul>
             </div>
             
@@ -437,149 +374,64 @@ print(f"안녕하세요 {name}님! {robot}과 함께 파이썬을 배워봅시�
         </section>
     </main>
 
+    <!-- 공통 스크립트 -->
+    <script src="common-scripts.js"></script>
+    
     <script>
-        let pyodide = null;
-
-        // Initialize Pyodide
-        async function initPyodide() {
-            if (pyodide === null) {
-                document.getElementById('output').textContent = '파이썬 엔진을 준비하고 있습니다...';
-                pyodide = await loadPyodide();
-                document.getElementById('output').textContent = '준비 완료! 코드를 실행해보세요.';
-            }
-        }
-
-        // Run Python code
-        async function runPythonCode(code) {
-            if (pyodide === null) {
-                await initPyodide();
-            }
-            
-            try {
-                // Capture stdout
-                pyodide.runPython(`
-                    import sys
-                    from io import StringIO
-                    old_stdout = sys.stdout
-                    sys.stdout = captured_output = StringIO()
-                `);
-                
-                // Run user code
-                pyodide.runPython(code);
-                
-                // Get output
-                const output = pyodide.runPython(`
-                    sys.stdout = old_stdout
-                    captured_output.getvalue()
-                `);
-                
-                document.getElementById('output').textContent = output || '(출력 없음)';
-                
-                // Update progress
-                updateProgress();
-                
-            } catch (error) {
-                document.getElementById('output').textContent = `오류 발생:\n${error.message}`;
-            }
-        }
-
-        // Update progress
-        function updateProgress() {
-            let progress = JSON.parse(localStorage.getItem('mechDogLearningProgress') || '{"lessonsCompleted": 0, "codesRun": 0}');
-            progress.codesRun = (progress.codesRun || 0) + 1;
-            
-            // Mark lesson 1 as completed if not already
-            if (progress.lessonsCompleted < 1) {
-                progress.lessonsCompleted = 1;
-            }
-            
-            localStorage.setItem('mechDogLearningProgress', JSON.stringify(progress));
-        }
-
-        // Quiz handling
-        function handleQuizAnswer(quizId, selectedOption, isCorrect) {
-            const options = document.querySelectorAll(`[data-quiz="${quizId}"]`);
-            const resultDiv = document.getElementById(`quiz-${quizId}-result`);
-            
-            options.forEach(option => {
-                option.style.pointerEvents = 'none';
-                if (option === selectedOption) {
-                    option.classList.add(isCorrect ? 'correct' : 'incorrect');
-                } else if (option.dataset.answer === 'correct') {
-                    option.classList.add('correct');
-                }
-            });
-            
-            if (isCorrect) {
-                resultDiv.textContent = '정답입니다! 🎉';
-                resultDiv.className = 'mt-4 text-sm font-medium text-green-600';
-            } else {
-                resultDiv.textContent = '틀렸습니다. 다시 생각해보세요! 🤔';
-                resultDiv.className = 'mt-4 text-sm font-medium text-red-600';
-            }
-            
-            resultDiv.classList.remove('hidden');
-        }
-
-        // Event listeners
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize on first interaction
-            document.addEventListener('click', initPyodide, { once: true });
-            
-            // Run code button
-            document.getElementById('run-code').addEventListener('click', () => {
-                const code = document.getElementById('code-editor').value;
-                runPythonCode(code);
-            });
-            
-            // Clear code button
-            document.getElementById('clear-code').addEventListener('click', () => {
-                document.getElementById('code-editor').value = '';
-                document.getElementById('output').textContent = '에디터를 지웠습니다.';
-            });
-            
-            // Example code button
-            document.getElementById('example-code').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# print() 함수 5가지 사용법 종합 예제
-
-print("🤖 MechDog과 함께 배우는 파이썬!")
-print("=" * 40)
-
+        // 레슨 1 전용 코드
+        const lesson1DefaultCode = `# print() 함수의 다양한 사용법 실습
 # 1. 기본 출력
-print("1. 기본 출력 방법")
-print("Hello, Python World!")
+print("Hello, World!")
+print("안녕하세요, MechDog!")
 
-# 2. 여러 개 출력
-print("2. 여러 개 한번에 출력")
-print("MechDog", "파이썬", "학습", "시작!")
+# 2. 여러 개 출력 (쉼표로 구분)
+print("안녕", "나는", "파이썬", "학습자야")
 
-# 3. 줄 바꾸지 않고 이어서 출력
-print("3. 이어서 출력하기")
-print("안녕하세요", end=" ")
-print("MechDog입니다!")
+# 3. 줄 바꾸지 않기 (end 사용)
+print("MechDog이", end=" ")
+print("안녕하고 있어요!")
 
-# 4. 구분자 바꾸기
-print("4. 구분자 바꾸기")
-print("년", "월", "일", sep="-")
-print("사과", "바나나", "포도", sep=" | ")
+# 4. 구분자 바꾸기 (sep 사용)
+print("2025", "06", "13", sep="-")
+print("파이썬", "학습", "재미있어요", sep=" ★ ")
 
-# 5. 변수와 f-string
-print("5. 변수 활용하기")
-student_name = "김파이썬"
-lesson_number = 1
-print(f"학생 이름: {student_name}")
-print(f"현재 레슨: {lesson_number}번째")
-print(f"{student_name}님, 레슨 {lesson_number} 화이팅!")`;
-            });
-            
-            // Show solution button
-            document.getElementById('show-solution').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 도전 과제 정답
+# 5. 변수와 f-string 사용
+name = "학습자"
+robot = "MechDog"
+print(f"안녕하세요 {name}님! {robot}과 함께 파이썬을 배워봅시다!")`;
 
+        const lesson1ExampleCode = `# 🎨 문법 강조 기능 확인 예제
+# 주석은 회색으로 표시됩니다
+
+# 함수는 파란색으로 표시됩니다
+print("함수가 파란색으로 보이나요?")
+
+# 문자열은 초록색으로 표시됩니다
+message = "이 문자열은 초록색이에요!"
+print(message)
+
+# 숫자는 보라색으로 표시됩니다
+age = 25
+score = 95.5
+print(f"나이: {age}, 점수: {score}")
+
+# 키워드들도 색칠됩니다
+if age > 18:
+    print("성인입니다")
+else:
+    print("미성년자입니다")
+
+# 다양한 print() 함수 사용법
+print("=" * 30)
+print("MechDog", "파이썬", "학습", sep=" ★ ")
+print("완료!", end=" ")
+print("멋져요! 🎉")`;
+
+        const lesson1SolutionCode = `# 도전 과제 정답
 # 다양한 print() 함수 사용법을 활용한 해답
 
 # 변수 정의
-my_name = "공주"  # 여러분의 이름으로 바꿔보세요
+my_name = "김파이썬"  # 여러분의 이름으로 바꿔보세요
 
 # 1. f-string으로 이름 넣기
 print(f"안녕하세요 {my_name}님!")
@@ -588,21 +440,39 @@ print(f"안녕하세요 {my_name}님!")
 print("MechDog", "파이썬", "학습-레슨1", sep=" ")
 
 # 3. sep으로 날짜 형식 만들기
-print("오늘 날짜:", end="")
+print("오늘", "날짜:", end=" ")
 print("2025", "06", "13", sep="-")
 
 # 4. 기본 출력
-print("첫 번째 레슨 완료!")`;
-            });
+print("첫 번째 레슨 완료!")
+
+# 보너스: 더 예쁘게 꾸미기
+print("🎉" * 10)
+print(f"축하합니다 {my_name}님!")
+print("🎉" * 10)`;
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            // CodeMirror 에디터 초기화
+            initCodeEditor(lesson1DefaultCode);
             
-            // Quiz handlers
-            document.querySelectorAll('.quiz-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const quizId = option.dataset.quiz;
-                    const isCorrect = option.dataset.answer === 'correct';
-                    handleQuizAnswer(quizId, option, isCorrect);
+            // 공통 이벤트 리스너 설정
+            setupCommonEventListeners();
+            
+            // 레슨 1 전용 이벤트 리스너
+            const exampleButton = document.getElementById('example-code');
+            if (exampleButton) {
+                exampleButton.addEventListener('click', () => {
+                    setEditorValue(lesson1ExampleCode);
                 });
-            });
+            }
+            
+            const solutionButton = document.getElementById('show-solution');
+            if (solutionButton) {
+                solutionButton.addEventListener('click', () => {
+                    setEditorValue(lesson1SolutionCode);
+                });
+            }
         });
     </script>
 </body>

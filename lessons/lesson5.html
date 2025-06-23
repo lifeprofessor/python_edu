@@ -8,37 +8,28 @@
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     
+    <!-- CodeMirror 라이브러리 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/selection/active-line.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/foldcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/foldgutter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/brace-fold.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/indent-fold.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/foldgutter.min.css">
+    
+    <!-- 공통 스타일 -->
+    <link rel="stylesheet" href="common-styles.css">
+    
     <style>
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: 'Noto Sans KR', sans-serif;
             min-height: 100vh;
-        }
-        
-        .code-editor {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            border-radius: 12px;
-            padding: 1.5rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 14px;
-            border: 2px solid #404040;
-            resize: vertical;
-            min-height: 120px;
-        }
-        
-        .output-panel {
-            background: #0d1117;
-            color: #e6edf3;
-            border-radius: 12px;
-            padding: 1.5rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 14px;
-            min-height: 120px;
-            border: 2px solid #30363d;
-            white-space: pre-wrap;
-            overflow-y: auto;
-            resize: vertical;
         }
         
         .lesson-card {
@@ -226,11 +217,111 @@ print(f"5 + 3 = {합계}")</code></pre>
         <!-- Practice Section -->
         <section class="lesson-card mb-8">
             <h3 class="text-2xl font-bold text-gray-800 mb-4">💻 파이썬 함수 실습</h3>
+            <p class="text-gray-600 mb-4">✨ <strong>VSCode 스타일의 코드 에디터</strong>를 사용해보세요! 함수, 문자열, 주석이 자동으로 색칠됩니다.</p>
             
             <div class="grid md:grid-cols-2 gap-6">
                 <div>
-                    <textarea id="code-editor" class="code-editor w-full h-80">
-# MechDog 함수 시스템 - 초보자용
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        🎨 코드 에디터 (문법 강조 지원)
+                    </label>
+                    <div id="code-editor-container">
+                        <!-- CodeMirror will be initialized here -->
+                    </div>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-code" class="btn-primary text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center">
+                            <span class="mr-2">▶️</span> 실행하기
+                        </button>
+                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            🗑️ 지우기
+                        </button>
+                        <button id="basic-example" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            🔧 기본 함수
+                        </button>
+                        <button id="parameter-example" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            📥 매개변수
+                        </button>
+                    </div>
+                    
+                    <div class="flex space-x-2 mt-2">
+                        <button id="return-example" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">📤 반환값</button>
+                        <button id="default-example" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">⚙️ 기본값</button>
+                        <button id="advanced-example" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition-colors">🚀 고급 예제</button>
+                    </div>
+                    
+                    <!-- 에디터 기능 설명 -->
+                    <div class="editor-info">
+                        <div class="font-semibold">🎯 에디터 기능:</div>
+                        <ul>
+                            <li>• <span class="syntax-highlight-blue">파란색</span>: 함수와 키워드</li>
+                            <li>• <span class="syntax-highlight-green">초록색</span>: 문자열</li>
+                            <li>• <span class="syntax-highlight-gray">회색</span>: 주석</li>
+                            <li>• <span class="syntax-highlight-purple">보라색</span>: 숫자</li>
+                            <li>• 라인 번호 표시</li>
+                            <li>• 현재 줄 하이라이트</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">🖥️ 실행 결과</label>
+                    <div id="output" class="output-panel h-80">
+                        실행 버튼을 눌러 코드를 실행해보세요!
+                        
+💡 코드 에디터에서 다음 기능들을 확인해보세요:
+• 함수명이 파란색으로 표시됩니다
+• 문자열이 초록색으로 표시됩니다  
+• 주석이 회색으로 표시됩니다
+• 라인 번호가 표시됩니다
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenge -->
+        <section class="lesson-card mb-8">
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6">
+                <h4 class="text-lg font-bold text-yellow-800 mb-4">🎯 도전 과제</h4>
+                <p class="text-yellow-700 mb-4">MechDog 기본 함수들을 직접 만들어보세요:</p>
+                <ol class="text-yellow-700 space-y-1 mb-4">
+                    <li>1. <strong>인사_함수(이름)</strong>: 이름을 받아서 "안녕하세요 [이름]님!" 출력</li>
+                    <li>2. <strong>계산기(숫자1, 숫자2)</strong>: 두 숫자를 더한 결과 반환</li>
+                    <li>3. <strong>나이_계산(태어난년도, 현재년도=2024)</strong>: 나이를 계산해서 반환</li>
+                    <li>4. <strong>MechDog_동작()</strong>: 여러 동작을 순서대로 실행하는 함수</li>
+                </ol>
+                <p class="text-yellow-600 text-sm mb-4">💡 힌트: 매개변수, 반환값, 기본값을 모두 사용해보세요!</p>
+                <button id="show-challenge" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">도전 과제 보기</button>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 정리</h3>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-6">
+                <h4 class="text-lg font-bold text-green-800 mb-3">✅ 핵심 내용</h4>
+                <ul class="text-green-700 space-y-2">
+                    <li>• <strong>함수 정의:</strong> <code>def 함수이름():</code></li>
+                    <li>• <strong>매개변수:</strong> 함수에 값을 전달하는 방법</li>
+                    <li>• <strong>반환값:</strong> <code>return</code>으로 결과 반환</li>
+                    <li>• <strong>기본값:</strong> 매개변수에 기본값 설정 가능</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="flex justify-between items-center">
+            <a href="lesson4.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg">← 이전</a>
+            <a href="lesson6.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg">다음 →</a>
+        </section>
+    </main>
+
+    <!-- 공통 스크립트 -->
+    <script src="common-scripts.js"></script>
+    
+    <script>
+        // 레슨 5 전용 코드
+        const lesson5DefaultCode = `# MechDog 함수 시스템 - 초보자용
 
 print("🤖 MechDog 함수 시스템 시작!")
 print("함수를 하나씩 배워봅시다!")
@@ -259,61 +350,25 @@ def 몇번짖기(횟수):
     for i in range(횟수):
         print(f"  {i+1}번째: 멍멍!")
 
-def 이동하기(방향, 거리):
-    """방향과 거리를 받아서 이동하는 함수"""
-    print(f"🚶 MechDog이 {방향}으로 {거리}cm 이동합니다.")
-    if 방향 == "앞":
-        print("   앞으로 걸어가는 중...")
-    elif 방향 == "뒤":
-        print("   뒤로 걸어가는 중...")
-    elif 방향 == "왼쪽":
-        print("   왼쪽으로 돌아가는 중...")
-    elif 방향 == "오른쪽":
-        print("   오른쪽으로 돌아가는 중...")
-
 # 3. 반환값이 있는 함수 - 계산 결과를 돌려주는 함수
 def 더하기(a, b):
     """두 숫자를 더해서 결과를 돌려주는 함수"""
     결과 = a + b
     return 결과
 
-def 곱하기(a, b):
-    """두 숫자를 곱해서 결과를 돌려주는 함수"""
-    결과 = a * b
-    return 결과
-
-def 나이확인하기(태어난년도):
+def 나이계산하기(태어난년도):
     """태어난 년도를 받아서 나이를 계산하는 함수"""
-    현재년도 = 2024
+    현재년도 = 2025
     나이 = 현재년도 - 태어난년도
     return 나이
 
-def 성적평가하기(점수):
-    """점수를 받아서 등급을 돌려주는 함수"""
-    if 점수 >= 90:
-        return "A등급"
-    elif 점수 >= 80:
-        return "B등급"
-    elif 점수 >= 70:
-        return "C등급"
-    elif 점수 >= 60:
-        return "D등급"
-    else:
-        return "F등급"
-
 # 4. 기본값이 있는 함수 - 값을 안 넣어도 기본값을 사용하는 함수
-def 인사하기(이름="친구"):
+def 인사하기_기본값(이름="친구"):
     """이름을 받아서 인사하는 함수 (기본값: 친구)"""
     print(f"🐕 안녕하세요, {이름}님!")
     print("반갑습니다!")
 
-def 계산하기(숫자1, 숫자2=1):
-    """두 숫자를 더하는 함수 (두 번째 숫자 기본값: 1)"""
-    결과 = 숫자1 + 숫자2
-    print(f"{숫자1} + {숫자2} = {결과}")
-    return 결과
-
-# ===== 함수 테스트 시작 =====
+# 함수 테스트
 print("=== 1. 기본 함수 테스트 ===")
 인사하기()
 print()
@@ -325,176 +380,22 @@ print("=== 2. 매개변수 함수 테스트 ===")
 print()
 몇번짖기(3)
 print()
-이동하기("앞", 50)
-print()
-이동하기("왼쪽", 30)
-print()
 
 print("=== 3. 반환값 함수 테스트 ===")
-# 더하기 함수 사용
 합계 = 더하기(10, 5)
 print(f"10 + 5 = {합계}")
 
-# 곱하기 함수 사용
-곱셈결과 = 곱하기(4, 6)
-print(f"4 × 6 = {곱셈결과}")
-
-# 나이 확인하기 함수 사용
-나이 = 나이확인하기(2010)
+나이 = 나이계산하기(2010)
 print(f"2010년생의 나이: {나이}세")
-
-# 성적 평가하기 함수 사용
-등급 = 성적평가하기(85)
-print(f"85점의 등급: {등급}")
 print()
 
 print("=== 4. 기본값 함수 테스트 ===")
-# 기본값 사용
-인사하기()  # "안녕하세요, 친구님!"
-print()
-인사하기("영희")  # "안녕하세요, 영희님!"
-print()
+인사하기_기본값()  # "안녕하세요, 친구님!"
+인사하기_기본값("영희")  # "안녕하세요, 영희님!"
 
-# 계산하기 함수 테스트
-계산하기(10)  # 10 + 1 = 11
-계산하기(10, 5)  # 10 + 5 = 15
-print()
+print("\\n🎉 함수 학습 완료!")`;
 
-print("=== 5. 함수 조합 사용하기 ===")
-# 여러 함수를 조합해서 사용
-print("MechDog가 복잡한 작업을 수행합니다!")
-이름으로인사하기("주인님")
-몇번짖기(2)
-이동하기("앞", 20)
-
-# 계산 결과를 다른 함수에 사용
-점수1 = 더하기(85, 10)  # 95점
-점수2 = 더하기(70, 5)   # 75점
-평균점수 = 더하기(점수1, 점수2) / 2  # 85점
-
-print(f"\n평균 점수: {평균점수}점")
-최종등급 = 성적평가하기(평균점수)
-print(f"최종 등급: {최종등급}")
-
-print("\n🎉 모든 함수 테스트 완료!")
-print("함수를 잘 배우셨나요? 이제 MechDog를 더 똑똑하게 만들 수 있습니다!")
-</textarea>
-                    
-                    <div class="flex space-x-2 mt-4">
-                        <button id="run-code" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg">▶️ 실행</button>
-                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">지우기</button>
-                        <button id="basic-example" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">🔧 기본 함수</button>
-                        <button id="parameter-example" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg">📥 매개변수</button>
-                    </div>
-                    
-                    <div class="flex space-x-2 mt-2">
-                        <button id="return-example" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg">📤 반환값</button>
-                        <button id="default-example" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">⚙️ 기본값</button>
-                        <button id="advanced-example" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg">🚀 고급 예제</button>
-                    </div>
-                </div>
-                
-                <div>
-                    <div id="output" class="output-panel h-80">
-                        MechDog 함수 코드를 실행해보세요!
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Challenge -->
-        <section class="lesson-card mb-8">
-            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6">
-                <h4 class="text-lg font-bold text-yellow-800 mb-4">🎯 도전 과제</h4>
-                <p class="text-yellow-700 mb-4">MechDog 스마트 홈 시스템을 함수로 만들어보세요:</p>
-                <ol class="text-yellow-700 space-y-1 mb-4">
-                    <li>1. <code>greet_visitor(name)</code>: 방문자 인사 함수</li>
-                    <li>2. <code>patrol_area(rounds=3)</code>: 순찰 함수</li>
-                    <li>3. <code>emergency_response(danger_level)</code>: 응급 대응 함수</li>
-                    <li>4. <code>daily_report()</code>: 일일 보고서 함수</li>
-                </ol>
-                <button id="show-challenge" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">도전 과제 보기</button>
-            </div>
-        </section>
-
-        <!-- Summary -->
-        <section class="lesson-card mb-8">
-            <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 정리</h3>
-            
-            <div class="bg-green-50 border-l-4 border-green-500 p-6">
-                <h4 class="text-lg font-bold text-green-800 mb-3">✅ 핵심 내용</h4>
-                <ul class="text-green-700 space-y-2">
-                    <li>• <strong>함수 정의:</strong> <code>def 함수이름():</code></li>
-                    <li>• <strong>매개변수:</strong> 함수에 값을 전달하는 방법</li>
-                    <li>• <strong>반환값:</strong> <code>return</code>으로 결과 반환</li>
-                    <li>• <strong>기본값:</strong> 매개변수에 기본값 설정 가능</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Navigation -->
-        <section class="flex justify-between items-center">
-            <a href="lesson4.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg">← 이전</a>
-            <a href="lesson6.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg">다음 →</a>
-        </section>
-    </main>
-
-    <script>
-        let pyodide = null;
-
-        async function initPyodide() {
-            if (pyodide === null) {
-                document.getElementById('output').textContent = '파이썬 엔진 준비 중...';
-                pyodide = await loadPyodide();
-                document.getElementById('output').textContent = '준비 완료!';
-            }
-        }
-
-        async function runPythonCode(code) {
-            if (pyodide === null) await initPyodide();
-            
-            try {
-                pyodide.runPython(`
-                    import sys
-                    from io import StringIO
-                    old_stdout = sys.stdout
-                    sys.stdout = captured_output = StringIO()
-                `);
-                
-                pyodide.runPython(code);
-                
-                const output = pyodide.runPython(`
-                    sys.stdout = old_stdout
-                    captured_output.getvalue()
-                `);
-                
-                document.getElementById('output').textContent = output || '(출력 없음)';
-                
-                // Update progress
-                let progress = JSON.parse(localStorage.getItem('mechDogLearningProgress') || '{"lessonsCompleted": 0, "codesRun": 0}');
-                progress.codesRun = (progress.codesRun || 0) + 1;
-                if (progress.lessonsCompleted < 5) progress.lessonsCompleted = 5;
-                localStorage.setItem('mechDogLearningProgress', JSON.stringify(progress));
-                
-            } catch (error) {
-                document.getElementById('output').textContent = `오류:\n${error.message}`;
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.addEventListener('click', initPyodide, { once: true });
-            
-            document.getElementById('run-code').addEventListener('click', () => {
-                runPythonCode(document.getElementById('code-editor').value);
-            });
-            
-            document.getElementById('clear-code').addEventListener('click', () => {
-                document.getElementById('code-editor').value = '';
-                document.getElementById('output').textContent = '에디터를 지웠습니다.';
-            });
-            
-            document.getElementById('basic-example').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 🔧 기본 함수 예제 - MechDog 동작 시스템
+        const lesson5BasicExample = `# 🔧 기본 함수 예제 - MechDog 동작 시스템
 
 print("🤖 MechDog 기본 함수 예제")
 print("함수가 무엇인지 쉽게 배워봅시다!")
@@ -521,35 +422,8 @@ def 일어서기():
     print("🐕 일어서!")
     print("MechDog가 일어섰습니다.")
 
-# 2. 함수들을 순서대로 실행하는 함수
-def 기본동작시퀀스():
-    """기본 동작들을 순서대로 실행하는 함수"""
-    print("🎬 기본 동작 시퀀스 시작!")
-    print()
-    
-    print("1단계: 인사하기")
-    인사하기()
-    print()
-    
-    print("2단계: 앉기")
-    앉기()
-    print()
-    
-    print("3단계: 짖기")
-    짖기()
-    print()
-    
-    print("4단계: 일어서기")
-    일어서기()
-    print()
-    
-    print("✅ 시퀀스 완료!")
-
 # 함수 호출하기
 print("=== 개별 함수 테스트 ===")
-print("각 함수를 하나씩 실행해봅니다.")
-print()
-
 인사하기()
 print()
 짖기()
@@ -557,21 +431,10 @@ print()
 앉기()
 print()
 일어서기()
-print()
 
-print("=== 시퀀스 테스트 ===")
-print("이제 모든 동작을 순서대로 실행해봅니다.")
-print()
+print("\\n🎉 기본 함수 예제 완료!")`;
 
-기본동작시퀀스()
-
-print("🎉 기본 함수 예제 완료!")
-print("함수는 이렇게 특정 작업을 수행하는 코드의 모음입니다!")
-print("마치 요리 레시피처럼, 순서대로 실행하면 원하는 결과가 나옵니다.")`;
-            });
-            
-            document.getElementById('parameter-example').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 📥 매개변수 함수 예제 - MechDog 제어 시스템
+        const lesson5ParameterExample = `# 📥 매개변수 함수 예제 - MechDog 제어 시스템
 
 print("🤖 MechDog 매개변수 함수 예제")
 print("함수에 값을 전달하는 방법을 배워봅시다!")
@@ -594,98 +457,16 @@ def 몇번짖기(횟수):
 def 이동하기(방향, 거리):
     """방향과 거리를 받아서 이동하는 함수"""
     print(f"🚶 MechDog가 {방향}으로 {거리}cm 이동합니다.")
-    
-    if 방향 == "앞":
-        print("   앞으로 걸어가는 중...")
-    elif 방향 == "뒤":
-        print("   뒤로 걸어가는 중...")
-    elif 방향 == "왼쪽":
-        print("   왼쪽으로 돌아가는 중...")
-    elif 방향 == "오른쪽":
-        print("   오른쪽으로 돌아가는 중...")
-
-# 4. 색상을 받아서 LED를 설정하는 함수
-def LED색상설정하기(색상):
-    """색상을 받아서 LED를 설정하는 함수"""
-    print(f"💡 LED를 {색상}색으로 설정합니다.")
-    
-    if 색상 == "빨강":
-        print("   🔴 위험 모드")
-    elif 색상 == "파랑":
-        print("   🔵 대기 모드")
-    elif 색상 == "초록":
-        print("   🟢 정상 모드")
-    elif 색상 == "노랑":
-        print("   🟡 주의 모드")
-
-# 5. 나이를 받아서 적절한 동작을 하는 함수
-def 나이별동작하기(나이):
-    """나이에 따라 다른 동작을 하는 함수"""
-    print(f"👤 {나이}세를 위한 동작을 시작합니다.")
-    
-    if 나이 < 10:
-        print("   🎈 어린이 모드: 장난감 놀이")
-        몇번짖기(2)
-    elif 나이 < 20:
-        print("   🎮 청소년 모드: 게임 동반")
-        LED색상설정하기("파랑")
-    elif 나이 < 60:
-        print("   💼 성인 모드: 업무 보조")
-        이동하기("앞", 30)
-    else:
-        print("   👴 노인 모드: 건강 관리")
-        LED색상설정하기("초록")
 
 # 함수 테스트
 print("=== 매개변수 함수 테스트 ===")
-print("다양한 값들을 함수에 전달해봅니다.")
-print()
-
-print("1. 이름으로 인사하기")
 이름으로인사하기("철수")
-이름으로인사하기("영희")
-이름으로인사하기("주인님")
-print()
-
-print("2. 몇 번 짖기")
-몇번짖기(1)
 몇번짖기(3)
-몇번짖기(5)
-print()
-
-print("3. 이동하기")
 이동하기("앞", 20)
-이동하기("뒤", 10)
-이동하기("왼쪽", 15)
-이동하기("오른쪽", 25)
-print()
 
-print("4. LED 색상 설정하기")
-LED색상설정하기("빨강")
-LED색상설정하기("초록")
-LED색상설정하기("노랑")
-print()
+print("\\n🎉 매개변수 함수 예제 완료!")`;
 
-print("5. 나이별 동작하기")
-나이별동작하기(8)   # 어린이
-print()
-나이별동작하기(15)  # 청소년
-print()
-나이별동작하기(30)  # 성인
-print()
-나이별동작하기(70)  # 노인
-print()
-
-print("=== 매개변수의 장점 ===")
-print("매개변수를 사용하면 같은 함수로 다양한 결과를 만들 수 있습니다!")
-print("마치 자판기처럼, 다른 동전을 넣으면 다른 음료수가 나옵니다.")
-
-print("🎉 매개변수 함수 예제 완료!")
-print("이제 함수에 값을 전달하는 방법을 알게 되었습니다!")`;
-            });
-            
-            document.getElementById('return-example').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 📤 반환값 함수 예제 - MechDog 계산 시스템
+        const lesson5ReturnExample = `# 📤 반환값 함수 예제 - MechDog 계산 시스템
 
 print("🤖 MechDog 반환값 함수 예제")
 print("함수에서 결과를 받아오는 방법을 배워봅시다!")
@@ -697,20 +478,14 @@ def 더하기(a, b):
     결과 = a + b
     return 결과
 
-# 2. 두 숫자를 곱해서 결과를 돌려주는 함수
-def 곱하기(a, b):
-    """두 숫자를 곱해서 결과를 돌려주는 함수"""
-    결과 = a * b
-    return 결과
-
-# 3. 태어난 년도를 받아서 나이를 계산하는 함수
+# 2. 나이를 계산하는 함수
 def 나이계산하기(태어난년도):
     """태어난 년도를 받아서 나이를 계산하는 함수"""
     현재년도 = 2024
     나이 = 현재년도 - 태어난년도
     return 나이
 
-# 4. 점수를 받아서 등급을 돌려주는 함수
+# 3. 성적 평가하는 함수
 def 성적평가하기(점수):
     """점수를 받아서 등급을 돌려주는 함수"""
     if 점수 >= 90:
@@ -719,127 +494,23 @@ def 성적평가하기(점수):
         return "B등급"
     elif 점수 >= 70:
         return "C등급"
-    elif 점수 >= 60:
-        return "D등급"
     else:
         return "F등급"
 
-# 5. 온도를 받아서 날씨 상태를 돌려주는 함수
-def 날씨상태확인하기(온도):
-    """온도를 받아서 날씨 상태를 돌려주는 함수"""
-    if 온도 >= 30:
-        return "더움"
-    elif 온도 >= 20:
-        return "따뜻함"
-    elif 온도 >= 10:
-        return "시원함"
-    elif 온도 >= 0:
-        return "추움"
-    else:
-        return "매우 추움"
-
-# 6. 여러 정보를 한 번에 돌려주는 함수
-def 학생정보분석하기(이름, 나이, 점수):
-    """학생 정보를 분석해서 결과를 돌려주는 함수"""
-    등급 = 성적평가하기(점수)
-    
-    if 나이 < 20:
-        연령대 = "청소년"
-    elif 나이 < 30:
-        연령대 = "청년"
-    else:
-        연령대 = "성인"
-    
-    return {
-        "이름": 이름,
-        "나이": 나이,
-        "점수": 점수,
-        "등급": 등급,
-        "연령대": 연령대
-    }
-
 # 함수 테스트
 print("=== 반환값 함수 테스트 ===")
-print("함수에서 결과를 받아와서 사용해봅니다.")
-print()
+결과 = 더하기(10, 5)
+print(f"10 + 5 = {결과}")
 
-print("1. 더하기 함수")
-결과1 = 더하기(10, 5)
-print(f"10 + 5 = {결과1}")
+나이 = 나이계산하기(2010)
+print(f"2010년생의 나이: {나이}세")
 
-결과2 = 더하기(20, 30)
-print(f"20 + 30 = {결과2}")
-print()
+등급 = 성적평가하기(85)
+print(f"85점의 등급: {등급}")
 
-print("2. 곱하기 함수")
-곱셈결과1 = 곱하기(4, 6)
-print(f"4 × 6 = {곱셈결과1}")
+print("\\n🎉 반환값 함수 예제 완료!")`;
 
-곱셈결과2 = 곱하기(7, 8)
-print(f"7 × 8 = {곱셈결과2}")
-print()
-
-print("3. 나이 계산하기")
-나이1 = 나이계산하기(2010)
-print(f"2010년생의 나이: {나이1}세")
-
-나이2 = 나이계산하기(2005)
-print(f"2005년생의 나이: {나이2}세")
-print()
-
-print("4. 성적 평가하기")
-등급1 = 성적평가하기(95)
-print(f"95점의 등급: {등급1}")
-
-등급2 = 성적평가하기(75)
-print(f"75점의 등급: {등급2}")
-
-등급3 = 성적평가하기(55)
-print(f"55점의 등급: {등급3}")
-print()
-
-print("5. 날씨 상태 확인하기")
-날씨1 = 날씨상태확인하기(35)
-print(f"35도의 날씨: {날씨1}")
-
-날씨2 = 날씨상태확인하기(15)
-print(f"15도의 날씨: {날씨2}")
-
-날씨3 = 날씨상태확인하기(-5)
-print(f"-5도의 날씨: {날씨3}")
-print()
-
-print("6. 학생 정보 분석하기")
-학생1 = 학생정보분석하기("철수", 16, 85)
-print(f"학생1 정보: {학생1}")
-
-학생2 = 학생정보분석하기("영희", 25, 92)
-print(f"학생2 정보: {학생2}")
-print()
-
-print("=== 반환값의 장점 ===")
-print("반환값을 사용하면 함수의 결과를 다른 곳에서 활용할 수 있습니다!")
-print("마치 계산기처럼, 계산 결과를 받아서 다른 계산에 사용할 수 있습니다.")
-
-print("=== 함수 조합 사용하기 ===")
-# 여러 함수의 결과를 조합해서 사용
-국어 = 85
-영어 = 90
-수학 = 78
-
-평균점수 = (국어 + 영어 + 수학) / 3
-print(f"세 과목 점수: {국어}, {영어}, {수학}")
-print(f"평균 점수: {평균점수:.1f}")
-
-최종등급 = 성적평가하기(평균점수)
-print(f"최종 등급: {최종등급}")
-
-print("🎉 반환값 함수 예제 완료!")
-print("이제 함수에서 결과를 받아오는 방법을 알게 되었습니다!")`;
-            });
-            
-            document.getElementById('default-example').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# ⚙️ 기본값 함수 예제 - MechDog 스마트 시스템
+        const lesson5DefaultExample = `# ⚙️ 기본값 함수 예제 - MechDog 스마트 시스템
 
 print("🤖 MechDog 기본값 함수 예제")
 print("함수에 기본값을 설정하는 방법을 배워봅시다!")
@@ -858,377 +529,204 @@ def 짖기(횟수=1):
     for i in range(횟수):
         print(f"  {i+1}번째: 멍멍!")
 
-# 3. 방향과 거리에 기본값을 설정한 이동 함수
-def 이동하기(방향="앞", 거리=10):
-    """방향과 거리를 받아서 이동하는 함수 (기본값: 앞, 10cm)"""
-    print(f"🚶 MechDog가 {방향}으로 {거리}cm 이동합니다.")
-    
-    if 방향 == "앞":
-        print("   앞으로 걸어가는 중...")
-    elif 방향 == "뒤":
-        print("   뒤로 걸어가는 중...")
-    elif 방향 == "왼쪽":
-        print("   왼쪽으로 돌아가는 중...")
-    elif 방향 == "오른쪽":
-        print("   오른쪽으로 돌아가는 중...")
-
-# 4. 색상과 밝기에 기본값을 설정한 LED 함수
-def LED설정하기(색상="초록", 밝기=100):
-    """색상과 밝기를 설정하는 함수 (기본값: 초록, 100%)"""
-    print(f"💡 LED를 {색상}색으로 설정 (밝기: {밝기}%)")
-    
-    if 색상 == "빨강":
-        print("   🔴 위험 모드")
-    elif 색상 == "파랑":
-        print("   🔵 대기 모드")
-    elif 색상 == "초록":
-        print("   🟢 정상 모드")
-    elif 색상 == "노랑":
-        print("   🟡 주의 모드")
-
-# 5. 계산 함수에 기본값 설정
-def 계산하기(숫자1, 숫자2=1, 연산="더하기"):
-    """두 숫자를 계산하는 함수 (기본값: 숫자2=1, 연산=더하기)"""
-    if 연산 == "더하기":
-        결과 = 숫자1 + 숫자2
-        print(f"{숫자1} + {숫자2} = {결과}")
-    elif 연산 == "빼기":
-        결과 = 숫자1 - 숫자2
-        print(f"{숫자1} - {숫자2} = {결과}")
-    elif 연산 == "곱하기":
-        결과 = 숫자1 * 숫자2
-        print(f"{숫자1} × {숫자2} = {결과}")
-    elif 연산 == "나누기":
-        if 숫자2 != 0:
-            결과 = 숫자1 / 숫자2
-            print(f"{숫자1} ÷ {숫자2} = {결과}")
-        else:
-            print("0으로 나눌 수 없습니다!")
-            return
-    
+# 3. 계산 함수에 기본값 설정
+def 계산하기(숫자1, 숫자2=1):
+    """두 숫자를 더하는 함수 (기본값: 숫자2=1)"""
+    결과 = 숫자1 + 숫자2
+    print(f"{숫자1} + {숫자2} = {결과}")
     return 결과
 
 # 함수 테스트
 print("=== 기본값 함수 테스트 ===")
-print("다양한 방법으로 함수를 호출해봅니다.")
-print()
-
-print("1. 인사하기 함수 테스트")
-print("기본값 사용:")
+# 기본값 사용
 인사하기()  # "안녕하세요, 친구님!"
-print()
-
-print("새 값 사용:")
-인사하기("철수")  # "안녕하세요, 철수님!"
-인사하기("영희")  # "안녕하세요, 영희님!"
-print()
-
-print("2. 짖기 함수 테스트")
-print("기본값 사용:")
-짖기()  # 1번 짖기
-print()
-
-print("새 값 사용:")
-짖기(3)  # 3번 짖기
-짖기(5)  # 5번 짖기
-print()
-
-print("3. 이동하기 함수 테스트")
-print("모든 기본값 사용:")
-이동하기()  # 앞으로 10cm
-print()
-
-print("일부 값만 지정:")
-이동하기("뒤")  # 뒤로 10cm (거리는 기본값)
-이동하기(거리=20)  # 앞으로 20cm (방향은 기본값)
-print()
-
-print("모든 값 지정:")
-이동하기("왼쪽", 15)  # 왼쪽으로 15cm
-print()
-
-print("4. LED 설정하기 함수 테스트")
-print("기본값 사용:")
-LED설정하기()  # 초록색, 100% 밝기
-print()
-
-print("일부 값만 지정:")
-LED설정하기("빨강")  # 빨간색, 100% 밝기
-LED설정하기(밝기=50)  # 초록색, 50% 밝기
-print()
-
-print("모든 값 지정:")
-LED설정하기("노랑", 75)  # 노란색, 75% 밝기
-print()
-
-print("5. 계산하기 함수 테스트")
-print("기본값 사용:")
+짖기()     # 1번 짖기
 계산하기(10)  # 10 + 1 = 11
+
 print()
 
-print("일부 값만 지정:")
-계산하기(10, 5)  # 10 + 5 = 15
-계산하기(10, 연산="곱하기")  # 10 × 1 = 10
-print()
+# 새 값 사용
+인사하기("철수")
+짖기(3)
+계산하기(10, 5)
 
-print("모든 값 지정:")
-계산하기(20, 4, "빼기")  # 20 - 4 = 16
-계산하기(15, 3, "나누기")  # 15 ÷ 3 = 5.0
-print()
+print("\\n🎉 기본값 함수 예제 완료!")`;
 
-print("=== 기본값의 장점 ===")
-print("기본값을 사용하면:")
-print("1. 함수를 더 간단하게 호출할 수 있습니다")
-print("2. 필요한 값만 바꿔서 사용할 수 있습니다")
-print("3. 실수를 줄일 수 있습니다")
-print("마치 자판기의 기본 음료수처럼, 아무것도 선택하지 않아도 기본값이 나옵니다!")
-
-print("🎉 기본값 함수 예제 완료!")
-print("이제 함수에 기본값을 설정하는 방법을 알게 되었습니다!")`;
-            });
-            
-            document.getElementById('advanced-example').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 🚀 고급 함수 예제 - MechDog 종합 시스템
+        const lesson5AdvancedExample = `# 🚀 고급 함수 예제 - MechDog 종합 시스템
 
 print("🤖 MechDog 고급 함수 예제")
 print("여러 함수를 조합해서 복잡한 시스템을 만들어봅시다!")
 print()
 
-# 1. 학생 정보를 관리하는 함수들
-def 학생등록하기(이름, 나이, 학년):
+# 1. 학생 관리 함수들
+def 학생등록하기(이름, 나이):
     """새로운 학생을 등록하는 함수"""
-    print(f"👤 학생 등록: {이름} ({나이}세, {학년}학년)")
-    return {"이름": 이름, "나이": 나이, "학년": 학년}
-
-def 성적입력하기(학생, 과목, 점수):
-    """학생의 성적을 입력하는 함수"""
-    if "성적" not in 학생:
-        학생["성적"] = {}
-    
-    학생["성적"][과목] = 점수
-    print(f"📝 {학생['이름']}의 {과목} 성적: {점수}점")
+    학생 = {"이름": 이름, "나이": 나이, "성적": []}
+    print(f"👤 학생 등록: {이름} ({나이}세)")
     return 학생
+
+def 성적추가하기(학생, 점수):
+    """학생의 성적을 추가하는 함수"""
+    학생["성적"].append(점수)
+    print(f"📝 {학생['이름']}의 성적 추가: {점수}점")
 
 def 평균계산하기(학생):
     """학생의 평균 점수를 계산하는 함수"""
-    if "성적" not in 학생 or not 학생["성적"]:
+    if not 학생["성적"]:
         return 0
-    
-    총점 = sum(학생["성적"].values())
-    과목수 = len(학생["성적"])
-    평균 = 총점 / 과목수
+    평균 = sum(학생["성적"]) / len(학생["성적"])
     return 평균
 
-def 등급평가하기(평균):
-    """평균 점수에 따른 등급을 평가하는 함수"""
-    if 평균 >= 90:
-        return "A등급"
-    elif 평균 >= 80:
-        return "B등급"
-    elif 평균 >= 70:
-        return "C등급"
-    elif 평균 >= 60:
-        return "D등급"
-    else:
-        return "F등급"
-
-# 2. MechDog 동작을 조합하는 함수들
-def 인사시퀀스(이름):
-    """인사와 함께 기본 동작을 수행하는 함수"""
-    print(f"🐕 {이름}님을 위한 인사 시퀀스 시작!")
-    
-    # LED 설정
-    print("💡 LED를 파란색으로 설정")
-    
-    # 인사
-    print(f"안녕하세요, {이름}님!")
-    print("MechDog가 인사드립니다!")
-    
-    # 짖기
-    print("멍멍! 멍멍!")
-    
-    # 이동
-    print("앞으로 5cm 이동")
-    
-    print("✅ 인사 시퀀스 완료!")
-
-def 학습모드시퀀스(학생):
-    """학습을 위한 동작 시퀀스"""
-    print(f"📚 {학생['이름']}님의 학습 모드 시작!")
-    
-    # LED를 초록색으로 설정 (집중 모드)
-    print("💡 LED를 초록색으로 설정 (집중 모드)")
-    
-    # 학습 시간 계산 (나이에 따라)
-    if 학생['나이'] < 15:
-        학습시간 = 30
-    elif 학생['나이'] < 18:
-        학습시간 = 45
-    else:
-        학습시간 = 60
-    
-    print(f"⏰ 권장 학습 시간: {학습시간}분")
-    
-    # 성적 확인
-    평균 = 평균계산하기(학생)
-    if 평균 > 0:
-        등급 = 등급평가하기(평균)
-        print(f"📊 현재 평균: {평균:.1f}점 ({등급})")
-        
-        if 등급 in ["A등급", "B등급"]:
-            print("🎉 훌륭한 성적입니다! 계속 노력하세요!")
-        elif 등급 == "C등급":
-            print("📖 조금 더 노력하면 좋은 성적을 받을 수 있습니다!")
-        else:
-            print("📚 더 열심히 공부해보세요! MechDog가 응원합니다!")
-    
-    print("✅ 학습 모드 설정 완료!")
-
-def 놀이모드시퀀스(이름, 나이):
-    """놀이를 위한 동작 시퀀스"""
-    print(f"🎮 {이름}님의 놀이 모드 시작!")
-    
-    # 나이에 따른 놀이 선택
+# 2. MechDog 동작 함수들
+def 환영인사(이름, 나이):
+    """나이에 맞는 환영 인사"""
+    print(f"🐕 안녕하세요, {이름}님!")
     if 나이 < 10:
-        놀이 = "장난감 놀이"
-        LED색상 = "노랑"
-        짖기횟수 = 3
-    elif 나이 < 15:
-        놀이 = "게임 동반"
-        LED색상 = "파랑"
-        짖기횟수 = 2
+        print("어린 친구네요! 함께 놀아요!")
+    elif 나이 < 20:
+        print("청소년이시군요! 열심히 공부해요!")
     else:
-        놀이 = "산책 동반"
-        LED색상 = "초록"
-        짖기횟수 = 1
-    
-    print(f"💡 LED를 {LED색상}색으로 설정")
-    print(f"🎯 선택된 놀이: {놀이}")
-    
-    # 짖기
-    for i in range(짖기횟수):
-        print(f"  {i+1}번째: 멍멍!")
-    
-    # 이동
-    print("앞으로 10cm 이동")
-    print("왼쪽으로 5cm 이동")
-    print("뒤로 5cm 이동")
-    
-    print("✅ 놀이 모드 완료!")
+        print("성인이시군요! 멋져요!")
 
-# 3. 종합 시스템 함수
-def MechDog종합시스템():
-    """MechDog의 종합 시스템을 실행하는 함수"""
-    print("🤖 MechDog 종합 시스템 시작!")
-    print("=" * 40)
+def 성적리포트(학생):
+    """학생의 성적 리포트를 출력하는 함수"""
+    평균 = 평균계산하기(학생)
+    print(f"📊 {학생['이름']}님의 성적 리포트")
+    print(f"   평균 점수: {평균:.1f}점")
     
-    # 학생 등록
-    학생1 = 학생등록하기("철수", 16, 2)
-    학생2 = 학생등록하기("영희", 14, 1)
-    학생3 = 학생등록하기("민수", 18, 3)
-    
-    print()
-    
-    # 성적 입력
-    성적입력하기(학생1, "수학", 85)
-    성적입력하기(학생1, "영어", 90)
-    성적입력하기(학생1, "과학", 78)
-    
-    성적입력하기(학생2, "수학", 95)
-    성적입력하기(학생2, "영어", 88)
-    
-    성적입력하기(학생3, "수학", 70)
-    성적입력하기(학생3, "영어", 65)
-    성적입력하기(학생3, "과학", 80)
-    
-    print()
-    
-    # 각 학생별 MechDog 동작
-    print("=== 학생별 MechDog 동작 ===")
-    
-    # 철수 - 학습 모드
-    인사시퀀스("철수")
-    print()
-    학습모드시퀀스(학생1)
-    print()
-    
-    # 영희 - 놀이 모드
-    인사시퀀스("영희")
-    print()
-    놀이모드시퀀스("영희", 14)
-    print()
-    
-    # 민수 - 학습 모드
-    인사시퀀스("민수")
-    print()
-    학습모드시퀀스(학생3)
-    print()
-    
-    # 전체 성적 보고서
-    print("=== 📊 전체 성적 보고서 ===")
-    for 학생 in [학생1, 학생2, 학생3]:
-        평균 = 평균계산하기(학생)
-        등급 = 등급평가하기(평균)
-        print(f"{학생['이름']} ({학생['나이']}세): 평균 {평균:.1f}점 ({등급})")
-    
-    print()
-    print("🎉 MechDog 종합 시스템 완료!")
-    print("함수들을 조합해서 복잡한 시스템을 만들 수 있습니다!")
+    if 평균 >= 90:
+        print("   🏆 최우수 학생입니다!")
+    elif 평균 >= 80:
+        print("   🎉 우수한 성적입니다!")
+    elif 평균 >= 70:
+        print("   📚 더 노력해보세요!")
+    else:
+        print("   💪 열심히 공부해야겠어요!")
 
 # 시스템 실행
-MechDog종합시스템()
+print("=== MechDog 종합 시스템 실행 ===")
 
-print("🎉 고급 함수 예제 완료!")
-print("이제 여러 함수를 조합해서 복잡한 프로그램을 만들 수 있습니다!")`;
-            });
-            
-            document.getElementById('show-challenge').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 🎯 도전 과제: MechDog 스마트 홈 시스템
+# 학생 등록
+철수 = 학생등록하기("철수", 16)
+영희 = 학생등록하기("영희", 14)
 
-print("🏠 MechDog 스마트 홈 시스템 구축")
+print()
+
+# 환영 인사
+환영인사("철수", 16)
+환영인사("영희", 14)
+
+print()
+
+# 성적 관리
+성적추가하기(철수, 85)
+성적추가하기(철수, 90)
+성적추가하기(철수, 78)
+
+성적추가하기(영희, 95)
+성적추가하기(영희, 88)
+
+print()
+
+# 성적 리포트
+성적리포트(철수)
+성적리포트(영희)
+
+print("\\n🎉 고급 함수 예제 완료!")`;
+
+        const lesson5ChallengeCode = `# 🎯 도전 과제: MechDog 기본 함수 만들기
+
+print("🤖 MechDog 기본 함수 도전 과제")
 print("다음 함수들을 완성해보세요!")
 print()
 
 # 여기에 코드를 작성하세요!
 
-def greet_visitor(name):
-    """방문자 인사 함수"""
-    # 방문자에게 인사하는 코드를 작성하세요
-    # 예: "안녕하세요 [이름]님! MechDog입니다."
-    # 힌트: print() 함수를 사용하세요
+def 인사_함수(이름):
+    """이름을 받아서 인사하는 함수"""
+    # 힌트: print(f"안녕하세요 {이름}님!")
     pass
 
-def patrol_area(rounds=3):
-    """순찰 함수"""
-    # 지정된 횟수만큼 순찰하는 코드를 작성하세요
-    # 각 순찰마다 "N차 순찰 중... 이상무!" 출력
-    # 힌트: for 반복문을 사용하세요
+def 계산기(숫자1, 숫자2):
+    """두 숫자를 더한 결과를 반환하는 함수"""
+    # 힌트: return 숫자1 + 숫자2
     pass
 
-def emergency_response(danger_level):
-    """응급 대응 함수 (1=낮음, 2=보통, 3=높음)"""
-    # 위험도에 따른 대응 코드를 작성하세요
-    # 1: 경계 모드, 2: 주의 모드, 3: 위험 모드
-    # 힌트: if-elif-else 문을 사용하세요
+def 나이_계산(태어난년도, 현재년도=2024):
+    """나이를 계산해서 반환하는 함수 (기본값 사용)"""
+    # 힌트: return 현재년도 - 태어난년도
     pass
 
-def daily_report():
-    """일일 보고서 함수"""
-    # 하루 활동 보고서를 출력하는 코드를 작성하세요
-    # 순찰, 방문자 응대, 이상 상황 등을 포함
-    # 힌트: 여러 print() 문을 사용하세요
+def MechDog_동작():
+    """여러 동작을 순서대로 실행하는 함수"""
+    # 힌트: 위에서 만든 함수들을 사용해보세요
     pass
 
-# 시스템 테스트
-print("=== MechDog 스마트 홈 시스템 테스트 ===")
-greet_visitor("김철수")
-patrol_area(2)
-emergency_response(2)
-daily_report()
+# 함수 테스트
+print("=== 함수 테스트 ===")
+인사_함수("철수")
+결과 = 계산기(10, 5)
+print(f"계산 결과: {결과}")
+나이 = 나이_계산(2010)
+print(f"나이: {나이}세")
+MechDog_동작()
 
-print("✅ 스마트 홈 시스템 테스트 완료!")`;
-            });
-        });
+print("\\n✅ 도전 과제 완료!")`;
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            // CodeMirror 에디터 초기화
+            initCodeEditor(lesson5DefaultCode);
+            
+            // 공통 이벤트 리스너 설정
+            setupCommonEventListeners();
+            
+            // 레슨 5 전용 이벤트 리스너
+            const basicButton = document.getElementById('basic-example');
+            if (basicButton) {
+                basicButton.addEventListener('click', () => {
+                    setEditorValue(lesson5BasicExample);
+                });
+            }
+            
+            const parameterButton = document.getElementById('parameter-example');
+            if (parameterButton) {
+                parameterButton.addEventListener('click', () => {
+                    setEditorValue(lesson5ParameterExample);
+                });
+            }
+            
+            const returnButton = document.getElementById('return-example');
+            if (returnButton) {
+                returnButton.addEventListener('click', () => {
+                    setEditorValue(lesson5ReturnExample);
+                });
+            }
+            
+            const defaultButton = document.getElementById('default-example');
+            if (defaultButton) {
+                defaultButton.addEventListener('click', () => {
+                    setEditorValue(lesson5DefaultExample);
+                });
+            }
+            
+            const advancedButton = document.getElementById('advanced-example');
+            if (advancedButton) {
+                advancedButton.addEventListener('click', () => {
+                    setEditorValue(lesson5AdvancedExample);
+                });
+            }
+            
+            const challengeButton = document.getElementById('show-challenge');
+            if (challengeButton) {
+                challengeButton.addEventListener('click', () => {
+                    setEditorValue(lesson5ChallengeCode);
+                });
+            }
+                 });
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html> 

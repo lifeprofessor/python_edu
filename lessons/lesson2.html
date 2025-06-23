@@ -6,84 +6,19 @@
     <title>레슨 2: 변수와 데이터 타입 | MechDog 파이썬 학습</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    
+    <!-- CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/monokai.min.css">
+    
+    <!-- CodeMirror JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/python/python.min.js"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     
-    <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Noto Sans KR', sans-serif;
-            min-height: 100vh;
-        }
-        
-        .code-editor {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            border-radius: 12px;
-            padding: 1.5rem;
-            font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
-            font-size: 14px;
-            border: 2px solid #404040;
-            transition: all 0.3s ease;
-            resize: vertical;
-            min-height: 120px;
-        }
-        
-        .code-editor:focus {
-            outline: none;
-            border-color: #00d9ff;
-            box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
-        }
-        
-        .output-panel {
-            background: #0d1117;
-            color: #e6edf3;
-            border-radius: 12px;
-            padding: 1.5rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 14px;
-            min-height: 120px;
-            border: 2px solid #30363d;
-            white-space: pre-wrap;
-            overflow-y: auto;
-            resize: vertical;
-        }
-        
-        .lesson-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-        
-        .quiz-option {
-            background: #f3f4f6;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 1rem;
-            margin: 0.5rem 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .quiz-option:hover {
-            background: #e5e7eb;
-            transform: translateX(8px);
-        }
-        
-        .quiz-option.correct {
-            background: #dcfce7;
-            border-color: #16a34a;
-            color: #166534;
-        }
-        
-        .quiz-option.incorrect {
-            background: #fee2e2;
-            border-color: #dc2626;
-            color: #991b1b;
-        }
-    </style>
+    <!-- 공통 스타일 -->
+    <link rel="stylesheet" href="common-styles.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -228,61 +163,49 @@
             
             <div class="grid md:grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">코드 에디터</label>
-                    <textarea 
-                        id="code-editor" 
-                        class="code-editor w-full h-80"
-                        placeholder="여기에 파이썬 코드를 작성하세요..."
-                    ># MechDog 정보를 변수로 저장하기
-
-# 문자열 변수
-dog_name = "로보독"
-owner_name = "김파이썬"
-
-# 숫자 변수
-battery_level = 85  # 배터리 잔량 (%)
-temperature = 23.5  # 온도 (℃)
-leg_count = 4       # 다리 개수
-
-# 불린 변수
-is_standing = True   # 서있는 상태
-is_charging = False  # 충전 중
-
-# MechDog 정보 출력
-print("=== MechDog 정보 ===")
-print(f"이름: {dog_name}")
-print(f"주인: {owner_name}")
-print(f"배터리: {battery_level}%")
-print(f"온도: {temperature}℃")
-print(f"다리 개수: {leg_count}개")
-print(f"서있는 상태: {is_standing}")
-print(f"충전 중: {is_charging}")
-
-# 데이터 타입 확인
-print("\n=== 데이터 타입 확인 ===")
-print(f"dog_name의 타입: {type(dog_name)}")
-print(f"battery_level의 타입: {type(battery_level)}")
-print(f"temperature의 타입: {type(temperature)}")
-print(f"is_standing의 타입: {type(is_standing)}")
-</textarea>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        🎨 코드 에디터 (문법 강조 지원)
+                    </label>
+                    <div id="code-editor-container">
+                        <!-- CodeMirror will be initialized here -->
+                    </div>
                     
                     <div class="flex space-x-2 mt-4">
-                        <button id="run-code" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center">
+                        <button id="run-code" class="btn-primary text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center">
                             <span class="mr-2">▶️</span> 실행하기
                         </button>
                         <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
-                            지우기
+                            🗑️ 지우기
                         </button>
-                        <button id="example-code" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        <button id="example-code" class="btn-secondary text-white px-4 py-2 rounded-lg transition-colors">
                             💡 다른 예제
                         </button>
+                    </div>
+                    
+                    <!-- 에디터 기능 설명 -->
+                    <div class="editor-info">
+                        <div class="font-semibold">🎯 에디터 기능:</div>
+                        <ul>
+                            <li>• <span class="syntax-highlight-blue">파란색</span>: 함수와 키워드</li>
+                            <li>• <span class="syntax-highlight-green">초록색</span>: 문자열</li>
+                            <li>• <span class="syntax-highlight-gray">회색</span>: 주석</li>
+                            <li>• <span class="syntax-highlight-purple">보라색</span>: 숫자</li>
+                            <li>• 라인 번호 표시</li>
+                            <li>• 현재 줄 하이라이트</li>
+                        </ul>
                     </div>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">실행 결과</label>
-                    <div id="output" class="output-panel h-80">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">🖥️ 실행 결과</label>
+                    <div id="output" class="output-panel">
                         실행 버튼을 눌러 코드를 실행해보세요!
+                        
+💡 VSCode 스타일 에디터의 문법 강조 기능을 확인해보세요:
+• 함수명이 파란색으로 표시됩니다
+• 문자열이 초록색으로 표시됩니다  
+• 주석이 회색으로 표시됩니다
+• 라인 번호가 표시됩니다
                     </div>
                 </div>
             </div>
@@ -385,110 +308,44 @@ print(f"is_standing의 타입: {type(is_standing)}")
         </section>
     </main>
 
+    <!-- 공통 스크립트 -->
+    <script src="common-scripts.js"></script>
+    
     <script>
-        let pyodide = null;
+        // 레슨 2 전용 코드
+        const lesson2DefaultCode = `# MechDog 정보를 변수로 저장하기
 
-        // Initialize Pyodide
-        async function initPyodide() {
-            if (pyodide === null) {
-                document.getElementById('output').textContent = '파이썬 엔진을 준비하고 있습니다...';
-                pyodide = await loadPyodide();
-                document.getElementById('output').textContent = '준비 완료! 코드를 실행해보세요.';
-            }
-        }
+# 문자열 변수
+dog_name = "로보독"
+owner_name = "김파이썬"
 
-        // Run Python code
-        async function runPythonCode(code) {
-            if (pyodide === null) {
-                await initPyodide();
-            }
-            
-            try {
-                // Capture stdout
-                pyodide.runPython(`
-                    import sys
-                    from io import StringIO
-                    old_stdout = sys.stdout
-                    sys.stdout = captured_output = StringIO()
-                `);
-                
-                // Run user code
-                pyodide.runPython(code);
-                
-                // Get output
-                const output = pyodide.runPython(`
-                    sys.stdout = old_stdout
-                    captured_output.getvalue()
-                `);
-                
-                document.getElementById('output').textContent = output || '(출력 없음)';
-                
-                // Update progress
-                updateProgress();
-                
-            } catch (error) {
-                document.getElementById('output').textContent = `오류 발생:\n${error.message}`;
-            }
-        }
+# 숫자 변수
+battery_level = 85  # 배터리 잔량 (%)
+temperature = 23.5  # 온도 (℃)
+leg_count = 4       # 다리 개수
 
-        // Update progress
-        function updateProgress() {
-            let progress = JSON.parse(localStorage.getItem('mechDogLearningProgress') || '{"lessonsCompleted": 0, "codesRun": 0}');
-            progress.codesRun = (progress.codesRun || 0) + 1;
-            
-            // Mark lesson 2 as completed if not already
-            if (progress.lessonsCompleted < 2) {
-                progress.lessonsCompleted = 2;
-            }
-            
-            localStorage.setItem('mechDogLearningProgress', JSON.stringify(progress));
-        }
+# 불린 변수
+is_standing = True   # 서있는 상태
+is_charging = False  # 충전 중
 
-        // Quiz handling
-        function handleQuizAnswer(quizId, selectedOption, isCorrect) {
-            const options = document.querySelectorAll(`[data-quiz="${quizId}"]`);
-            const resultDiv = document.getElementById(`quiz-${quizId}-result`);
-            
-            options.forEach(option => {
-                option.style.pointerEvents = 'none';
-                if (option === selectedOption) {
-                    option.classList.add(isCorrect ? 'correct' : 'incorrect');
-                } else if (option.dataset.answer === 'correct') {
-                    option.classList.add('correct');
-                }
-            });
-            
-            if (isCorrect) {
-                resultDiv.textContent = '정답입니다! 🎉';
-                resultDiv.className = 'mt-4 text-sm font-medium text-green-600';
-            } else {
-                resultDiv.textContent = '틀렸습니다. 다시 생각해보세요! 🤔';
-                resultDiv.className = 'mt-4 text-sm font-medium text-red-600';
-            }
-            
-            resultDiv.classList.remove('hidden');
-        }
+# MechDog 정보 출력
+print("=== MechDog 정보 ===")
+print(f"이름: {dog_name}")
+print(f"주인: {owner_name}")
+print(f"배터리: {battery_level}%")
+print(f"온도: {temperature}℃")
+print(f"다리 개수: {leg_count}개")
+print(f"서있는 상태: {is_standing}")
+print(f"충전 중: {is_charging}")
 
-        // Event listeners
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize on first interaction
-            document.addEventListener('click', initPyodide, { once: true });
-            
-            // Run code button
-            document.getElementById('run-code').addEventListener('click', () => {
-                const code = document.getElementById('code-editor').value;
-                runPythonCode(code);
-            });
-            
-            // Clear code button
-            document.getElementById('clear-code').addEventListener('click', () => {
-                document.getElementById('code-editor').value = '';
-                document.getElementById('output').textContent = '에디터를 지웠습니다.';
-            });
-            
-            // Example code button
-            document.getElementById('example-code').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# MechDog 상태 모니터링 시스템
+# 데이터 타입 확인
+print("\\n=== 데이터 타입 확인 ===")
+print(f"dog_name의 타입: {type(dog_name)}")
+print(f"battery_level의 타입: {type(battery_level)}")
+print(f"temperature의 타입: {type(temperature)}")
+print(f"is_standing의 타입: {type(is_standing)}")`;
+
+        const lesson2ExampleCode = `# MechDog 상태 모니터링 시스템
 
 import time
 
@@ -516,11 +373,8 @@ direction = "동쪽"
 print(f"🔄 새로운 상태: {current_mode}")
 print(f"🏃 새로운 속도: {speed} m/s")
 print(f"🧭 새로운 방향: {direction}")`;
-            });
-            
-            // Show solution button
-            document.getElementById('show-solution').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 나만의 MechDog 프로필
+
+        const lesson2SolutionCode = `# 나만의 MechDog 프로필
 
 # 기본 정보
 my_dog_name = "썬더볼트"  # 여러분의 MechDog 이름
@@ -534,16 +388,29 @@ print(f"안녕하세요! 제 이름은 {my_dog_name}입니다!")
 print(f"저는 {favorite_color}을 가장 좋아해요.")
 print(f"최고 속도는 {max_speed}km/h까지 달릴 수 있답니다.")
 print(f"함께 즐거운 시간을 보내요! 🎉")`;
-            });
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            // CodeMirror 에디터 초기화
+            initCodeEditor(lesson2DefaultCode);
             
-            // Quiz handlers
-            document.querySelectorAll('.quiz-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const quizId = option.dataset.quiz;
-                    const isCorrect = option.dataset.answer === 'correct';
-                    handleQuizAnswer(quizId, option, isCorrect);
+            // 공통 이벤트 리스너 설정
+            setupCommonEventListeners();
+            
+            // 레슨 2 전용 이벤트 리스너
+            const exampleButton = document.getElementById('example-code');
+            if (exampleButton) {
+                exampleButton.addEventListener('click', () => {
+                    setEditorValue(lesson2ExampleCode);
                 });
-            });
+            }
+            
+            const solutionButton = document.getElementById('show-solution');
+            if (solutionButton) {
+                solutionButton.addEventListener('click', () => {
+                    setEditorValue(lesson2SolutionCode);
+                });
+            }
         });
     </script>
 </body>

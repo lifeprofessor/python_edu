@@ -8,37 +8,28 @@
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     
+    <!-- CodeMirror 라이브러리 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/selection/active-line.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/foldcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/foldgutter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/brace-fold.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/indent-fold.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/foldgutter.min.css">
+    
+    <!-- 공통 스타일 -->
+    <link rel="stylesheet" href="common-styles.css">
+    
     <style>
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: 'Noto Sans KR', sans-serif;
             min-height: 100vh;
-        }
-        
-        .code-editor {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            border-radius: 12px;
-            padding: 1.5rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 14px;
-            border: 2px solid #404040;
-            resize: vertical;
-            min-height: 120px;
-        }
-        
-        .output-panel {
-            background: #0d1117;
-            color: #e6edf3;
-            border-radius: 12px;
-            padding: 1.5rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 14px;
-            min-height: 120px;
-            border: 2px solid #30363d;
-            white-space: pre-wrap;
-            overflow-y: auto;
-            resize: vertical;
         }
         
         .lesson-card {
@@ -267,11 +258,111 @@ for num in numbers:
         <!-- Practice Section -->
         <section class="lesson-card mb-8">
             <h3 class="text-2xl font-bold text-gray-800 mb-4">💻 MechDog 반복문 실습</h3>
+            <p class="text-gray-600 mb-4">✨ <strong>VSCode 스타일의 코드 에디터</strong>를 사용해보세요! 함수, 문자열, 주석이 자동으로 색칠됩니다.</p>
             
             <div class="grid md:grid-cols-2 gap-6">
                 <div>
-                    <textarea id="code-editor" class="code-editor w-full h-80">
-# MechDog 반복 동작 시스템
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        🎨 코드 에디터 (문법 강조 지원)
+                    </label>
+                    <div id="code-editor-container">
+                        <!-- CodeMirror will be initialized here -->
+                    </div>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-code" class="btn-primary text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center">
+                            <span class="mr-2">▶️</span> 실행하기
+                        </button>
+                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            🗑️ 지우기
+                        </button>
+                        <button id="for-example" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            🔄 for 예제
+                        </button>
+                        <button id="while-example" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            ⏰ while 예제
+                        </button>
+                    </div>
+                    
+                    <div class="flex space-x-2 mt-2">
+                        <button id="list-example" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">📋 리스트 예제</button>
+                        <button id="control-example" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">🛑 제어 예제</button>
+                        <button id="advanced-example" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition-colors">🚀 고급 예제</button>
+                    </div>
+                    
+                    <!-- 에디터 기능 설명 -->
+                    <div class="editor-info">
+                        <div class="font-semibold">🎯 에디터 기능:</div>
+                        <ul>
+                            <li>• <span class="syntax-highlight-blue">파란색</span>: 함수와 키워드</li>
+                            <li>• <span class="syntax-highlight-green">초록색</span>: 문자열</li>
+                            <li>• <span class="syntax-highlight-gray">회색</span>: 주석</li>
+                            <li>• <span class="syntax-highlight-purple">보라색</span>: 숫자</li>
+                            <li>• 라인 번호 표시</li>
+                            <li>• 현재 줄 하이라이트</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">🖥️ 실행 결과</label>
+                    <div id="output" class="output-panel h-80">
+                        실행 버튼을 눌러 코드를 실행해보세요!
+                        
+💡 코드 에디터에서 다음 기능들을 확인해보세요:
+• 함수명이 파란색으로 표시됩니다
+• 문자열이 초록색으로 표시됩니다  
+• 주석이 회색으로 표시됩니다
+• 라인 번호가 표시됩니다
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenge -->
+        <section class="lesson-card mb-8">
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6">
+                <h4 class="text-lg font-bold text-yellow-800 mb-4">🎯 도전 과제</h4>
+                <p class="text-yellow-700 mb-4">MechDog 훈련 프로그램을 만들어보세요:</p>
+                <ol class="text-yellow-700 space-y-1 mb-4">
+                    <li>1. <strong>기본 동작 연습</strong>: "앉기", "서기", "돌기", "짖기" 동작을 각각 3번씩 반복</li>
+                    <li>2. <strong>숫자 세기</strong>: 1부터 10까지 세면서 각 숫자마다 "멍!" 출력</li>
+                    <li>3. <strong>조건부 훈련</strong>: 5보 걸으면서 3보째에 "쉬어!" 명령 출력</li>
+                    <li>4. <strong>완료 메시지</strong>: 모든 훈련이 끝나면 "훈련 완료! 잘했어요!" 출력</li>
+                </ol>
+                <p class="text-yellow-600 text-sm mb-4">💡 힌트: for문, while문, break, continue를 모두 사용해보세요!</p>
+                <button id="show-challenge" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">도전 과제 보기</button>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 정리</h3>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-6">
+                <h4 class="text-lg font-bold text-green-800 mb-3">✅ 핵심 내용</h4>
+                <ul class="text-green-700 space-y-2">
+                    <li>• <strong>for 반복문:</strong> 정해진 횟수나 리스트 요소만큼 반복</li>
+                    <li>• <strong>while 반복문:</strong> 조건이 참인 동안 계속 반복</li>
+                    <li>• <strong>break:</strong> 반복문을 완전히 종료</li>
+                    <li>• <strong>continue:</strong> 현재 반복을 건너뛰고 다음으로</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="flex justify-between items-center">
+            <a href="lesson3.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg">← 이전</a>
+            <a href="lesson5.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg">다음 →</a>
+        </section>
+    </main>
+
+    <!-- 공통 스크립트 -->
+    <script src="common-scripts.js"></script>
+    
+    <script>
+        // 레슨 4 전용 코드
+        const lesson4DefaultCode = `# MechDog 반복 동작 시스템
 
 print("🤖 MechDog 반복 동작 시스템 시작!")
 print()
@@ -309,124 +400,9 @@ for step in range(1, 11):
         print("   🚧 장애물 감지! 정지")
         break
 
-print("\n🎉 모든 반복 동작 완료!")
-</textarea>
-                    
-                    <div class="flex space-x-2 mt-4">
-                        <button id="run-code" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg">▶️ 실행</button>
-                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">지우기</button>
-                        <button id="for-example" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">🔄 for 예제</button>
-                        <button id="while-example" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg">⏰ while 예제</button>
-                    </div>
-                    
-                    <div class="flex space-x-2 mt-2">
-                        <button id="list-example" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg">📋 리스트 예제</button>
-                        <button id="control-example" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">🛑 제어 예제</button>
-                        <button id="advanced-example" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg">🚀 고급 예제</button>
-                    </div>
-                </div>
-                
-                <div>
-                    <div id="output" class="output-panel h-80">
-                        MechDog 반복문 코드를 실행해보세요!
-                    </div>
-                </div>
-            </div>
-        </section>
+print("\\n🎉 모든 반복 동작 완료!")`;
 
-        <!-- Challenge -->
-        <section class="lesson-card mb-8">
-            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6">
-                <h4 class="text-lg font-bold text-yellow-800 mb-4">🎯 도전 과제</h4>
-                <p class="text-yellow-700 mb-4">MechDog 스마트 홈 시큐리티 시스템을 만들어보세요:</p>
-                <ol class="text-yellow-700 space-y-1 mb-4">
-                    <li>1. 10번 거리 측정하여 평균 거리 계산</li>
-                    <li>2. 거리가 20cm 이하면 경고음 3번 울리기</li>
-                    <li>3. 밝기가 80 이하일 때까지 LED 깜빡이기</li>
-                    <li>4. 모든 동작 완료 후 상태 보고서 출력</li>
-                </ol>
-                <button id="show-challenge" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">도전 과제 보기</button>
-            </div>
-        </section>
-
-        <!-- Summary -->
-        <section class="lesson-card mb-8">
-            <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 정리</h3>
-            
-            <div class="bg-green-50 border-l-4 border-green-500 p-6">
-                <h4 class="text-lg font-bold text-green-800 mb-3">✅ 핵심 내용</h4>
-                <ul class="text-green-700 space-y-2">
-                    <li>• <strong>for 반복문:</strong> 정해진 횟수나 리스트 요소만큼 반복</li>
-                    <li>• <strong>while 반복문:</strong> 조건이 참인 동안 계속 반복</li>
-                    <li>• <strong>break:</strong> 반복문을 완전히 종료</li>
-                    <li>• <strong>continue:</strong> 현재 반복을 건너뛰고 다음으로</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Navigation -->
-        <section class="flex justify-between items-center">
-            <a href="lesson3.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg">← 이전</a>
-            <a href="lesson5.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg">다음 →</a>
-        </section>
-    </main>
-
-    <script>
-        let pyodide = null;
-
-        async function initPyodide() {
-            if (pyodide === null) {
-                document.getElementById('output').textContent = '파이썬 엔진 준비 중...';
-                pyodide = await loadPyodide();
-                document.getElementById('output').textContent = '준비 완료!';
-            }
-        }
-
-        async function runPythonCode(code) {
-            if (pyodide === null) await initPyodide();
-            
-            try {
-                pyodide.runPython(`
-                    import sys
-                    from io import StringIO
-                    old_stdout = sys.stdout
-                    sys.stdout = captured_output = StringIO()
-                `);
-                
-                pyodide.runPython(code);
-                
-                const output = pyodide.runPython(`
-                    sys.stdout = old_stdout
-                    captured_output.getvalue()
-                `);
-                
-                document.getElementById('output').textContent = output || '(출력 없음)';
-                
-                // Update progress
-                let progress = JSON.parse(localStorage.getItem('mechDogLearningProgress') || '{"lessonsCompleted": 0, "codesRun": 0}');
-                progress.codesRun = (progress.codesRun || 0) + 1;
-                if (progress.lessonsCompleted < 4) progress.lessonsCompleted = 4;
-                localStorage.setItem('mechDogLearningProgress', JSON.stringify(progress));
-                
-            } catch (error) {
-                document.getElementById('output').textContent = `오류:\n${error.message}`;
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.addEventListener('click', initPyodide, { once: true });
-            
-            document.getElementById('run-code').addEventListener('click', () => {
-                runPythonCode(document.getElementById('code-editor').value);
-            });
-            
-            document.getElementById('clear-code').addEventListener('click', () => {
-                document.getElementById('code-editor').value = '';
-                document.getElementById('output').textContent = '에디터를 지웠습니다.';
-            });
-            
-            document.getElementById('for-example').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 🔄 for 반복문 예제 - MechDog 동작 시퀀스
+        const lesson4ForExample = `# 🔄 for 반복문 예제 - MechDog 동작 시퀀스
 
 print("🤖 MechDog for 반복문 예제")
 print()
@@ -463,10 +439,8 @@ for row in range(3):
         # 실제로는: mechdog.move_to_position(row, col)
 
 print("\\n✅ for 반복문 예제 완료!")`;
-            });
-            
-            document.getElementById('while-example').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# ⏰ while 반복문 예제 - MechDog 센서 모니터링
+
+        const lesson4WhileExample = `# ⏰ while 반복문 예제 - MechDog 센서 모니터링
 
 import random  # 실제 센서 대신 랜덤 값 사용
 
@@ -513,10 +487,8 @@ while count > 0:
 print("   🚀 MechDog 시작!")
 
 print("\\n✅ while 반복문 예제 완료!")`;
-            });
-            
-            document.getElementById('list-example').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 📋 리스트와 반복문 예제 - MechDog 데이터 처리
+
+        const lesson4ListExample = `# 📋 리스트와 반복문 예제 - MechDog 데이터 처리
 
 print("🤖 MechDog 리스트와 반복문 예제")
 print()
@@ -567,10 +539,8 @@ for i, (action, detail) in enumerate(performance_sequence, 1):
 print("   👏 공연 완료!")
 
 print("\\n✅ 리스트와 반복문 예제 완료!")`;
-            });
-            
-            document.getElementById('control-example').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 🛑 반복문 제어 예제 - MechDog 안전 시스템
+
+        const lesson4ControlExample = `# 🛑 반복문 제어 예제 - MechDog 안전 시스템
 
 import random  # 실제 센서 대신 랜덤 값 사용
 
@@ -632,10 +602,8 @@ for press in range(1, 6):  # 5번 버튼 누르기 시뮬레이션
     current_action += 1
 
 print("\\n✅ 반복문 제어 예제 완료!")`;
-            });
-            
-            document.getElementById('advanced-example').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 🚀 고급 반복문 예제 - MechDog 스마트 홈 시큐리티
+
+        const lesson4AdvancedExample = `# 🚀 고급 반복문 예제 - MechDog 스마트 홈 시큐리티
 
 import random  # 실제 센서 대신 랜덤 값 사용
 
@@ -691,28 +659,74 @@ print(f"   🌡️ 시스템 상태: 정상")
 print("   ✅ 모든 기능 정상 작동")
 
 print("\\n🎉 고급 반복문 예제 완료!")`;
-            });
-            
-            document.getElementById('show-challenge').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 🎯 도전 과제: MechDog 스마트 홈 시큐리티 시스템
 
-import random  # 실제 센서 대신 랜덤 값 사용
+        const lesson4ChallengeCode = `# 🎯 도전 과제: MechDog 훈련 프로그램
 
-print("🏠 MechDog 스마트 홈 시큐리티 시스템")
-print("다음 조건을 만족하는 코드를 작성해보세요!")
+print("🐕 MechDog 훈련 프로그램 시작!")
+print("=" * 30)
 print()
 
 # 여기에 코드를 작성하세요!
-# 힌트: 
-# 1. for문으로 10번 거리 측정하고 리스트에 저장
-# 2. sum()과 len()으로 평균 계산
-# 3. if문으로 20cm 이하 판단
-# 4. for문으로 경고음 3번
-# 5. while문으로 밝기 모니터링
-# 6. 마지막에 상태 보고서 출력
+# 힌트:
+# 1. 기본 동작 연습 - for문과 리스트 사용
+# 2. 숫자 세기 - for문과 range() 사용  
+# 3. 조건부 훈련 - for문과 if문, break 사용
+# 4. 완료 메시지 - 마지막에 출력
 
-print("✅ 보안 시스템 작동 완료!")`;
-            });
+print()
+print("🎉 훈련 프로그램 완료!")
+print("=" * 30)`;
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            // CodeMirror 에디터 초기화
+            initCodeEditor(lesson4DefaultCode);
+            
+            // 공통 이벤트 리스너 설정
+            setupCommonEventListeners();
+            
+            // 레슨 4 전용 이벤트 리스너
+            const forButton = document.getElementById('for-example');
+            if (forButton) {
+                forButton.addEventListener('click', () => {
+                    setEditorValue(lesson4ForExample);
+                });
+            }
+            
+            const whileButton = document.getElementById('while-example');
+            if (whileButton) {
+                whileButton.addEventListener('click', () => {
+                    setEditorValue(lesson4WhileExample);
+                });
+            }
+            
+            const listButton = document.getElementById('list-example');
+            if (listButton) {
+                listButton.addEventListener('click', () => {
+                    setEditorValue(lesson4ListExample);
+                });
+            }
+            
+            const controlButton = document.getElementById('control-example');
+            if (controlButton) {
+                controlButton.addEventListener('click', () => {
+                    setEditorValue(lesson4ControlExample);
+                });
+            }
+            
+            const advancedButton = document.getElementById('advanced-example');
+            if (advancedButton) {
+                advancedButton.addEventListener('click', () => {
+                    setEditorValue(lesson4AdvancedExample);
+                });
+            }
+            
+            const challengeButton = document.getElementById('show-challenge');
+            if (challengeButton) {
+                challengeButton.addEventListener('click', () => {
+                    setEditorValue(lesson4ChallengeCode);
+                });
+            }
         });
     </script>
 </body>

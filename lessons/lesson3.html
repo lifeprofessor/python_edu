@@ -6,49 +6,19 @@
     <title>레슨 3: 조건문 | MechDog 파이썬 학습</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    
+    <!-- CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/monokai.min.css">
+    
+    <!-- CodeMirror JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/python/python.min.js"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     
-    <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Noto Sans KR', sans-serif;
-            min-height: 100vh;
-        }
-        
-        .code-editor {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            border-radius: 12px;
-            padding: 1.5rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 14px;
-            border: 2px solid #404040;
-            resize: vertical;
-            min-height: 120px;
-        }
-        
-        .output-panel {
-            background: #0d1117;
-            color: #e6edf3;
-            border-radius: 12px;
-            padding: 1.5rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 14px;
-            min-height: 120px;
-            border: 2px solid #30363d;
-            white-space: pre-wrap;
-            overflow-y: auto;
-            resize: vertical;
-        }
-        
-        .lesson-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    <!-- 공통 스타일 -->
+    <link rel="stylesheet" href="common-styles.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -123,8 +93,99 @@ else:
             
             <div class="grid md:grid-cols-2 gap-6">
                 <div>
-                    <textarea id="code-editor" class="code-editor w-full h-80">
-# MechDog 상태 판단 시스템
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        🎨 코드 에디터 (문법 강조 지원)
+                    </label>
+                    <div id="code-editor-container">
+                        <!-- CodeMirror will be initialized here -->
+                    </div>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-code" class="btn-primary text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center">
+                            <span class="mr-2">▶️</span> 실행하기
+                        </button>
+                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            🗑️ 지우기
+                        </button>
+                        <button id="example-code" class="btn-secondary text-white px-4 py-2 rounded-lg transition-colors">
+                            💡 예제
+                        </button>
+                        <button id="touch-example" class="btn-warning text-white px-4 py-2 rounded-lg transition-colors">
+                            🤖 터치 센서
+                        </button>
+                    </div>
+                    
+                    <!-- 에디터 기능 설명 -->
+                    <div class="editor-info">
+                        <div class="font-semibold">🎯 에디터 기능:</div>
+                        <ul>
+                            <li>• <span class="syntax-highlight-blue">파란색</span>: 함수와 키워드</li>
+                            <li>• <span class="syntax-highlight-green">초록색</span>: 문자열</li>
+                            <li>• <span class="syntax-highlight-gray">회색</span>: 주석</li>
+                            <li>• <span class="syntax-highlight-purple">보라색</span>: 숫자</li>
+                            <li>• 라인 번호 표시</li>
+                            <li>• 현재 줄 하이라이트</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">🖥️ 실행 결과</label>
+                    <div id="output" class="output-panel">
+                        MechDog 조건문 코드를 실행해보세요!
+                        
+💡 VSCode 스타일 에디터의 문법 강조 기능을 확인해보세요:
+• 함수명이 파란색으로 표시됩니다
+• 문자열이 초록색으로 표시됩니다  
+• 주석이 회색으로 표시됩니다
+• 라인 번호가 표시됩니다
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenge -->
+        <section class="lesson-card mb-8">
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6">
+                <h4 class="text-lg font-bold text-yellow-800 mb-4">🎯 도전 과제</h4>
+                <p class="text-yellow-700 mb-4">MechDog 보안 시스템을 만들어보세요:</p>
+                <ol class="text-yellow-700 space-y-1 mb-4">
+                    <li>1. 비밀번호 입력 시스템 (숫자 4자리)</li>
+                    <li>2. 3번 틀리면 잠금 모드</li>
+                    <li>3. 올바른 비밀번호시 환영 메시지</li>
+                </ol>
+                <button id="show-challenge" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">도전 과제 보기</button>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 정리</h3>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-6">
+                <h4 class="text-lg font-bold text-green-800 mb-3">✅ 핵심 내용</h4>
+                <ul class="text-green-700 space-y-2">
+                    <li>• <strong>if문:</strong> 조건이 참일 때 실행</li>
+                    <li>• <strong>elif문:</strong> 다른 조건 추가</li>
+                    <li>• <strong>else문:</strong> 모든 조건이 거짓일 때</li>
+                    <li>• <strong>비교 연산자:</strong> ==, !=, >, <, >=, <=</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="flex justify-between items-center">
+            <a href="lesson2.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg">← 이전</a>
+            <a href="lesson4.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg">다음 →</a>
+        </section>
+    </main>
+
+    <!-- 공통 스크립트 -->
+    <script src="common-scripts.js"></script>
+    
+    <script>
+        // 레슨 3 전용 코드
+        const lesson3DefaultCode = `# MechDog 상태 판단 시스템
 
 # MechDog 현재 상태
 battery_level = 75
@@ -176,7 +237,7 @@ else:
     movement_action = "정상 이동"
 
 # 종합 판단
-print("\n=== 🤖 MechDog 행동 결정 ===")
+print("\\n=== 🤖 MechDog 행동 결정 ===")
 if battery_status == "위험":
     print("📍 최우선: 충전소로 이동")
 elif temp_action != "정상 활동 가능":
@@ -184,117 +245,9 @@ elif temp_action != "정상 활동 가능":
 else:
     print(f"📍 이동 계획: {movement_action}")
 
-print("🎉 상태 분석 완료!")
-</textarea>
-                    
-                    <div class="flex space-x-2 mt-4">
-                        <button id="run-code" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg">▶️ 실행</button>
-                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">지우기</button>
-                        <button id="example-code" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">💡 예제</button>
-                        <button id="touch-example" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg">🤖 터치 센서 활용 예제</button>
-                    </div>
-                </div>
-                
-                <div>
-                    <div id="output" class="output-panel h-80">
-                        MechDog 조건문 코드를 실행해보세요!
-                    </div>
-                </div>
-            </div>
-        </section>
+print("🎉 상태 분석 완료!")`;
 
-        <!-- Challenge -->
-        <section class="lesson-card mb-8">
-            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6">
-                <h4 class="text-lg font-bold text-yellow-800 mb-4">🎯 도전 과제</h4>
-                <p class="text-yellow-700 mb-4">MechDog 보안 시스템을 만들어보세요:</p>
-                <ol class="text-yellow-700 space-y-1 mb-4">
-                    <li>1. 비밀번호 입력 시스템 (숫자 4자리)</li>
-                    <li>2. 3번 틀리면 잠금 모드</li>
-                    <li>3. 올바른 비밀번호시 환영 메시지</li>
-                </ol>
-                <button id="show-challenge" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">도전 과제 보기</button>
-            </div>
-        </section>
-
-        <!-- Summary -->
-        <section class="lesson-card mb-8">
-            <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 정리</h3>
-            
-            <div class="bg-green-50 border-l-4 border-green-500 p-6">
-                <h4 class="text-lg font-bold text-green-800 mb-3">✅ 핵심 내용</h4>
-                <ul class="text-green-700 space-y-2">
-                    <li>• <strong>if문:</strong> 조건이 참일 때 실행</li>
-                    <li>• <strong>elif문:</strong> 다른 조건 추가</li>
-                    <li>• <strong>else문:</strong> 모든 조건이 거짓일 때</li>
-                    <li>• <strong>비교 연산자:</strong> ==, !=, >, <, >=, <=</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Navigation -->
-        <section class="flex justify-between items-center">
-            <a href="lesson2.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg">← 이전</a>
-            <a href="lesson4.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg">다음 →</a>
-        </section>
-    </main>
-
-    <script>
-        let pyodide = null;
-
-        async function initPyodide() {
-            if (pyodide === null) {
-                document.getElementById('output').textContent = '파이썬 엔진 준비 중...';
-                pyodide = await loadPyodide();
-                document.getElementById('output').textContent = '준비 완료!';
-            }
-        }
-
-        async function runPythonCode(code) {
-            if (pyodide === null) await initPyodide();
-            
-            try {
-                pyodide.runPython(`
-                    import sys
-                    from io import StringIO
-                    old_stdout = sys.stdout
-                    sys.stdout = captured_output = StringIO()
-                `);
-                
-                pyodide.runPython(code);
-                
-                const output = pyodide.runPython(`
-                    sys.stdout = old_stdout
-                    captured_output.getvalue()
-                `);
-                
-                document.getElementById('output').textContent = output || '(출력 없음)';
-                
-                // Update progress
-                let progress = JSON.parse(localStorage.getItem('mechDogLearningProgress') || '{"lessonsCompleted": 0, "codesRun": 0}');
-                progress.codesRun = (progress.codesRun || 0) + 1;
-                if (progress.lessonsCompleted < 3) progress.lessonsCompleted = 3;
-                localStorage.setItem('mechDogLearningProgress', JSON.stringify(progress));
-                
-            } catch (error) {
-                document.getElementById('output').textContent = `오류:\n${error.message}`;
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.addEventListener('click', initPyodide, { once: true });
-            
-            document.getElementById('run-code').addEventListener('click', () => {
-                runPythonCode(document.getElementById('code-editor').value);
-            });
-            
-            document.getElementById('clear-code').addEventListener('click', () => {
-                document.getElementById('code-editor').value = '';
-                document.getElementById('output').textContent = '에디터를 지웠습니다.';
-            });
-            
-            document.getElementById('example-code').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# MechDog 센서 기반 모드 전환
+        const lesson3ExampleCode = `# MechDog 센서 기반 모드 전환
 
 # 센서 데이터 (시뮬레이션)
 distance = 15
@@ -339,10 +292,8 @@ elif mode == "야간":
     print("💡 LED 켜기, 저속 이동")
 else:
     print("🚶 정상 이동, 환경 탐색")`;
-            });
-            
-            document.getElementById('touch-example').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# MechDog 터치 버튼 동작 시퀀스 (Touch-detail.py 기반)
+
+        const lesson3TouchCode = `# MechDog 터치 버튼 동작 시퀀스 (Touch-detail.py 기반)
 
 # 버튼 터치 상태 시뮬레이션
 button_pressed = True
@@ -397,10 +348,8 @@ if button_pressed:
     #         time.sleep(1.5)
     #         action_num = 1
     #     enter_flag = 0  # 버튼 상태 초기화"`;
-            });
-            
-            document.getElementById('show-challenge').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# MechDog 보안 시스템 도전 과제
+
+        const lesson3ChallengeCode = `# MechDog 보안 시스템 도전 과제
 
 # 설정
 correct_password = "1234"
@@ -436,7 +385,36 @@ for password in test_passwords:
     print()
 
 print("\\n🔐 보안 시스템 테스트 완료")`;
-            });
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            // CodeMirror 에디터 초기화
+            initCodeEditor(lesson3DefaultCode);
+            
+            // 공통 이벤트 리스너 설정
+            setupCommonEventListeners();
+            
+            // 레슨 3 전용 이벤트 리스너
+            const exampleButton = document.getElementById('example-code');
+            if (exampleButton) {
+                exampleButton.addEventListener('click', () => {
+                    setEditorValue(lesson3ExampleCode);
+                });
+            }
+            
+            const touchButton = document.getElementById('touch-example');
+            if (touchButton) {
+                touchButton.addEventListener('click', () => {
+                    setEditorValue(lesson3TouchCode);
+                });
+            }
+            
+            const challengeButton = document.getElementById('show-challenge');
+            if (challengeButton) {
+                challengeButton.addEventListener('click', () => {
+                    setEditorValue(lesson3ChallengeCode);
+                });
+            }
         });
     </script>
 </body>
