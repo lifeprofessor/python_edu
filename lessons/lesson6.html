@@ -376,12 +376,13 @@ if distance < 15:
         <section class="lesson-card mb-8">
             <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6">
                 <h4 class="text-lg font-bold text-yellow-800 mb-4">🎯 도전 과제</h4>
-                <p class="text-yellow-700 mb-4">실제 MechDog 코드를 분석하고 개선해보세요:</p>
+                <p class="text-yellow-700 mb-4">배운 모듈들을 사용해서 재미있는 MechDog 놀이를 만들어보세요:</p>
                 <ol class="text-yellow-700 space-y-1 mb-4">
-                    <li>1. <code>MechDogController</code>: 전체 로봇을 제어하는 클래스</li>
-                    <li>2. <code>SensorModule</code>: 센서 데이터를 처리하는 모듈</li>
-                    <li>3. <code>MovementModule</code>: 이동과 자세를 제어하는 모듈</li>
-                    <li>4. <code>LEDModule</code>: LED 색상과 패턴을 제어하는 모듈</li>
+                    <li>1. 🎮 <strong>가위바위보 게임</strong>: random 모듈로 MechDog와 게임하기</li>
+                    <li>2. 🚨 <strong>센서 경보 시스템</strong>: 거리 측정으로 경보 시스템 만들기</li>
+                    <li>3. 📚 <strong>수학 선생님</strong>: math 모듈로 수학 문제 내기</li>
+                    <li>4. ⏰ <strong>시간 관리사</strong>: datetime 모듈로 시간 관리 도우미</li>
+                    <li>5. 🎪 <strong>보너스 놀이터</strong>: 모든 기능을 합친 종합 놀이 프로그램</li>
                 </ol>
                 <button id="show-challenge" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">도전 과제 보기</button>
             </div>
@@ -610,695 +611,807 @@ print("🎉 기본 모듈 import 완료!")`;
             });
             
             document.getElementById('mechdog-modules').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 🤖 MechDog 스타일 모듈 시스템
+                document.getElementById('code-editor').value = `# 🤖 MechDog 모듈 사용하기
 
-print("🔧 MechDog 모듈 시스템 시뮬레이션")
-print("실제 MechDog에서 사용하는 방식을 따라해보세요!")
+print("🤖 MechDog 친구와 함께 모듈 배우기!")
+print("모듈은 도구상자 같은 거예요!")
 print()
 
-# 실제 MechDog에서는 이런 식으로 모듈을 사용합니다:
-# import Hiwonder
-# import time
-# from HW_MechDog import MechDog
+# 1. 기본 도구들 가져오기 (모듈 import)
+print("=== 도구상자에서 도구 꺼내기 ===")
+import random  # 랜덤 도구
+import time    # 시간 도구  
+import math    # 수학 도구
 
-# 시뮬레이션을 위한 클래스들
-class MechDogSimulator:
-    """MechDog 시뮬레이터 클래스"""
-    def __init__(self):
-        self.name = "MechDog"
-        self.position = [0, 0, 0]  # x, y, z
-        self.pose = "default"
-        print(f"🤖 {self.name} 초기화 완료")
+print("✅ 도구들을 꺼냈어요!")
+print("🎲 random: 랜덤 숫자 만들기")
+print("⏰ time: 시간 관련 일들")
+print("🔢 math: 수학 계산하기")
+print()
+
+# 2. MechDog가 걷는 모습 시뮬레이션
+print("=== MechDog 걷기 시뮬레이션 ===")
+
+def mechdog_walk():
+    """MechDog가 걷는 함수"""
+    print("🦶 MechDog가 걷고 있어요!")
     
-    def set_default_pose(self):
-        """기본 자세 설정"""
-        self.pose = "default"
-        print("📐 기본 자세로 설정")
-    
-    def move(self, distance, angle):
-        """이동 명령"""
-        print(f"🚶 {distance}cm 거리, {angle}도 각도로 이동")
-        # 실제로는 하드웨어를 제어하지만 여기서는 시뮬레이션
-        
-    def transform(self, position, rotation, duration):
-        """자세 변환"""
-        x, y, z = position
-        roll, pitch, yaw = rotation
-        print(f"🔄 자세 변환: 위치({x}, {y}, {z}), 회전({roll}, {pitch}, {yaw})")
-        print(f"   소요 시간: {duration}ms")
+def mechdog_stop():
+    """MechDog가 멈추는 함수"""
+    print("🛑 MechDog가 멈췄어요!")
 
-class HiwonderIIC:
-    """I2C 통신 시뮬레이터"""
-    def __init__(self, port):
-        self.port = port
-        print(f"🔌 I2C 포트 {port} 초기화")
+def mechdog_turn(direction):
+    """MechDog가 방향을 바꾸는 함수"""
+    print(f"🔄 MechDog가 {direction}으로 돌아요!")
 
-class I2CSonar:
-    """초음파 센서 시뮬레이터"""
-    def __init__(self, i2c):
-        self.i2c = i2c
-        print("📡 초음파 센서 초기화")
-    
-    def getDistance(self):
-        """거리 측정 (시뮬레이션)"""
-        import random
-        distance = random.randint(10, 100)
-        return distance
-    
-    def setRGB(self, index, r, g, b):
-        """LED 색상 설정"""
-        print(f"💡 LED {index}: RGB({r}, {g}, {b})")
+# MechDog 동작 테스트
+print("MechDog 동작 테스트:")
+mechdog_walk()
+mechdog_turn("왼쪽")
+mechdog_walk()
+mechdog_stop()
+print()
 
-# MechDog 시스템 초기화 (실제 코드 스타일)
-print("=== MechDog 시스템 초기화 ===")
-mechdog = MechDogSimulator()
-i2c1 = HiwonderIIC(1)
-sonar = I2CSonar(i2c1)
+# 3. 거리 센서 놀이
+print("=== 거리 센서 놀이 ===")
 
-# 기본 동작 시퀀스
-print("=== 기본 동작 시퀀스 ===")
-mechdog.set_default_pose()
+def get_distance():
+    """거리를 측정하는 함수 (가짜)"""
+    # random 모듈로 10~50 사이 숫자 만들기
+    distance = random.randint(10, 50)
+    return distance
 
-# 이동 테스트
-mechdog.move(50, -16)  # 50cm 앞으로, 오른쪽으로 16도
-
-# 자세 변환 테스트
-mechdog.transform([0, 0, 20], [0, 0, 0], 1000)  # 20mm 위로
-
-# 센서 테스트
-print("=== 센서 테스트 ===")
-for i in range(3):
-    distance = sonar.getDistance()
-    print(f"측정 {i+1}: {distance}cm")
-    
-    # 거리에 따른 LED 색상 변경 (실제 MechDog 로직)
-    if distance < 15:
-        sonar.setRGB(0, 255, 0, 0)  # 빨강 - 위험
-    elif distance > 40:
-        sonar.setRGB(0, 0, 0, 255)  # 파랑 - 안전
+def show_led_color(distance):
+    """거리에 따라 LED 색깔 바꾸는 함수"""
+    if distance < 20:
+        color = "빨간색"
+        print("💡 LED: 빨간색 (가까워요!)")
+    elif distance < 35:
+        color = "노란색"  
+        print("💡 LED: 노란색 (적당해요!)")
     else:
-        sonar.setRGB(0, 255, 255, 0)  # 노랑 - 주의
+        color = "파란색"
+        print("💡 LED: 파란색 (멀어요!)")
+    return color
 
-print("🎉 MechDog 모듈 시스템 테스트 완료!")
-print("실제 하드웨어에서는 이런 방식으로 동작합니다!")`;
+# 거리 측정 놀이
+print("거리 측정 게임:")
+for i in range(5):
+    distance = get_distance()
+    print(f"측정 {i+1}: {distance}cm")
+    show_led_color(distance)
+
+print()
+
+# 4. MechDog의 하루 일과
+print("=== MechDog의 하루 일과 ===")
+
+def morning_routine():
+    """아침 루틴"""
+    print("🌅 좋은 아침! 스트레칭 중...")
+
+def patrol_time():
+    """순찰 시간"""
+    print("🚶 집 안을 순찰하고 있어요")
+
+def play_time():
+    """놀이 시간"""
+    games = ["공 굴리기", "숨바꼭질", "따라하기", "춤추기"]
+    game = random.choice(games)
+    print(f"🎮 놀이 시간: {game}")
+
+def rest_time():
+    """휴식 시간"""
+    print("😴 충전 중... 잠깐 쉬어요")
+
+# MechDog 일과 실행
+print("MechDog의 하루:")
+morning_routine()
+patrol_time()
+play_time()
+rest_time()
+print()
+
+# 5. 재미있는 모듈 활용
+print("=== 재미있는 모듈 활용 ===")
+
+# 수학 모듈로 간단한 계산
+print("🔢 수학 계산:")
+print(f"√16 = {math.sqrt(16)}")
+print(f"원주율 π = {math.pi:.2f}")
+
+# 랜덤 모듈로 재미있는 것들
+print("🎲 랜덤 재미:")
+emotions = ["기쁨", "신남", "졸림", "호기심"]
+today_mood = random.choice(emotions)
+print(f"오늘 MechDog 기분: {today_mood}")
+
+# 랜덤 색깔
+colors = ["빨강", "파랑", "초록", "노랑", "보라"]
+favorite_color = random.choice(colors)
+print(f"오늘의 좋아하는 색깔: {favorite_color}")
+
+print()
+print("🎉 MechDog 모듈 놀이 완료!")
+print("모듈을 사용하면 더 재미있는 일들을 할 수 있어요!")`;
             });
             
             document.getElementById('sensor-example').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 📡 MechDog 센서 모듈 활용
+                document.getElementById('code-editor').value = `# 📡 MechDog 센서 놀이
 
-print("📡 MechDog 센서 시스템")
-print("실제 센서 데이터 처리 방식을 배워보세요!")
+print("👀 MechDog의 눈 - 센서 놀이!")
+print("MechDog가 주변을 어떻게 보는지 알아보아요!")
+print()
+
+import random
+
+# 1. 거리 센서 게임
+print("=== 거리 센서 게임 ===")
+
+def check_distance():
+    """거리를 체크하는 함수"""
+    # 랜덤으로 거리 만들기 (10~100cm)
+    distance = random.randint(10, 100)
+    return distance
+
+def what_is_there(distance):
+    """거리에 따라 뭐가 있는지 맞춰보는 함수"""
+    if distance < 20:
+        thing = "벽이나 장애물"
+        emoji = "🧱"
+    elif distance < 40:
+        thing = "가구"
+        emoji = "🪑"
+    elif distance < 70:
+        thing = "사람"
+        emoji = "👨"
+    else:
+        thing = "빈 공간"
+        emoji = "🏞️"
+    
+    print(f"{emoji} {distance}cm 앞에 {thing}이(가) 있어요!")
+    return thing
+
+print("🎯 거리 측정 게임 시작!")
+for i in range(5):
+    print(f"\\n측정 {i+1}:")
+    distance = check_distance()
+    what_is_there(distance)
+
+print()
+
+# 2. LED 신호등 게임
+print("=== LED 신호등 게임 ===")
+
+def led_traffic_light(distance):
+    """거리에 따른 LED 신호등"""
+    if distance < 15:
+        color = "빨간불"
+        action = "멈춰!"
+        emoji = "🔴"
+    elif distance < 30:
+        color = "노란불"
+        action = "조심해!"
+        emoji = "🟡"
+    else:
+        color = "파란불"
+        action = "가도 돼!"
+        emoji = "🔵"
+    
+    print(f"{emoji} {color} - {action} (거리: {distance}cm)")
+
+print("🚦 MechDog 신호등:")
+distances = [12, 25, 45, 8, 35]
+for i, dist in enumerate(distances):
+    print(f"상황 {i+1}: ", end="")
+    led_traffic_light(dist)
+
+print()
+
+# 3. 경고음 시스템
+print("=== 경고음 시스템 ===")
+
+def warning_sound(distance):
+    """거리에 따른 경고음"""
+    if distance < 10:
+        sound = "삐삐삐삐삐!"
+        level = "매우 위험"
+    elif distance < 20:
+        sound = "삐삐삐!"
+        level = "위험"
+    elif distance < 30:
+        sound = "삐...삐..."
+        level = "주의"
+    else:
+        sound = "조용..."
+        level = "안전"
+    
+    print(f"🔊 {sound} ({level}, {distance}cm)")
+
+print("🚨 경고음 테스트:")
+test_distances = [5, 15, 25, 40]
+for dist in test_distances:
+    warning_sound(dist)
+
+print()
+
+# 4. 재미있는 센서 반응
+print("=== MechDog 센서 반응 놀이 ===")
+
+def mechdog_reaction(distance):
+    """MechDog의 귀여운 반응"""
+    if distance < 15:
+        reaction = "어? 뭔가 가까이 있다! 😯"
+        action = "뒤로 살짝 물러나기"
+    elif distance < 30:
+        reaction = "음... 뭔가 있네? 🤔"
+        action = "천천히 다가가기"
+    elif distance < 50:
+        reaction = "괜찮은 거리네! 😊"
+        action = "정상 속도로 이동"
+    else:
+        reaction = "앞이 뻥 뚫려있어! 😎"
+        action = "신나게 달려가기"
+    
+    print(f"💭 MechDog: '{reaction}'")
+    print(f"🎬 행동: {action}")
+
+print("🤖 MechDog 반응 테스트:")
+for i in range(3):
+    print(f"\\n테스트 {i+1}:")
+    distance = random.randint(5, 80)
+    print(f"📏 측정된 거리: {distance}cm")
+    mechdog_reaction(distance)
+
+print()
+
+# 5. 센서 통계 게임
+print("=== 센서 통계 게임 ===")
+
+# 여러 번 측정한 결과
+measurements = []
+print("📊 10번 측정해서 통계 내기!")
+
+for i in range(10):
+    distance = random.randint(10, 100)
+    measurements.append(distance)
+    print(f"측정 {i+1}: {distance}cm")
+
+# 간단한 통계
+print(f"\\n📈 측정 결과:")
+print(f"총 측정 횟수: {len(measurements)}회")
+print(f"가장 가까운 거리: {min(measurements)}cm")
+print(f"가장 먼 거리: {max(measurements)}cm")
+print(f"평균 거리: {sum(measurements) / len(measurements):.1f}cm")
+
+# 가장 많이 나온 범위 찾기
+close_count = sum(1 for d in measurements if d < 30)
+far_count = sum(1 for d in measurements if d >= 30)
+
+if close_count > far_count:
+    print("🎯 결론: 주로 가까운 곳에 물건들이 많아요!")
+else:
+    print("🎯 결론: 앞이 비교적 넓어요!")
+
+print("\\n🎉 센서 놀이 완료!")
+print("센서 모듈을 사용하면 MechDog가 똑똑해져요!")`;
+            });
+            
+            document.getElementById('math-example').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# 🔢 MechDog 수학 놀이
+
+print("🧮 MechDog와 함께하는 수학 놀이!")
+print("로봇이 움직이는데 필요한 간단한 수학을 배워보아요!")
+print()
+
+import math
+
+# 1. 거리 계산 게임
+print("=== 거리 계산 게임 ===")
+
+def calculate_distance(x1, y1, x2, y2):
+    """두 점 사이의 거리를 계산하는 함수"""
+    # 피타고라스 정리: √((x2-x1)² + (y2-y1)²)
+    distance = math.sqrt((x2-x1)**2 + (y2-y1)**2)
+    return distance
+
+print("📍 MechDog가 이동할 경로:")
+start = (0, 0)  # 시작점
+goal = (3, 4)   # 목표점
+
+distance = calculate_distance(start[0], start[1], goal[0], goal[1])
+print(f"시작점: {start}")
+print(f"목표점: {goal}")
+print(f"이동거리: {distance}cm")
+print("와! 정확히 5cm네요! (3² + 4² = 5²)")
+
+print()
+
+# 2. 원형 경로 놀이
+print("=== 원형 경로 놀이 ===")
+
+def circle_path(radius):
+    """원의 둘레 계산"""
+    # 원의 둘레 = 2 × π × 반지름
+    circumference = 2 * math.pi * radius
+    return circumference
+
+print("🔄 MechDog가 원형으로 돌아요!")
+radii = [10, 20, 30]  # 반지름들
+
+for radius in radii:
+    path_length = circle_path(radius)
+    print(f"반지름 {radius}cm → 돌아야 할 거리: {path_length:.1f}cm")
+
+print()
+
+# 3. 각도 놀이
+print("=== 각도 놀이 ===")
+
+def turn_angle(current_direction, target_direction):
+    """회전해야 할 각도 계산"""
+    angle = target_direction - current_direction
+    # 180도보다 크면 반대 방향으로 돌기
+    if angle > 180:
+        angle = angle - 360
+    elif angle < -180:
+        angle = angle + 360
+    return angle
+
+print("🔄 MechDog 회전 계산:")
+directions = [
+    (0, 90, "북쪽 → 동쪽"),
+    (90, 270, "동쪽 → 서쪽"), 
+    (350, 30, "북서쪽 → 북동쪽")
+]
+
+for current, target, description in directions:
+    rotation = turn_angle(current, target)
+    direction = "왼쪽" if rotation < 0 else "오른쪽"
+    print(f"{description}: {direction}으로 {abs(rotation)}도 회전")
+
+print()
+
+# 4. 높이 계산 놀이
+print("=== 높이 계산 놀이 ===")
+
+def jump_height(angle, power):
+    """점프 높이 계산 (간단 버전)"""
+    # 간단한 공식으로 높이 계산
+    height = power * math.sin(math.radians(angle)) / 2
+    return height
+
+print("🦘 MechDog 점프 계산:")
+jump_angles = [30, 45, 60]  # 점프 각도
+power = 10  # 점프 파워
+
+for angle in jump_angles:
+    height = jump_height(angle, power)
+    print(f"{angle}도 각도로 점프: {height:.1f}cm 높이")
+
+print("45도가 가장 높이 점프해요!")
+print()
+
+# 5. 재미있는 수학 상수들
+print("=== 재미있는 수학 상수들 ===")
+
+print("🥧 파이 (π):")
+print(f"π = {math.pi:.3f}")
+print("원의 둘레를 지름으로 나눈 값이에요!")
+
+print("\\n📐 각도 변환:")
+print("90도 = π/2 라디안")
+print(f"90도 = {math.radians(90):.3f} 라디안")
+
+print("\\n🔢 제곱근 계산:")
+numbers = [4, 9, 16, 25]
+for num in numbers:
+    sqrt_result = math.sqrt(num)
+    print(f"√{num} = {sqrt_result}")
+
+print()
+
+# 6. MechDog 경로 계획
+print("=== MechDog 경로 계획 ===")
+
+# 간단한 경로 계획
+waypoints = [
+    ("집", 0, 0),
+    ("공원", 10, 5),
+    ("상점", 15, 10),
+    ("집", 0, 0)
+]
+
+print("🗺️ MechDog 여행 계획:")
+total_distance = 0
+
+for i in range(len(waypoints)-1):
+    place1, x1, y1 = waypoints[i]
+    place2, x2, y2 = waypoints[i+1]
+    
+    segment_distance = calculate_distance(x1, y1, x2, y2)
+    total_distance += segment_distance
+    
+    print(f"{place1} → {place2}: {segment_distance:.1f}cm")
+
+print(f"\\n🚀 총 여행 거리: {total_distance:.1f}cm")
+
+print()
+
+# 7. 수학 퀴즈
+print("=== 수학 퀴즈 ===")
+
+def math_quiz():
+    """간단한 수학 퀴즈"""
+    problems = [
+        ("√16은?", math.sqrt(16), 4),
+        ("3² + 4²은?", 3**2 + 4**2, 25),
+        ("원주율 π는 대략?", math.pi, 3.14)
+    ]
+    
+    for question, answer, hint in problems:
+        print(f"❓ {question}")
+        print(f"💡 정답: {answer}")
+        if isinstance(hint, (int, float)):
+            print(f"   (힌트: 약 {hint})")
+        print()
+
+math_quiz()
+
+print("🎉 수학 놀이 완료!")
+print("수학 모듈을 사용하면 MechDog가 정확하게 움직일 수 있어요!")`;
+            });
+            
+            document.getElementById('time-example').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# ⏰ MechDog 시간 놀이
+
+print("⏰ MechDog와 함께하는 시간 놀이!")
+print("시간을 다루는 재미있는 방법들을 배워보아요!")
+print()
+
+from datetime import datetime, timedelta
+import random
+
+# 1. 현재 시간 알아보기
+print("=== 지금이 몇 시인지 알아보기 ===")
+
+def show_current_time():
+    """현재 시간을 예쁘게 보여주는 함수"""
+    now = datetime.now()
+    print(f"🕐 지금 시간: {now.strftime('%Y년 %m월 %d일')}")
+    print(f"⏰ 시각: {now.strftime('%H시 %M분 %S초')}")
+    
+    # 시간대별 인사
+    hour = now.hour
+    if 6 <= hour < 12:
+        greeting = "좋은 아침이에요! 🌅"
+    elif 12 <= hour < 18:
+        greeting = "즐거운 오후에요! ☀️"
+    elif 18 <= hour < 22:
+        greeting = "편안한 저녁이에요! 🌆"
+    else:
+        greeting = "조용한 밤이에요! 🌙"
+    
+    print(f"💬 MechDog: {greeting}")
+
+show_current_time()
+print()
+
+# 2. MechDog 일과표
+print("=== MechDog 일과표 ===")
+
+def create_schedule():
+    """MechDog의 하루 일과를 만드는 함수"""
+    activities = [
+        ("아침 스트레칭", "07:00", "😊"),
+        ("산책하기", "08:30", "🚶"),
+        ("놀이시간", "10:00", "🎮"),
+        ("점심 충전", "12:00", "🔋"),
+        ("오후 순찰", "14:00", "👮"),
+        ("친구들과 놀기", "16:00", "👫"),
+        ("저녁 정리시간", "18:00", "🧹"),
+        ("밤 휴식", "21:00", "😴")
+    ]
+    
+    print("📋 MechDog의 하루 일과:")
+    for activity, time, emoji in activities:
+        print(f"{emoji} {time} - {activity}")
+
+create_schedule()
+print()
+
+# 3. 카운트다운 게임
+print("=== 카운트다운 게임 ===")
+
+def countdown_game(seconds):
+    """카운트다운을 하는 함수"""
+    print(f"⏱️ {seconds}초 카운트다운 시작!")
+    
+    for i in range(seconds, 0, -1):
+        if i <= 3:
+            print(f"🚨 {i}... ")
+        else:
+            print(f"⏰ {i}초 남았어요")
+    
+    print("🎉 시간 끝! 땡!")
+
+# 5초 카운트다운
+countdown_game(5)
+print()
+
+# 4. 미래 시간 계산하기
+print("=== 미래 시간 계산하기 ===")
+
+def future_time_calculator():
+    """미래 시간을 계산하는 함수"""
+    now = datetime.now()
+    
+    future_times = [
+        (1, "1시간 후"),
+        (24, "내일 이 시간"),
+        (168, "일주일 후"),  # 24 * 7 = 168시간
+    ]
+    
+    print("🔮 미래 시간 예측:")
+    for hours, description in future_times:
+        future = now + timedelta(hours=hours)
+        print(f"{description}: {future.strftime('%m월 %d일 %H시 %M분')}")
+
+future_time_calculator()
+print()
+
+# 5. 나이 계산기
+print("=== MechDog 나이 계산기 ===")
+
+def calculate_age():
+    """MechDog가 태어난 지 얼마나 됐는지 계산"""
+    # MechDog가 태어난 날 (가상)
+    birth_date = datetime(2023, 6, 15)  # 2023년 6월 15일
+    now = datetime.now()
+    
+    age_days = (now - birth_date).days
+    age_months = age_days // 30  # 대략적인 월 계산
+    
+    print(f"🤖 MechDog 생일: {birth_date.strftime('%Y년 %m월 %d일')}")
+    print(f"📅 오늘까지: {age_days}일")
+    print(f"📊 대략: {age_months}개월")
+    
+    if age_days < 30:
+        age_comment = "아직 아기 로봇이에요! 👶"
+    elif age_days < 365:
+        age_comment = "귀여운 어린 로봇이에요! 🧒"
+    else:
+        age_comment = "멋진 어른 로봇이에요! 🤖"
+    
+    print(f"💭 {age_comment}")
+
+calculate_age()
+print()
+
+# 6. 시간 퀴즈
+print("=== 시간 퀴즈 ===")
+
+def time_quiz():
+    """시간 관련 퀴즈"""
+    questions = [
+        ("1분은 몇 초일까요?", 60, "초"),
+        ("1시간은 몇 분일까요?", 60, "분"),
+        ("하루는 몇 시간일까요?", 24, "시간"),
+        ("일주일은 며칠일까요?", 7, "일")
+    ]
+    
+    for question, answer, unit in questions:
+        print(f"❓ {question}")
+        print(f"💡 정답: {answer}{unit}")
+        print()
+
+time_quiz()
+
+# 7. 재미있는 시간 놀이
+print("=== 재미있는 시간 놀이 ===")
+
+def time_games():
+    """시간과 관련된 재미있는 놀이들"""
+    
+    # 랜덤 시간 만들기
+    random_hour = random.randint(0, 23)
+    random_minute = random.randint(0, 59)
+    
+    print(f"🎲 랜덤 시간: {random_hour:02d}:{random_minute:02d}")
+    
+    # 시간대 맞추기
+    if 6 <= random_hour < 12:
+        time_period = "아침"
+        activity = "아침 운동"
+    elif 12 <= random_hour < 18:
+        time_period = "오후"
+        activity = "오후 산책"
+    elif 18 <= random_hour < 22:
+        time_period = "저녁"
+        activity = "저녁 놀이"
+    else:
+        time_period = "밤"
+        activity = "조용한 휴식"
+    
+    print(f"🌅 이 시간은 {time_period}이에요!")
+    print(f"🎯 MechDog가 할 일: {activity}")
+    
+    # 계절 맞추기
+    now = datetime.now()
+    month = now.month
+    
+    if 3 <= month <= 5:
+        season = "봄 🌸"
+    elif 6 <= month <= 8:
+        season = "여름 ☀️"
+    elif 9 <= month <= 11:
+        season = "가을 🍂"
+    else:
+        season = "겨울 ❄️"
+    
+    print(f"🍃 지금은 {season}이에요!")
+
+time_games()
+print()
+
+# 8. 시간 저축 게임
+print("=== 시간 저축 게임 ===")
+
+def time_savings():
+    """시간을 절약하는 방법들"""
+    time_saving_tips = [
+        ("정리 정돈", "3분", "물건을 제자리에 두면 찾는 시간 절약!"),
+        ("미리 준비", "5분", "내일 할 일을 미리 준비해두기!"),
+        ("빠른 결정", "2분", "간단한 일은 바로바로 결정하기!"),
+        ("계획 세우기", "10분", "하루 계획을 세우면 효율적!")
+    ]
+    
+    print("💰 시간 저축 비법:")
+    total_saved = 0
+    
+    for tip, saved_time, description in time_saving_tips:
+        minutes = int(saved_time.replace('분', ''))
+        total_saved += minutes
+        print(f"✨ {tip}: {saved_time} 절약")
+        print(f"   💡 {description}")
+    
+    print(f"\\n🎉 총 절약 시간: {total_saved}분!")
+    print("이 시간으로 더 재미있는 일을 할 수 있어요!")
+
+time_savings()
+
+print("\\n🎉 시간 놀이 완료!")
+print("시간 모듈을 사용하면 MechDog가 시간을 잘 관리할 수 있어요!")`;
+            });
+            
+            document.getElementById('show-challenge').addEventListener('click', () => {
+                document.getElementById('code-editor').value = `# 🎯 도전 과제: MechDog 놀이 만들기
+
+print("🎮 MechDog와 함께하는 재미있는 도전!")
+print("배운 모듈들을 사용해서 재미있는 프로그램을 만들어보세요!")
 print()
 
 import random
 import math
 from datetime import datetime
 
-# 센서 데이터 처리 클래스
-class SensorDataProcessor:
-    """센서 데이터 처리기"""
-    def __init__(self):
-        self.history = []
-        print("🔧 센서 데이터 처리기 초기화")
-    
-    def process_distance_data(self, distance):
-        """거리 데이터 처리"""
-        self.history.append({
-            'distance': distance,
-            'timestamp': datetime.now(),
-            'status': self.classify_distance(distance)
-        })
-        return self.classify_distance(distance)
-    
-    def classify_distance(self, distance):
-        """거리 분류"""
-        if distance < 15:
-            return "위험"
-        elif distance < 30:
-            return "주의"
-        elif distance < 50:
-            return "안전"
-        else:
-            return "여유"
-    
-    def get_statistics(self):
-        """통계 정보"""
-        if not self.history:
-            return "데이터 없음"
-        
-        distances = [data['distance'] for data in self.history]
-        return {
-            'count': len(distances),
-            'average': sum(distances) / len(distances),
-            'min': min(distances),
-            'max': max(distances)
-        }
+# 🏆 도전 과제 1: MechDog 가위바위보 게임
+print("=== 도전 과제 1: 가위바위보 게임 ===")
 
-# 실제 MechDog 스타일 센서 시뮬레이션
-class MechDogSensorArray:
-    """MechDog 센서 배열"""
-    def __init__(self):
-        self.processor = SensorDataProcessor()
-        print("🤖 MechDog 센서 배열 초기화")
+def mechdog_rps_game():
+    """MechDog와 가위바위보 게임하기"""
+    choices = ["가위", "바위", "보"]
     
-    def scan_environment(self, scan_count=5):
-        """환경 스캔"""
-        print("🔄 환경 스캔 시작...")
-        results = []
-        
-        for i in range(scan_count):
-            # 시뮬레이션된 거리 데이터
-            distance = random.randint(5, 100)
-            status = self.processor.process_distance_data(distance)
-            
-            print(f"  스캔 {i+1}: {distance}cm ({status})")
-            results.append({'distance': distance, 'status': status})
-        
-        return results
+    # 여기에 코드를 작성해보세요!
+    # 힌트 1: random.choice(choices) 사용
+    # 힌트 2: 사용자 선택과 MechDog 선택 비교하기
+    # 힌트 3: 승부 결과 출력하기
     
-    def adaptive_behavior(self, scan_results):
-        """적응형 행동 결정"""
-        print("🧠 적응형 행동 결정:")
-        
-        # 가장 가까운 장애물 찾기
-        min_distance = min(result['distance'] for result in scan_results)
-        
-        if min_distance < 15:
-            action = "후진"
-            led_color = "빨강"
-        elif min_distance < 30:
-            action = "정지"
-            led_color = "노랑"
-        elif min_distance < 50:
-            action = "천천히 전진"
-            led_color = "초록"
-        else:
-            action = "정상 속도 전진"
-            led_color = "파랑"
-        
-        print(f"  최근접 거리: {min_distance}cm")
-        print(f"  결정된 행동: {action}")
-        print(f"  LED 색상: {led_color}")
-        
-        return action, led_color
-
-# 센서 시스템 테스트
-print("=== MechDog 센서 시스템 테스트 ===")
-sensor_array = MechDogSensorArray()
+    print("🤖 MechDog: 가위바위보 게임을 해봅시다!")
+    # 여기서 게임 로직을 완성해보세요!
+    
+mechdog_rps_game()
 print()
 
-# 환경 스캔 실행
-scan_data = sensor_array.scan_environment(8)
+# 🏆 도전 과제 2: MechDog 센서 경보 시스템
+print("=== 도전 과제 2: 센서 경보 시스템 ===")
+
+def create_alarm_system():
+    """거리에 따른 경보 시스템 만들기"""
+    
+    # 여기에 코드를 작성해보세요!
+    # 힌트 1: 거리 측정 함수 만들기
+    # 힌트 2: 거리별로 다른 경보 출력
+    # 힌트 3: 5번 연속 측정해서 결과 보여주기
+    
+    print("🚨 MechDog 경보 시스템 가동!")
+    # 여기서 경보 시스템을 완성해보세요!
+    
+create_alarm_system()
 print()
 
-# 적응형 행동 결정
-action, led_color = sensor_array.adaptive_behavior(scan_data)
+# 🏆 도전 과제 3: MechDog 수학 선생님
+print("=== 도전 과제 3: 수학 선생님 ===")
+
+def math_teacher():
+    """MechDog가 수학 문제를 내주는 함수"""
+    
+    # 여기에 코드를 작성해보세요!
+    # 힌트 1: 랜덤으로 두 숫자 만들기
+    # 힌트 2: 덧셈, 뺄셈 문제 내기
+    # 힌트 3: 정답 계산해서 보여주기
+    
+    print("📚 MechDog 선생님의 수학 시간!")
+    # 여기서 수학 문제를 완성해보세요!
+    
+math_teacher()
 print()
 
-# 센서 데이터 통계
-stats = sensor_array.processor.get_statistics()
-print("📊 센서 데이터 통계:")
-print(f"  측정 횟수: {stats['count']}회")
-print(f"  평균 거리: {stats['average']:.1f}cm")
-print(f"  최소 거리: {stats['min']}cm")
-print(f"  최대 거리: {stats['max']}cm")
+# 🏆 도전 과제 4: MechDog 시간 관리사
+print("=== 도전 과제 4: 시간 관리사 ===")
+
+def time_manager():
+    """MechDog가 시간을 관리해주는 함수"""
+    
+    # 여기에 코드를 작성해보세요!
+    # 힌트 1: 현재 시간 가져오기
+    # 힌트 2: 시간대별 추천 활동 만들기
+    # 힌트 3: 오늘 날짜와 요일 출력하기
+    
+    print("⏰ MechDog 시간 관리사 서비스!")
+    # 여기서 시간 관리 기능을 완성해보세요!
+    
+time_manager()
 print()
 
-# 실제 MechDog 코드에서 영감을 받은 거리 기반 LED 제어
-print("=== 거리 기반 LED 제어 시뮬레이션 ===")
-print("(실제 MechDog 코드: i2csonar.setRGB(0, r, g, b))")
+# 🏆 보너스 도전 과제: MechDog 종합 놀이터
+print("=== 보너스 도전: MechDog 종합 놀이터 ===")
 
-for i, result in enumerate(scan_data[:3]):
-    distance = result['distance']
-    print(f"거리 {distance}cm:")
+def mechdog_playground():
+    """모든 기능을 합친 종합 놀이 프로그램"""
     
-    if distance < 15:
-        print(f"  → setRGB(0, 255, 0, 0)  # 빨강")
-    elif distance > 40:
-        print(f"  → setRGB(0, 0, 0, 153)  # 파랑")
-    else:
-        print(f"  → setRGB(0, 253, 208, 0)  # 노랑")
-
-print("🎉 센서 모듈 활용 완료!")
-print("실제 MechDog에서는 이런 방식으로 센서 데이터를 처리합니다!")`;
-            });
-            
-            document.getElementById('math-example').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 🔢 MechDog 수학 모듈 활용
-
-print("🔢 MechDog 수학 계산 시스템")
-print("실제 로봇 이동과 자세 제어에 필요한 수학을 배워보세요!")
-print()
-
-import math
-
-# 이동 거리 계산 (실제 MechDog에서 사용)
-class MovementCalculator:
-    """이동 계산기"""
-    def __init__(self):
-        print("📐 이동 계산기 초기화")
+    print("🎪 MechDog 종합 놀이터에 오신 걸 환영합니다!")
+    print()
     
-    def calculate_distance(self, x1, y1, x2, y2):
-        """두 점 사이의 거리 계산"""
-        distance = math.sqrt((x2-x1)**2 + (y2-y1)**2)
-        return distance
+    # 여기에 여러분만의 창의적인 코드를 작성해보세요!
+    # 다음 기능들을 조합해보세요:
+    # - 랜덤 숫자 게임
+    # - 거리 센서 놀이  
+    # - 간단한 수학 계산
+    # - 시간 관련 기능
+    # - 재미있는 메시지 출력
     
-    def calculate_angle(self, x1, y1, x2, y2):
-        """두 점 사이의 각도 계산"""
-        angle_rad = math.atan2(y2-y1, x2-x1)
-        angle_deg = math.degrees(angle_rad)
-        return angle_deg
+    activities = [
+        "🎲 주사위 던지기",
+        "📏 거리 측정 게임", 
+        "🧮 계산기 놀이",
+        "⏰ 시간 맞추기",
+        "🎨 색깔 바꾸기"
+    ]
     
-    def calculate_circular_path(self, radius):
-        """원형 경로 계산"""
-        circumference = 2 * math.pi * radius
-        return circumference
-
-# 자세 제어 계산 (실제 MechDog transform 함수에서 사용)
-class PoseCalculator:
-    """자세 계산기"""
-    def __init__(self):
-        print("🤸 자세 계산기 초기화")
+    print("🎯 오늘의 추천 활동:")
+    for i, activity in enumerate(activities):
+        print(f"  {i+1}. {activity}")
     
-    def degrees_to_radians(self, degrees):
-        """도를 라디안으로 변환"""
-        return math.radians(degrees)
+    # 여기서 더 재미있는 기능들을 추가해보세요!
     
-    def radians_to_degrees(self, radians):
-        """라디안을 도로 변환"""
-        return math.degrees(radians)
-    
-    def calculate_leg_position(self, height, angle):
-        """다리 위치 계산 (삼각함수 사용)"""
-        x = height * math.cos(math.radians(angle))
-        y = height * math.sin(math.radians(angle))
-        return x, y
-
-# 계산기 초기화
-movement_calc = MovementCalculator()
-pose_calc = PoseCalculator()
-print()
-
-# 실제 MechDog 이동 시나리오
-print("=== MechDog 이동 시나리오 ===")
-waypoints = [
-    (0, 0, "시작점"),
-    (30, 40, "중간점"),
-    (60, 20, "목표점")
-]
-
-print("📍 경유지:")
-for i, (x, y, name) in enumerate(waypoints):
-    print(f"  {i+1}. {name}: ({x}, {y})")
-
-print("🧮 이동 계산:")
-total_distance = 0
-for i in range(len(waypoints)-1):
-    x1, y1, name1 = waypoints[i]
-    x2, y2, name2 = waypoints[i+1]
-    
-    distance = movement_calc.calculate_distance(x1, y1, x2, y2)
-    angle = movement_calc.calculate_angle(x1, y1, x2, y2)
-    total_distance += distance
-    
-    print(f"  {name1} → {name2}:")
-    print(f"    거리: {distance:.2f}cm")
-    print(f"    각도: {angle:.1f}도")
-
-print(f"🚀 총 이동 거리: {total_distance:.2f}cm")
-print()
-
-# 자세 제어 계산
-print("=== MechDog 자세 제어 계산 ===")
-print("(실제 transform 함수에서 사용하는 계산)")
-
-# 다양한 자세의 다리 위치 계산
-poses = [
-    (20, 45, "기본 자세"),
-    (30, 30, "높은 자세"), 
-    (15, 60, "낮은 자세")
-]
-
-print("🦵 다리 위치 계산:")
-for height, angle, pose_name in poses:
-    x, y = pose_calc.calculate_leg_position(height, angle)
-    print(f"  {pose_name} (높이: {height}cm, 각도: {angle}도):")
-    print(f"    X 위치: {x:.2f}cm")
-    print(f"    Y 위치: {y:.2f}cm")
+mechdog_playground()
 
 print()
-
-# 원형 순찰 경로 계산
-print("=== 원형 순찰 경로 계산 ===")
-patrol_radii = [50, 100, 150]
-
-print("⭕ 다양한 순찰 반경:")
-for radius in patrol_radii:
-    circumference = movement_calc.calculate_circular_path(radius)
-    print(f"  반지름 {radius}cm: 둘레 {circumference:.2f}cm")
-
+print("🎉 도전 과제 안내")
+print("=" * 40)
+print("👆 위의 함수들을 완성해보세요!")
 print()
-
-# 각도 변환 예제
-print("=== 각도 변환 (도 ↔ 라디안) ===")
-angles_deg = [0, 30, 45, 90, 180]
-
-print("📐 각도 변환:")
-for deg in angles_deg:
-    rad = pose_calc.degrees_to_radians(deg)
-    back_to_deg = pose_calc.radians_to_degrees(rad)
-    print(f"  {deg}도 = {rad:.4f} 라디안 = {back_to_deg}도")
-
+print("💡 도움말:")
+print("• random.randint(1, 10) : 1~10 사이 랜덤 숫자")
+print("• random.choice(['A', 'B']) : 리스트에서 랜덤 선택")
+print("• math.sqrt(16) : 제곱근 계산")
+print("• datetime.now() : 현재 시간")
+print("• if-elif-else : 조건 분기")
+print("• for 반복문 : 여러 번 실행")
 print()
-
-# 실제 MechDog에서 자주 사용하는 삼각함수 값들
-print("=== 자주 사용하는 삼각함수 값 ===")
-important_angles = [0, 30, 45, 60, 90]
-
-print("📊 삼각함수 값:")
-for angle in important_angles:
-    rad = math.radians(angle)
-    sin_val = math.sin(rad)
-    cos_val = math.cos(rad)
-    print(f"  {angle}도: sin = {sin_val:.3f}, cos = {cos_val:.3f}")
-
-print("🎉 수학 모듈 활용 완료!")
-print("실제 MechDog에서는 이런 계산들로 정확한 움직임을 만듭니다!")`;
-            });
-            
-            document.getElementById('time-example').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# ⏰ MechDog 시간 모듈 활용
-
-print("⏰ MechDog 시간 관리 시스템")
-print("실제 로봇의 스케줄링과 타이밍을 배워보세요!")
-print()
-
-import time
-from datetime import datetime, timedelta
-
-# 실제 MechDog에서 사용하는 시간 관리
-class MechDogScheduler:
-    """MechDog 스케줄러 (실제 코드 스타일)"""
-    def __init__(self):
-        self.start_time = datetime.now()
-        self.mission_queue = []
-        print(f"📅 MechDog 스케줄러 시작: {self.start_time.strftime('%H:%M:%S')}")
-    
-    def add_mission(self, mission_name, delay_seconds, duration_seconds):
-        """임무 추가"""
-        scheduled_time = datetime.now() + timedelta(seconds=delay_seconds)
-        self.mission_queue.append({
-            'name': mission_name,
-            'scheduled_time': scheduled_time,
-            'duration': duration_seconds,
-            'status': '대기중'
-        })
-        print(f"📋 임무 추가: {mission_name} ({scheduled_time.strftime('%H:%M:%S')} 예정)")
-    
-    def execute_mission(self, mission):
-        """임무 실행 시뮬레이션"""
-        print(f"🎬 {mission['name']} 실행 중... ({mission['duration']}초)")
-        # 실제로는 time.sleep(mission['duration']) 사용
-        # 여기서는 시뮬레이션으로 대체
-        mission['status'] = '완료'
-        return True
-    
-    def get_mission_status(self):
-        """임무 상태 확인"""
-        current_time = datetime.now()
-        print(f"📊 현재 시간: {current_time.strftime('%H:%M:%S')}")
-        print("📋 임무 상태:")
-        
-        for i, mission in enumerate(self.mission_queue):
-            time_diff = (mission['scheduled_time'] - current_time).total_seconds()
-            if time_diff > 0:
-                print(f"  {i+1}. {mission['name']}: {time_diff:.0f}초 후 시작 예정")
-            else:
-                print(f"  {i+1}. {mission['name']}: 실행 가능")
-
-# 로그 시스템 (실제 MechDog 활동 기록)
-class ActivityLogger:
-    """활동 로거"""
-    def __init__(self):
-        self.logs = []
-        print("📝 활동 로거 초기화")
-    
-    def log_activity(self, activity, level="INFO"):
-        """활동 기록"""
-        timestamp = datetime.now()
-        log_entry = {
-            'timestamp': timestamp,
-            'activity': activity,
-            'level': level
-        }
-        self.logs.append(log_entry)
-        
-        # 실제 MechDog 로그 형식
-        time_str = timestamp.strftime('%H:%M:%S')
-        print(f"[{time_str}] {level}: {activity}")
-    
-    def get_logs_summary(self):
-        """로그 요약"""
-        if not self.logs:
-            return "로그 없음"
-        
-        levels = {}
-        for log in self.logs:
-            level = log['level']
-            levels[level] = levels.get(level, 0) + 1
-        
-        return levels
-
-# 타이밍 제어 (실제 MechDog의 정밀한 동작 제어)
-class TimingController:
-    """타이밍 컨트롤러"""
-    def __init__(self):
-        print("⏱️ 타이밍 컨트롤러 초기화")
-    
-    def precise_delay(self, milliseconds):
-        """정밀 지연 (실제로는 하드웨어 타이밍 제어)"""
-        seconds = milliseconds / 1000.0
-        print(f"⏳ {milliseconds}ms 정밀 지연")
-        # 실제로는 time.sleep(seconds)
-        return seconds
-    
-    def measure_execution_time(self, task_name):
-        """실행 시간 측정"""
-        start_time = time.time()
-        print(f"⏰ {task_name} 시작")
-        
-        # 시뮬레이션된 작업 시간
-        import random
-        simulated_work_time = random.uniform(0.1, 0.5)
-        # 실제로는 time.sleep(simulated_work_time)
-        
-        end_time = start_time + simulated_work_time
-        execution_time = end_time - start_time
-        
-        print(f"✅ {task_name} 완료 (실행시간: {execution_time:.3f}초)")
-        return execution_time
-
-# 시스템 초기화
-print("=== MechDog 시간 시스템 초기화 ===")
-scheduler = MechDogScheduler()
-logger = ActivityLogger()
-timer = TimingController()
-print()
-
-# 실제 MechDog 동작 시나리오
-print("=== MechDog 일일 스케줄 설정 ===")
-
-# 실제 MechDog가 수행할 수 있는 임무들
-daily_missions = [
-    ("시스템 자가진단", 5, 10),
-    ("환경 센서 체크", 15, 5),
-    ("순찰 루트 1", 30, 120),
-    ("배터리 상태 확인", 45, 3),
-    ("LED 시스템 테스트", 60, 8),
-    ("순찰 루트 2", 90, 180)
-]
-
-# 스케줄 등록
-for mission_name, delay, duration in daily_missions:
-    scheduler.add_mission(mission_name, delay, duration)
-    logger.log_activity(f"스케줄 등록: {mission_name}")
-
-print()
-
-# 스케줄 상태 확인
-scheduler.get_mission_status()
-print()
-
-# 정밀 타이밍 테스트 (실제 MechDog transform 함수와 유사)
-print("=== 정밀 타이밍 제어 테스트 ===")
-timing_tests = [
-    ("자세 변환", 1000),  # 1초
-    ("LED 색상 변경", 500),  # 0.5초
-    ("센서 데이터 읽기", 100),  # 0.1초
-    ("이동 명령 전송", 50)   # 0.05초
-]
-
-for task, delay_ms in timing_tests:
-    timer.precise_delay(delay_ms)
-    execution_time = timer.measure_execution_time(task)
-    logger.log_activity(f"{task} 실행완료", "INFO")
-
-print()
-
-# 시스템 성능 모니터링
-print("=== 시스템 성능 모니터링 ===")
-uptime = datetime.now() - scheduler.start_time
-print(f"🕐 시스템 가동 시간: {uptime.total_seconds():.1f}초")
-
-log_summary = logger.get_logs_summary()
-print("📊 로그 요약:")
-for level, count in log_summary.items():
-    print(f"  {level}: {count}건")
-
-print()
-
-# 실제 MechDog 코드 스타일의 메인 루프 시뮬레이션
-print("=== 메인 루프 시뮬레이션 ===")
-print("(실제 MechDog의 while True 루프와 유사)")
-
-loop_iterations = 5
-for i in range(loop_iterations):
-    current_time = datetime.now()
-    print(f"루프 {i+1}: {current_time.strftime('%H:%M:%S.%f')[:-3]}")
-    
-    # 센서 읽기 시뮬레이션
-    timer.measure_execution_time("센서 데이터 읽기")
-    logger.log_activity("센서 데이터 처리 완료")
-    
-    # 0.1초 간격 (실제로는 time.sleep(0.1))
-    timer.precise_delay(100)
-
-print("🎉 시간 모듈 활용 완료!")
-print("실제 MechDog에서는 이런 방식으로 정밀한 타이밍을 제어합니다!")`;
-            });
-            
-            document.getElementById('show-challenge').addEventListener('click', () => {
-                document.getElementById('code-editor').value = `# 🎯 도전 과제: MechDog 모듈 시스템 구축
-
-print("🏗️ MechDog 모듈 시스템 구축 도전!")
-print("실제 MechDog처럼 모듈화된 시스템을 만들어보세요!")
-print()
-
-# 여기에 코드를 작성하세요!
-
-# 1. MechDogController 클래스
-class MechDogController:
-    """전체 로봇을 제어하는 메인 컨트롤러"""
-    def __init__(self):
-        # 여기에 초기화 코드를 작성하세요
-        # 힌트: 각 모듈들을 초기화해야 합니다
-        pass
-    
-    def start_system(self):
-        """시스템 시작"""
-        # 여기에 시스템 시작 코드를 작성하세요
-        pass
-    
-    def shutdown_system(self):
-        """시스템 종료"""
-        # 여기에 시스템 종료 코드를 작성하세요
-        pass
-
-# 2. SensorModule 클래스
-class SensorModule:
-    """센서 데이터를 처리하는 모듈"""
-    def __init__(self):
-        # 여기에 센서 초기화 코드를 작성하세요
-        pass
-    
-    def read_distance(self):
-        """거리 센서 읽기"""
-        # 여기에 거리 센서 읽기 코드를 작성하세요
-        # 힌트: random 모듈 사용
-        pass
-    
-    def process_sensor_data(self, data):
-        """센서 데이터 처리"""
-        # 여기에 센서 데이터 처리 로직을 작성하세요
-        pass
-
-# 3. MovementModule 클래스
-class MovementModule:
-    """이동과 자세를 제어하는 모듈"""
-    def __init__(self):
-        # 여기에 이동 모듈 초기화 코드를 작성하세요
-        pass
-    
-    def move_forward(self, distance):
-        """전진"""
-        # 여기에 전진 코드를 작성하세요
-        pass
-    
-    def move_backward(self, distance):
-        """후진"""
-        # 여기에 후진 코드를 작성하세요
-        pass
-    
-    def turn(self, angle):
-        """회전"""
-        # 여기에 회전 코드를 작성하세요
-        pass
-    
-    def change_height(self, height):
-        """높이 변경"""
-        # 여기에 높이 변경 코드를 작성하세요 
-        # 힌트: 실제 MechDog의 transform 함수 참고
-        pass
-
-# 4. LEDModule 클래스
-class LEDModule:
-    """LED 색상과 패턴을 제어하는 모듈"""
-    def __init__(self):
-        # 여기에 LED 모듈 초기화 코드를 작성하세요
-        pass
-    
-    def set_color(self, r, g, b):
-        """LED 색상 설정"""
-        # 여기에 LED 색상 설정 코드를 작성하세요
-        pass
-    
-    def set_status_color(self, status):
-        """상태에 따른 LED 색상 설정"""
-        # 여기에 상태별 LED 색상 코드를 작성하세요
-        # 힌트: if-elif-else 사용
-        pass
-
-# 시스템 테스트 코드
-print("=== 시스템 테스트 ===")
-
-# MechDog 시스템 생성
-# controller = MechDogController()
-# controller.start_system()
-
-# 센서 테스트
-# sensor = SensorModule()
-# distance = sensor.read_distance()
-# sensor.process_sensor_data(distance)
-
-# 이동 테스트  
-# movement = MovementModule()
-# movement.move_forward(30)
-# movement.turn(45)
-# movement.change_height(20)
-
-# LED 테스트
-# led = LEDModule()
-# led.set_color(255, 0, 0)  # 빨강
-# led.set_status_color("warning")
-
-print("✅ 도전 과제 완료!")
-print("각 클래스의 메서드들을 구현해보세요!")
-
-# 추가 도전 과제:
-# 1. 모든 모듈을 통합해서 작동하는 시스템 만들기
-# 2. 센서 데이터에 따라 자동으로 동작하는 AI 로직 추가
-# 3. 시간에 따른 스케줄링 기능 추가
-# 4. 로그 기록 기능 추가`;
+print("🌟 창의적으로 코드를 완성해보세요!")
+print("완성되면 실행해서 MechDog와 놀아보아요!")`;
             });
         });
     </script>
