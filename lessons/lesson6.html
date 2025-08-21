@@ -98,9 +98,140 @@
                 </div>
             </div>
             
+            <!-- 패키지의 개념 설명 -->
+            <div class="bg-orange-50 border-l-4 border-orange-500 p-6 mb-6">
+                <h4 class="text-lg font-bold text-orange-800 mb-3">📦 패키지란 무엇일까요?</h4>
+                <p class="text-orange-700 mb-3">패키지는 <strong>여러 모듈들을 모아놓은 폴더</strong>입니다. 마치 도서관의 책들이 주제별로 서가에 정리되어 있는 것처럼, 관련된 모듈들을 하나의 패키지로 묶어서 관리합니다.</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-orange-700 mb-2">📚 모듈 vs 패키지</h5>
+                        <ul class="text-orange-700 space-y-1 text-sm">
+                            <li>• <strong>모듈</strong>: 하나의 .py 파일 (예: math.py)</li>
+                            <li>• <strong>패키지</strong>: 여러 .py 파일이 담긴 폴더</li>
+                            <li>• <strong>예시</strong>: HW_MechDog 패키지 안에 여러 모듈들</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-orange-700 mb-2">🗂️ MechDog 패키지 구조</h5>
+                        <pre class="text-sm"><code>HW_MechDog/           # 패키지 폴더
+├── __init__.py       # 패키지 초기화 파일
+├── MechDog.py        # MechDog 클래스 모듈
+├── actions.py        # 동작 관련 모듈
+└── sensors.py        # 센서 관련 모듈</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border mt-4">
+                    <h5 class="font-semibold text-orange-700 mb-2">💡 패키지 사용 예시</h5>
+                    <pre class="text-sm"><code># 패키지에서 특정 모듈 가져오기
+from HW_MechDog import MechDog        # HW_MechDog 패키지의 MechDog 모듈
+from Hiwonder_IIC import I2CSonar     # Hiwonder_IIC 패키지의 I2CSonar 모듈
+
+# 패키지 전체 가져오기
+import HW_MechDog                     # 패키지 전체를 가져옴
+dog = HW_MechDog.MechDog()            # 패키지명.클래스명으로 사용</code></pre>
+                </div>
+            </div>
+            
+            <!-- 파이썬 vs C/C++ 차이점 -->
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6 mb-6">
+                <h4 class="text-lg font-bold text-yellow-800 mb-3">🤔 파이썬에는 헤더 파일이 없나요?</h4>
+                <p class="text-yellow-700 mb-3"><strong>파이썬은 헤더 파일(.h)이 없습니다!</strong> C/C++과 달리 파이썬은 더 간단한 방식을 사용합니다.</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-yellow-700 mb-2">📄 C/C++ 방식</h5>
+                        <pre class="text-sm"><code>// math.h (헤더 파일)
+int add(int a, int b);
+
+// math.c (구현 파일)
+#include "math.h"
+int add(int a, int b) {
+    return a + b;
+}
+
+// main.c (사용)
+#include "math.h"</code></pre>
+                        <p class="text-xs text-yellow-600 mt-2">선언과 구현이 분리됨</p>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-yellow-700 mb-2">🐍 Python 방식</h5>
+                        <pre class="text-sm"><code># math.py (모듈 파일)
+def add(a, b):
+    return a + b
+
+# main.py (사용)
+import math
+result = math.add(1, 2)</code></pre>
+                        <p class="text-xs text-yellow-600 mt-2">하나의 파일에 모든 것이 포함됨</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border mt-4">
+                    <h5 class="font-semibold text-yellow-700 mb-2">✨ 파이썬의 장점</h5>
+                    <ul class="text-yellow-700 space-y-1 text-sm">
+                        <li>• <strong>간단함</strong>: 헤더 파일 없이 바로 import로 사용</li>
+                        <li>• <strong>자동 처리</strong>: 컴파일 과정 없이 인터프리터가 자동으로 처리</li>
+                        <li>• <strong>동적 타입</strong>: 타입 선언 없이 유연하게 사용 가능</li>
+                        <li>• <strong>__init__.py</strong>: 패키지 초기화 파일이 헤더 파일과 비슷한 역할</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 모듈과 패키지 정리표 -->
+            <div class="bg-indigo-50 border-l-4 border-indigo-500 p-6 mb-6">
+                <h4 class="text-lg font-bold text-indigo-800 mb-3">📊 모듈과 패키지 완벽 정리</h4>
+                
+                <table class="w-full bg-white rounded-lg overflow-hidden">
+                    <thead class="bg-indigo-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left text-indigo-800">구분</th>
+                            <th class="px-4 py-2 text-left text-indigo-800">모듈 (Module)</th>
+                            <th class="px-4 py-2 text-left text-indigo-800">패키지 (Package)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-semibold text-indigo-700">정의</td>
+                            <td class="px-4 py-2">하나의 .py 파일</td>
+                            <td class="px-4 py-2">여러 모듈을 담은 폴더</td>
+                        </tr>
+                        <tr class="border-t bg-indigo-50">
+                            <td class="px-4 py-2 font-semibold text-indigo-700">예시</td>
+                            <td class="px-4 py-2">math.py, time.py</td>
+                            <td class="px-4 py-2">HW_MechDog/, Hiwonder_IIC/</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-semibold text-indigo-700">구조</td>
+                            <td class="px-4 py-2">단일 파일</td>
+                            <td class="px-4 py-2">폴더 + __init__.py + 여러 .py 파일</td>
+                        </tr>
+                        <tr class="border-t bg-indigo-50">
+                            <td class="px-4 py-2 font-semibold text-indigo-700">import</td>
+                            <td class="px-4 py-2"><code>import module_name</code></td>
+                            <td class="px-4 py-2"><code>from package import module</code></td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-semibold text-indigo-700">용도</td>
+                            <td class="px-4 py-2">특정 기능 구현</td>
+                            <td class="px-4 py-2">관련 기능들을 체계적으로 관리</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="mt-4 p-3 bg-white rounded-lg border border-indigo-200">
+                    <p class="text-indigo-700 text-sm">
+                        💡 <strong>핵심 포인트:</strong> 모듈은 레고 블록 하나, 패키지는 레고 블록 세트입니다!
+                    </p>
+                </div>
+            </div>
+            
             <!-- MechDog 모듈 구조 -->
             <div class="bg-blue-50 border-l-4 border-blue-500 p-6 mb-6">
-                <h4 class="text-lg font-bold text-blue-800 mb-3">🤖 MechDog 모듈 구조</h4>
+                <h4 class="text-lg font-bold text-blue-800 mb-3">🤖 MechDog 모듈과 패키지 활용</h4>
                 <p class="text-blue-700 mb-3">실제 MechDog 코드에서는 이런 모듈들을 사용합니다:</p>
                 
                 <div class="grid md:grid-cols-2 gap-4">
@@ -122,26 +253,112 @@ import math          # 수학 계산</code></pre>
             
             <!-- import 방법들 -->
             <div class="bg-green-50 border-l-4 border-green-500 p-6 mb-6">
-                <h4 class="text-lg font-bold text-green-800 mb-3">📥 import 방법들</h4>
+                <h4 class="text-lg font-bold text-green-800 mb-3">📥 import 방법들과 실제 사용 예시</h4>
                 <p class="text-green-700 mb-3">모듈을 가져오는 방법은 여러 가지가 있습니다:</p>
                 
                 <div class="grid md:grid-cols-3 gap-4">
                     <div class="bg-white p-4 rounded-lg border">
                         <h5 class="font-semibold text-green-700 mb-2">📝 전체 가져오기</h5>
                         <pre class="text-sm"><code>import math
-result = math.sqrt(16)</code></pre>
+import time
+
+# 사용 예시
+result = math.sqrt(16)
+time.sleep(1)</code></pre>
+                        <p class="text-xs text-green-600 mt-2">모듈명.함수명으로 사용</p>
                     </div>
                     
                     <div class="bg-white p-4 rounded-lg border">
                         <h5 class="font-semibold text-green-700 mb-2">🎯 부분 가져오기</h5>
-                        <pre class="text-sm"><code>from math import sqrt
-result = sqrt(16)</code></pre>
+                        <pre class="text-sm"><code>from math import sqrt, pi
+from time import sleep
+
+# 사용 예시
+result = sqrt(16)
+sleep(1)</code></pre>
+                        <p class="text-xs text-green-600 mt-2">함수명만으로 바로 사용</p>
                     </div>
                     
                     <div class="bg-white p-4 rounded-lg border">
                         <h5 class="font-semibold text-green-700 mb-2">🏷️ 별명 사용하기</h5>
-                        <pre class="text-sm"><code>import math as m
-result = m.sqrt(16)</code></pre>
+                        <pre class="text-sm"><code>import numpy as np
+import pandas as pd
+
+# 사용 예시
+arr = np.array([1, 2, 3])
+df = pd.DataFrame()</code></pre>
+                        <p class="text-xs text-green-600 mt-2">긴 이름을 짧게 줄여서 사용</p>
+                    </div>
+                </div>
+                
+                <!-- 4가지 import 방법 카드 -->
+                <div class="mt-4">
+                    <h5 class="font-semibold text-green-700 mb-3">🌟 실제 사용 예시: 다양한 import 방법 조합</h5>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <!-- 1. 전체 모듈 가져오기 -->
+                        <div class="bg-blue-50 p-4 rounded-lg border">
+                            <h6 class="font-semibold text-blue-700 mb-2">1️⃣ 전체 모듈 가져오기</h6>
+                            <pre class="text-sm bg-white p-3 rounded overflow-x-auto"><code>import math
+import time
+import random
+
+# 사용법: 모듈명.함수명
+distance = math.sqrt(3**2 + 4**2)
+print(f"거리: {distance}")
+time.sleep(1)
+number = random.randint(1, 100)</code></pre>
+                            <p class="text-xs text-blue-600 mt-2">모듈 전체를 가져와서 <code>모듈명.함수명</code>으로 사용</p>
+                        </div>
+
+                        <!-- 2. 특정 함수만 가져오기 -->
+                        <div class="bg-green-50 p-4 rounded-lg border">
+                            <h6 class="font-semibold text-green-700 mb-2">2️⃣ 특정 함수만 가져오기</h6>
+                            <pre class="text-sm bg-white p-3 rounded overflow-x-auto"><code>from datetime import datetime, timedelta
+from random import choice, shuffle
+
+# 사용법: 함수명만으로 바로 사용
+now = datetime.now()
+tomorrow = now + timedelta(days=1)
+colors = ["빨강", "파랑", "초록"]
+selected = choice(colors)</code></pre>
+                            <p class="text-xs text-green-600 mt-2">필요한 함수만 가져와서 <code>함수명</code>으로 바로 사용</p>
+                        </div>
+
+                        <!-- 3. 별명 사용하기 -->
+                        <div class="bg-purple-50 p-4 rounded-lg border">
+                            <h6 class="font-semibold text-purple-700 mb-2">3️⃣ 별명 사용하기</h6>
+                            <pre class="text-sm bg-white p-3 rounded overflow-x-auto"><code>import math as m
+import datetime as dt
+
+# 사용법: 별명.함수명
+result = m.pi * m.sqrt(16)
+current = dt.datetime.now()
+print(f"결과: {result:.2f}")
+print(f"현재: {current}")</code></pre>
+                            <p class="text-xs text-purple-600 mt-2">긴 모듈명을 짧은 <code>별명</code>으로 줄여서 사용</p>
+                        </div>
+
+                        <!-- 4. 패키지에서 가져오기 -->
+                        <div class="bg-orange-50 p-4 rounded-lg border">
+                            <h6 class="font-semibold text-orange-700 mb-2">4️⃣ 패키지에서 가져오기</h6>
+                            <pre class="text-sm bg-white p-3 rounded overflow-x-auto"><code># MechDog 패키지 예시
+from HW_MechDog import MechDog
+import Hiwonder
+from Hiwonder_IIC import I2CSonar
+
+# 사용법: 패키지 구조 활용
+mechdog = MechDog()
+sensor = Hiwonder.LightSensor()
+sonar = I2CSonar()</code></pre>
+                            <p class="text-xs text-orange-600 mt-2">패키지 폴더에서 필요한 모듈/클래스만 선택해서 가져오기</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 p-3 bg-green-100 rounded-lg border border-green-200">
+                        <p class="text-green-700 text-sm">
+                            ✨ <strong>핵심 팁:</strong> 상황에 맞게 4가지 방법을 조합해서 사용하세요! 
+                            자주 사용하는 함수는 <code>from import</code>, 긴 이름은 <code>as</code> 별명을 활용하면 편리합니다.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -202,52 +419,191 @@ result = m.sqrt(16)</code></pre>
 
         <!-- Real MechDog Code Examples -->
         <section class="lesson-card mb-8">
-            <h3 class="text-2xl font-bold text-gray-800 mb-4">🤖 실제 MechDog 코드 분석</h3>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🤖 실제 MechDog 코드 중 모듈 사용 예시</h3>
             
-            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6 mb-6">
-                <h4 class="text-lg font-bold text-yellow-800 mb-3">📁 MechDog-Code 디렉토리 구조</h4>
-                <div class="bg-white p-4 rounded-lg border">
-                    <pre class="text-sm">MechDog-Code/
-├── 4.2 Motion Control Course/     # 동작 제어 코드
-│   ├── change_body_height-detail.py
-│   ├── forward_backward-detail.py  
-│   └── wheel-detail.py
-├── 4.3 Advanced Development Game Courses/  # 센서 게임 코드
-│   ├── ultrasonic_ranging-detail.py
-│   ├── light_perception-detail.py
-│   └── Touch-detail.py</pre>
+            <!-- 모듈별 기능 설명 -->
+            <div class="bg-purple-50 border-l-4 border-purple-500 p-6 mb-6">
+                <h4 class="text-lg font-bold text-purple-800 mb-3">📦 MechDog 모듈 시스템</h4>
+                <p class="text-purple-700 mb-3">MechDog는 <strong>모듈화된 구조</strong>로 각 기능을 담당하는 모듈들을 조합하여 사용합니다:</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-purple-700 mb-2">🤖 HW_MechDog 모듈</h5>
+                        <p class="text-sm text-purple-600 mb-2">로봇 본체 제어 핵심</p>
+                        <ul class="text-sm text-purple-600 space-y-1">
+                            <li>• 움직임 제어 (앞/뒤/좌/우)</li>
+                            <li>• 자세 변경 (몸체 높이, 각도)</li>
+                            <li>• 저장된 액션 실행</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-purple-700 mb-2">🔧 Hiwonder 모듈</h5>
+                        <p class="text-sm text-purple-600 mb-2">입출력 장치 제어</p>
+                        <ul class="text-sm text-purple-600 space-y-1">
+                            <li>• 버튼, 부저, 조도센서</li>
+                            <li>• 디스플레이 제어</li>
+                            <li>• 기본 센서 입력</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-purple-700 mb-2">📡 Hiwonder_IIC 모듈</h5>
+                        <p class="text-sm text-purple-600 mb-2">I2C 센서 통신</p>
+                        <ul class="text-sm text-purple-600 space-y-1">
+                            <li>• 초음파 거리 센서</li>
+                            <li>• 카메라 모듈 연결</li>
+                            <li>• 음성 인식 모듈</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-purple-700 mb-2">👁️ ESP32S3Cam 모듈</h5>
+                        <p class="text-sm text-purple-600 mb-2">비전 인식 기능</p>
+                        <ul class="text-sm text-purple-600 space-y-1">
+                            <li>• 얼굴 인식</li>
+                            <li>• 색상 추적</li>
+                            <li>• 라인 추적</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
+            <!-- 모듈별 실제 코드 예제 -->
             <div class="grid md:grid-cols-2 gap-6">
-                <!-- 몸체 높이 변경 코드 -->
+                <!-- 1. HW_MechDog 모듈 (로봇 제어) -->
                 <div class="bg-blue-50 p-4 rounded-lg">
-                    <h4 class="font-bold text-blue-800 mb-2">🔧 change_body_height-detail.py</h4>
-                    <pre class="text-sm bg-white p-3 rounded overflow-x-auto"><code>import Hiwonder  # 로봇 조종 도구
-import time      # 시간 지연 기능
-from HW_MechDog import MechDog  # MechDog 클래스
+                    <h4 class="font-bold text-blue-800 mb-2">1️⃣ HW_MechDog 모듈 (로봇 제어 핵심)</h4>
+                    <pre class="text-sm bg-white p-3 rounded overflow-x-auto"><code>from HW_MechDog import MechDog   # 모듈에서 클래스 불러오기
 
-mechdog = MechDog()  # 로봇 객체 생성
+mechdog = MechDog()              # 로봇 객체 생성
 
-# 몸체 높이 변경 함수
-mechdog.transform([0, 0, 20], [0, 0, 0], 1000)
-# [x, y, z] 위치, [roll, pitch, yaw] 각도, 시간(ms)</code></pre>
+mechdog.set_default_pose()       # 기본 자세로 초기화
+mechdog.move(50, 0)              # 앞으로 5cm/s 속도로 이동
+mechdog.transform([0, 0, 20], [0, 0, 0], 1000)  # 몸체를 위로 20mm 이동
+mechdog.action_run("left_foot_kick")  # 저장된 액션 실행</code></pre>
+                    <p class="text-xs text-blue-600 mt-2">➡ <strong>움직임, 자세, 액션</strong> 같은 로봇 본체 제어 담당</p>
                 </div>
 
-                <!-- 초음파 센서 코드 -->
+                <!-- 2. Hiwonder 모듈 (입출력) -->
                 <div class="bg-green-50 p-4 rounded-lg">
-                    <h4 class="font-bold text-green-800 mb-2">📡 ultrasonic_ranging-detail.py</h4>
-                    <pre class="text-sm bg-white p-3 rounded overflow-x-auto"><code>import Hiwonder_IIC  # I2C 통신 모듈
+                    <h4 class="font-bold text-green-800 mb-2">2️⃣ Hiwonder 모듈 (입출력 장치)</h4>
+                    <pre class="text-sm bg-white p-3 rounded overflow-x-auto"><code>import Hiwonder
+
+adc = Hiwonder.LightSensor()    # 조도 센서
+brightness = adc.read()         # 밝기 값 읽기
+
+beep = Hiwonder.Buzzer()        # 부저 객체 생성
+beep.playTone(800, 100, True)   # 800Hz, 0.1초 소리
+
+btn = Hiwonder.Button(2)        # 버튼 객체
+btn.Clicked(lambda: print("버튼 눌림"))</code></pre>
+                    <p class="text-xs text-green-600 mt-2">➡ 센서/출력 장치를 <strong>단순 호출 API</strong>로 제공</p>
+                </div>
+
+                <!-- 3. Hiwonder_IIC 모듈 (I2C) -->
+                <div class="bg-orange-50 p-4 rounded-lg">
+                    <h4 class="font-bold text-orange-800 mb-2">3️⃣ Hiwonder_IIC 모듈 (I2C 장치)</h4>
+                    <pre class="text-sm bg-white p-3 rounded overflow-x-auto"><code>import Hiwonder_IIC
+
+i2c1 = Hiwonder_IIC.IIC(1)                # I2C 포트 생성
+i2csonar = Hiwonder_IIC.I2CSonar(i2c1)    # 초음파 센서 객체
+
+distance = i2csonar.getDistance()         # 거리 측정
+i2csonar.setRGB(0, 255, 0, 0)             # LED 빨간색</code></pre>
+                    <p class="text-xs text-orange-600 mt-2">➡ <strong>I2C 기반 센서</strong>(초음파, 카메라, 음성 모듈) 연결용</p>
+                </div>
+
+                <!-- 4. ESP32S3Cam 모듈 (비전) -->
+                <div class="bg-pink-50 p-4 rounded-lg">
+                    <h4 class="font-bold text-pink-800 mb-2">4️⃣ ESP32S3Cam 모듈 (비전 모듈)</h4>
+                    <pre class="text-sm bg-white p-3 rounded overflow-x-auto"><code>iic2 = Hiwonder_IIC.IIC(2)
+cam = Hiwonder_IIC.ESP32S3Cam(iic2)
+
+if cam.face_recognition():                 # 얼굴 인식되면
+    mechdog.action_run("scrape_a_bow")     # 인사 동작 실행</code></pre>
+                    <p class="text-xs text-pink-600 mt-2">➡ <strong>비전</strong>(얼굴/색상/라인) 인식 기능</p>
+                </div>
+            </div>
+
+            <!-- 정리 -->
+            <div class="bg-indigo-50 border-l-4 border-indigo-500 p-6 mt-6">
+                <h4 class="text-lg font-bold text-indigo-800 mb-3">📝 정리</h4>
+                <ul class="text-indigo-700 space-y-2">
+                    <li>• <strong>HW_MechDog</strong> → 로봇 본체 제어</li>
+                    <li>• <strong>Hiwonder</strong> → 버튼, 부저, 조도 센서, 디스플레이</li>
+                    <li>• <strong>Hiwonder_IIC</strong> → I2C 센서(초음파, 카메라, 음성)</li>
+                    <li>• <strong>ESP32S3Cam</strong> → 얼굴, 색상, 선 인식</li>
+                </ul>
+                <p class="text-indigo-600 text-sm mt-3">
+                    💡 이러한 모듈들을 조합하여 복잡한 로봇 동작을 구현할 수 있습니다!
+                </p>
+            </div>
+            
+            <!-- 종합 예제 코드 -->
+            <div class="grid md:grid-cols-2 gap-6 mt-6">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h4 class="font-bold text-blue-800 mb-2">🎮 실제 예제: 스마트 펫 모드</h4>
+                    <pre class="text-sm bg-white p-3 rounded overflow-x-auto"><code># 모든 모듈을 조합한 스마트 펫 동작
+import Hiwonder
+import Hiwonder_IIC
 from HW_MechDog import MechDog
+import time
+import random
 
-# I2C 초음파 센서 설정
+# 객체 초기화
+mechdog = MechDog()
 i2c1 = Hiwonder_IIC.IIC(1)
-i2csonar = Hiwonder_IIC.I2CSonar(i2c1)
+sonar = Hiwonder_IIC.I2CSonar(i2c1)
+beep = Hiwonder.Buzzer()
 
-# 거리 측정 및 LED 제어
-distance = i2csonar.getDistance()
-if distance < 15:
-    i2csonar.setRGB(0, 0xff, 0x00, 0x00)  # 빨강</code></pre>
+# 스마트 펫 동작
+while True:
+    distance = sonar.getDistance()
+    
+    if distance < 20:  # 가까이 있으면
+        mechdog.action_run("scrape_a_bow")  # 인사
+        sonar.setRGB(0, 0x00, 0xff, 0x00)   # 초록 LED
+        beep.playTone(800, 100, True)       # 삑 소리
+    else:
+        mechdog.move(20, 0)   # 천천히 앞으로
+        sonar.setRGB(0, 0x00, 0x00, 0xff)   # 파랑 LED
+    
+    time.sleep(0.1)</code></pre>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h4 class="font-bold text-green-800 mb-2">🎯 실제 예제: 장애물 회피</h4>
+                    <pre class="text-sm bg-white p-3 rounded overflow-x-auto"><code># 센서를 활용한 장애물 회피
+import Hiwonder_IIC
+from HW_MechDog import MechDog
+import time
+import math
+
+mechdog = MechDog()
+i2c1 = Hiwonder_IIC.IIC(1)
+sonar = Hiwonder_IIC.I2CSonar(i2c1)
+
+def avoid_obstacle():
+    distance = sonar.getDistance()
+    
+    if distance < 15:
+        # 너무 가까우면 후진
+        mechdog.move(-30, 0)
+        time.sleep(0.5)
+        
+        # 랜덤하게 좌우 회전
+        turn_angle = math.radians(45)
+        mechdog.transform([0, 0, 0], 
+                         [0, 0, turn_angle], 1000)
+    else:
+        # 안전하면 전진
+        mechdog.move(50, 0)
+
+# 메인 루프
+while True:
+    avoid_obstacle()
+    time.sleep(0.1)</code></pre>
                 </div>
             </div>
         </section>
@@ -275,11 +631,11 @@ if distance < 15:
             <div class="bg-green-50 border-l-4 border-green-500 p-6">
                 <h4 class="text-lg font-bold text-green-800 mb-3">✅ 핵심 내용</h4>
                 <ul class="text-green-700 space-y-2">
-                    <li>• <strong>모듈 import:</strong> <code>import 모듈명</code>, <code>from 모듈명 import 함수명</code></li>
-                    <li>• <strong>MechDog에서 활용:</strong> Hiwonder, HW_MechDog, Hiwonder_IIC 등</li>
-                    <li>• <strong>수학 모듈:</strong> 이동 거리 계산, 각도 변환</li>
-                    <li>• <strong>시간 모듈:</strong> 동작 스케줄링, 로그 기록</li>
-                    <li>• <strong>센서 처리:</strong> 거리 측정, LED 제어, 데이터 분석</li>
+                    <li>• <strong>모듈(Module):</strong> 하나의 .py 파일, 특정 기능을 담은 코드 파일</li>
+                    <li>• <strong>패키지(Package):</strong> 여러 모듈을 모아놓은 폴더, 관련 기능들의 집합</li>
+                    <li>• <strong>import 방법:</strong> <code>import 모듈명</code>, <code>from 패키지 import 모듈</code></li>
+                    <li>• <strong>MechDog 패키지들:</strong> HW_MechDog (로봇 제어), Hiwonder (입출력), Hiwonder_IIC (I2C 센서)</li>
+                    <li>• <strong>활용 예시:</strong> 여러 패키지의 모듈들을 조합하여 복잡한 로봇 동작 구현</li>
                 </ul>
             </div>
         </section>
