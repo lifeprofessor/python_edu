@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="구글 Gemini 통합 나노바나나 AI 이미지 생성·편집 완벽 가이드. 포토샵급 편집, 실시간 처리, 실무 활용법까지 완전 정복">
+    <meta name="keywords" content="나노바나나, NanoBanana, AI 이미지 생성, 구글 Gemini, 이미지 편집, AI 도구, 마케팅, 교육">
+    <meta name="author" content="NanoBanana Guide">
+    <meta property="og:title" content="나노바나나(NanoBanana) 활용 가이드">
+    <meta property="og:description" content="구글 Gemini 통합 AI 이미지 생성·편집 완벽 가이드">
+    <meta property="og:type" content="website">
+    <title>나노바나나(NanoBanana) 활용 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral (Amber/Stone) -->
+    <!-- Application Structure Plan: A single-page app with a top navigation bar for the 8 main categories. Clicking a category updates a central content area displaying specific features as cards. An overview is provided by a Polar Area chart showing the number of features per category. This task-oriented structure allows users to quickly find functionalities relevant to their needs (e.g., advertising, character design) without reading through a linear document. -->
+    <!-- Visualization & Content Choices: 1. Feature Distribution -> Goal: Inform/Compare -> Viz: Polar Area Chart -> Interaction: Hover Tooltip -> Justification: Shows the tool's strengths/focus areas visually. -> Library: Chart.js. 2. Categories -> Goal: Organize/Navigate -> Presentation: Button Navigation -> Interaction: Click to filter content -> Justification: Clear, intuitive primary navigation. -> Method: HTML/JS. 3. Features -> Goal: Inform -> Presentation: Card Grid -> Interaction: Hover effect -> Justification: Scannable and visually appealing presentation of list items. -> Method: HTML/Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: smooth;
+        }
+        
+        /* 터치 인터페이스 개선 */
+        .nav-button {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            cursor: pointer;
+        }
+        
+        .feature-card {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        
+        /* 간단한 페이드 애니메이션 */
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* 간단한 호버 효과 */
+        .hover-lift {
+            transition: all 0.2s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 스크롤 인디케이터 */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+        
+        /* 접근성 개선 */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* 포커스 스타일 */
+        .nav-button:focus {
+            outline: 2px solid #f59e0b;
+            outline-offset: 2px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+        }
+        @media (min-width: 480px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+
+        /* 프롬프트 예시 카드 스타일 추가 */
+        .prompt-card {
+            background: linear-gradient(135deg, #fff 0%, #fef3c7 100%);
+            border-left: 4px solid #f59e0b;
+            transition: all 0.3s ease;
+        }
+        
+        .prompt-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+        
+        .prompt-category-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+    <!-- 스크롤 인디케이터 -->
+    <div class="scroll-indicator" id="scroll-indicator"></div>
+    
+    <!-- 접근성: 메인 콘텐츠로 바로 가기 -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-amber-500 text-white px-4 py-2 rounded-md z-50">메인 콘텐츠로 바로 가기</a>
+
+    <div class="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
+        <header class="text-center mb-6 sm:mb-8 md:mb-12 px-2">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 leading-tight">나노바나나(NanoBanana)</h1>
+            <p class="mt-3 text-base sm:text-lg md:text-xl text-stone-600 px-4">구글 Gemini 통합 AI 이미지 생성·편집 완벽 가이드</p>
+            <div class="mt-4 flex flex-wrap justify-center gap-2 text-sm">
+                <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full">포토샵급 편집</span>
+                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">실시간 처리</span>
+                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full">대화형 인터페이스</span>
+                <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full">비즈니스 활용</span>
+            </div>
+        </header>
+
+        <nav id="category-nav" class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 md:mb-12 px-2"></nav>
+
+        <main id="main-content" role="main">          
+            
+            <section class="px-2" aria-labelledby="current-category-title">
+                <h2 id="current-category-title" class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center text-stone-900 leading-tight"></h2>
+                <div id="features-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+                </div>
+            </section>
+            <div class="h-6 sm:h-8 md:h-12"></div>
+            <section class="bg-white p-4 sm:p-6 rounded-xl shadow-md mb-6 sm:mb-8 md:mb-12 mx-2 fade-in" aria-labelledby="chart-title">
+                <h2 id="chart-title" class="text-xl sm:text-2xl font-bold text-center mb-3 sm:mb-4 text-stone-900">핵심 기능 분포 및 전문성 비교</h2>
+                <p class="text-center text-stone-600 mb-4 sm:mb-6 max-w-4xl mx-auto text-sm sm:text-base leading-relaxed px-2">
+                    나노바나나는 구글 Gemini에 통합된 최신 AI 이미지 생성·편집 모델로, 기존 생성형 AI의 한계를 넘어 실무 작업에도 활용될 정도로 강력한 기능들을 제공합니다. 단순히 이미지를 생성하는 것을 넘어 일관성 있는 인물 표현, 자연스러운 사진 편집, 멀티 이미지 합성 등 포토샵급 편집 작업까지 텍스트 명령만으로 수행할 수 있습니다. 아래 차트는 10가지 핵심 기능 카테고리별 전문성과 활용도를 보여줍니다.
+                </p>
+                <div class="chart-container">
+                    <canvas id="featuresChart"></canvas>
+                </div>
+            </section>
+            
+            <!-- 실무 활용 사례 섹션 -->
+            <section class="bg-gradient-to-br from-amber-50 to-orange-50 p-4 sm:p-6 rounded-xl shadow-md mb-6 sm:mb-8 md:mb-12 mx-2 fade-in" aria-labelledby="use-cases-title">
+                <h2 id="use-cases-title" class="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6 text-stone-900">🚀 실무 활용 사례</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-6xl mx-auto">
+                    <div class="bg-white p-4 sm:p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                        <h3 class="text-lg font-semibold mb-3 text-amber-700 flex items-center">
+                            <span class="mr-2">🏫</span>교육 분야
+                        </h3>
+                        <ul class="space-y-2 text-sm sm:text-base text-stone-600">
+                            <li class="flex items-start"><span class="text-amber-500 mr-2">•</span>복잡한 과학 다이어그램 자동 생성</li>
+                            <li class="flex items-start"><span class="text-amber-500 mr-2">•</span>추상적 개념을 직관적 시각화로 변환</li>
+                            <li class="flex items-start"><span class="text-amber-500 mr-2">•</span>스케치를 완성된 3D 일러스트로 구현</li>
+                            <li class="flex items-start"><span class="text-amber-500 mr-2">•</span>디자인 프로토타이핑 실습</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4 sm:p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                        <h3 class="text-lg font-semibold mb-3 text-pink-700 flex items-center">
+                            <span class="mr-2">📊</span>마케팅 분야
+                        </h3>
+                        <ul class="space-y-2 text-sm sm:text-base text-stone-600">
+                            <li class="flex items-start"><span class="text-pink-500 mr-2">•</span>제작 비용 절감 및 온라인 전환율 34% 상승</li>
+                            <li class="flex items-start"><span class="text-pink-500 mr-2">•</span>광고 캠페인 제작 시간 몇 시간 → 1시간으로 단축</li>
+                            <li class="flex items-start"><span class="text-pink-500 mr-2">•</span>브랜드 모델 일관성 유지 시리즈 제작</li>
+                            <li class="flex items-start"><span class="text-pink-500 mr-2">•</span>SNS 밈 콘텐츠 즉석 생성</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4 sm:p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                        <h3 class="text-lg font-semibold mb-3 text-blue-700 flex items-center">
+                            <span class="mr-2">🏢</span>비즈니스 활용
+                        </h3>
+                        <ul class="space-y-2 text-sm sm:text-base text-stone-600">
+                            <li class="flex items-start"><span class="text-blue-500 mr-2">•</span>제품 컨셉 시각화 및 목업 제작</li>
+                            <li class="flex items-start"><span class="text-blue-500 mr-2">•</span>인테리어 가상 스테이징</li>
+                            <li class="flex items-start"><span class="text-blue-500 mr-2">•</span>브랜드 아이덴티티 디자인</li>
+                            <li class="flex items-start"><span class="text-blue-500 mr-2">•</span>프레젠테이션 자료 제작</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4 sm:p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                        <h3 class="text-lg font-semibold mb-3 text-green-700 flex items-center">
+                            <span class="mr-2">💼</span>전문 서비스
+                        </h3>
+                        <ul class="space-y-2 text-sm sm:text-base text-stone-600">
+                            <li class="flex items-start"><span class="text-green-500 mr-2">•</span>오래된 사진 고품질 복원</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">•</span>전문 리터칭 작업 자동화</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">•</span>대량 이미지 일괄 스타일 적용</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">•</span>AR/VR 콘텐츠 제작</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 고급 사용 팁 섹션 -->
+            <section class="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-xl shadow-md mb-6 sm:mb-8 md:mb-12 mx-2 fade-in" aria-labelledby="tips-title">
+                <h2 id="tips-title" class="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6 text-stone-900">💡 고급 사용 팁</h2>
+                <div class="max-w-4xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
+                        <div class="bg-white p-4 sm:p-5 rounded-lg shadow-sm">
+                            <h3 class="text-lg font-semibold mb-3 text-blue-700 flex items-center">
+                                <span class="mr-2">🎯</span>최적화 팁
+                            </h3>
+                            <ul class="space-y-2 text-sm sm:text-base text-stone-600">
+                                <li>• 고품질 입력 이미지 사용</li>
+                                <li>• 구체적이고 상세한 프롬프트 작성</li>
+                                <li>• 연속 편집 기능 활용</li>
+                                <li>• 일관성 모드로 시리즈 제작</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-4 sm:p-5 rounded-lg shadow-sm">
+                            <h3 class="text-lg font-semibold mb-3 text-indigo-700 flex items-center">
+                                <span class="mr-2">⚙️</span>워크플로우
+                            </h3>
+                            <ul class="space-y-2 text-sm sm:text-base text-stone-600">
+                                <li>• 단계별 점진적 수정 전략</li>
+                                <li>• 다양한 버전 생성 후 선택</li>
+                                <li>• 다른 도구와 혼용 활용</li>
+                                <li>• 고해상도 업스케일 적용</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-4 sm:p-5 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold mb-3 text-purple-700 flex items-center">
+                            <span class="mr-2">📝</span>효과적인 프롬프트 예시
+                        </h3>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm sm:text-base">
+                            <div>
+                                <p class="font-medium text-stone-700 mb-2">✅ 좋은 예시:</p>
+                                <p class="text-stone-600 bg-green-50 p-3 rounded italic">
+                                    "LinkedIn 프로필용 헤드샷처럼 부드러운 조명에 자연스러운 배경으로 만들어주세요"
+                                </p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-stone-700 mb-2">❌ 피할 예시:</p>
+                                <p class="text-stone-600 bg-red-50 p-3 rounded italic">
+                                    "더 예쁘게 만들어주세요"
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 나노바나나 활용 시나리오 섹션 -->
+            <section class="bg-gradient-to-br from-yellow-50 to-amber-50 p-4 sm:p-6 rounded-xl shadow-md mb-6 sm:mb-8 md:mb-12 mx-2 fade-in" aria-labelledby="scenarios-title">
+                <h2 id="scenarios-title" class="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6 text-stone-900">🎯 나노바나나 실전 활용 시나리오</h2>
+                <p class="text-center text-stone-600 mb-6 max-w-4xl mx-auto text-sm sm:text-base">
+                    실무에서 자주 발생하는 상황별로 나노바나나를 어떻게 활용할 수 있는지 구체적인 시나리오와 함께 알아보세요.
+                </p>
+                
+                <div class="max-w-6xl mx-auto">
+                    <!-- 마케팅팀 시나리오 -->
+                    <div class="mb-10">
+                        <h3 class="text-xl font-bold mb-6 text-pink-800 flex items-center border-b-2 border-pink-200 pb-2">
+                            <span class="mr-3">📢</span>마케팅팀의 하루
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                            <div class="bg-white p-6 rounded-xl border-l-4 border-pink-400">
+                                <h4 class="text-lg font-semibold mb-3 text-stone-800">🌅 오전 9시: 긴급 배너 제작</h4>
+                                <div class="bg-gray-50 p-4 rounded-lg mb-3">
+                                    <p class="text-sm text-gray-600 mb-2"><strong>상황:</strong> 점심시간 전까지 신제품 런칭 배너가 필요한 상황</p>
+                                    <p class="text-sm font-mono bg-white p-2 rounded border">
+                                        "모던한 스마트폰을 들고 있는 20대 여성 모델을 깔끔한 흰색 스튜디오 배경에서 촬영한 듯한 이미지를 만들어줘. 모델은 자연스럽게 미소 짓고 있고, 조명은 부드럽고 전문적으로. 배너용이니까 오른쪽에 텍스트 공간을 충분히 남겨줘."
+                                    </p>
+                                </div>
+                                <p class="text-xs text-stone-600">💡 결과: 30초 만에 전문 모델 촬영 수준의 배너 이미지 완성</p>
+                            </div>
+                            
+                            <div class="bg-white p-6 rounded-xl border-l-4 border-blue-400">
+                                <h4 class="text-lg font-semibold mb-3 text-stone-800">🍕 오후 2시: SNS 콘텐츠 제작</h4>
+                                <div class="bg-gray-50 p-4 rounded-lg mb-3">
+                                    <p class="text-sm text-gray-600 mb-2"><strong>상황:</strong> 인스타그램 피드용 라이프스타일 이미지 필요</p>
+                                    <p class="text-sm font-mono bg-white p-2 rounded border">
+                                        "아늑한 카페에서 노트북으로 작업하는 프리랜서의 모습을 위에서 내려다본 앵글로 촬영. 테이블 위에는 커피, 노트북, 스마트폰, 작은 식물이 자연스럽게 배치되어 있고, 따뜻한 자연광이 창문을 통해 들어오는 분위기로."
+                                    </p>
+                                </div>
+                                <p class="text-xs text-stone-600">💡 결과: 인플루언서급 라이프스타일 콘텐츠 즉석 제작</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 디자이너 시나리오 -->
+                    <div class="mb-10">
+                        <h3 class="text-xl font-bold mb-6 text-purple-800 flex items-center border-b-2 border-purple-200 pb-2">
+                            <span class="mr-3">🎨</span>디자이너의 창작 과정
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                            <div class="bg-white p-6 rounded-xl border-l-4 border-purple-400">
+                                <h4 class="text-lg font-semibold mb-3 text-stone-800">✏️ 아이디어 스케치를 현실로</h4>
+                                <div class="bg-gray-50 p-4 rounded-lg mb-3">
+                                    <p class="text-sm text-gray-600 mb-2"><strong>상황:</strong> 러프 스케치를 완성된 일러스트로 변환</p>
+                                    <p class="text-sm font-mono bg-white p-2 rounded border">
+                                        "이 손그림 스케치를 벡터 스타일의 깔끔한 일러스트로 완성해줘. 색상은 파스텔 톤으로, 선은 부드럽고 모던하게. 로고나 아이콘으로 사용할 수 있을 정도로 심플하면서도 세련되게."
+                                    </p>
+                                </div>
+                                <p class="text-xs text-stone-600">💡 결과: 아이디어 단계부터 완성품까지 한 번에</p>
+                            </div>
+                            
+                            <div class="bg-white p-6 rounded-xl border-l-4 border-green-400">
+                                <h4 class="text-lg font-semibold mb-3 text-stone-800">🔄 스타일 실험</h4>
+                                <div class="bg-gray-50 p-4 rounded-lg mb-3">
+                                    <p class="text-sm text-gray-600 mb-2"><strong>상황:</strong> 같은 디자인을 다양한 스타일로 테스트</p>
+                                    <p class="text-sm font-mono bg-white p-2 rounded border">
+                                        "이 캐릭터를 일본 애니메이션 스타일, 미국 카툰 스타일, 미니멀 벡터 스타일로 각각 다르게 그려줘. 기본 포즈와 표정은 유지하되 각 스타일의 특징을 살려서."
+                                    </p>
+                                </div>
+                                <p class="text-xs text-stone-600">💡 결과: 한 번에 여러 스타일 옵션 비교 가능</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 교육자 시나리오 -->
+                    <div class="mb-10">
+                        <h3 class="text-xl font-bold mb-6 text-blue-800 flex items-center border-b-2 border-blue-200 pb-2">
+                            <span class="mr-3">🏫</span>교육자의 수업 준비
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                            <div class="bg-white p-6 rounded-xl border-l-4 border-blue-400">
+                                <h4 class="text-lg font-semibold mb-3 text-stone-800">🧬 복잡한 개념 시각화</h4>
+                                <div class="bg-gray-50 p-4 rounded-lg mb-3">
+                                    <p class="text-sm text-gray-600 mb-2"><strong>상황:</strong> 생물학 수업용 세포 분열 과정 설명</p>
+                                    <p class="text-sm font-mono bg-white p-2 rounded border">
+                                        "세포가 분열하는 과정을 4단계로 나누어서 교육용 다이어그램으로 만들어줘. 각 단계별로 염색체의 변화가 명확히 보이도록 하고, 학생들이 이해하기 쉽게 색깔별로 구분해서 그려줘."
+                                    </p>
+                                </div>
+                                <p class="text-xs text-stone-600">💡 결과: 교과서급 품질의 교육 자료 완성</p>
+                            </div>
+                            
+                            <div class="bg-white p-6 rounded-xl border-l-4 border-orange-400">
+                                <h4 class="text-lg font-semibold mb-3 text-stone-800">🎭 역사 인물 재현</h4>
+                                <div class="bg-gray-50 p-4 rounded-lg mb-3">
+                                    <p class="text-sm text-gray-600 mb-2"><strong>상황:</strong> 한국사 수업용 조선시대 생활상 재현</p>
+                                    <p class="text-sm font-mono bg-white p-2 rounded border">
+                                        "조선시대 한양 시장 풍경을 생생하게 재현해줘. 한복 입은 사람들이 장사하고 물건을 사는 모습, 전통 가옥들, 당시 생활용품들이 자연스럽게 배치된 활기찬 시장 분위기로."
+                                    </p>
+                                </div>
+                                <p class="text-xs text-stone-600">💡 결과: 학생들의 몰입도를 높이는 생생한 역사 체험</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 개인 사용자 시나리오 -->
+                    <div class="mb-10">
+                        <h3 class="text-xl font-bold mb-6 text-green-800 flex items-center border-b-2 border-green-200 pb-2">
+                            <span class="mr-3">👤</span>개인 사용자의 일상
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                            <div class="bg-white p-6 rounded-xl border-l-4 border-green-400">
+                                <h4 class="text-lg font-semibold mb-3 text-stone-800">📸 추억 복원</h4>
+                                <div class="bg-gray-50 p-4 rounded-lg mb-3">
+                                    <p class="text-sm text-gray-600 mb-2"><strong>상황:</strong> 오래된 가족사진 복원 및 컬러화</p>
+                                    <p class="text-sm font-mono bg-white p-2 rounded border">
+                                        "이 1970년대 흑백 가족사진을 고품질로 복원하고 자연스러운 색깔을 입혀줘. 옷은 당시 유행했던 색상으로, 피부톤은 자연스럽게, 배경도 따뜻한 느낌으로 채색해줘."
+                                    </p>
+                                </div>
+                                <p class="text-xs text-stone-600">💡 결과: 가족의 소중한 추억이 생생하게 되살아남</p>
+                            </div>
+                            
+                            <div class="bg-white p-6 rounded-xl border-l-4 border-red-400">
+                                <h4 class="text-lg font-semibold mb-3 text-stone-800">🎁 맞춤 선물 제작</h4>
+                                <div class="bg-gray-50 p-4 rounded-lg mb-3">
+                                    <p class="text-sm text-gray-600 mb-2"><strong>상황:</strong> 반려동물 초상화를 애니메이션 스타일로</p>
+                                    <p class="text-sm font-mono bg-white p-2 rounded border">
+                                        "우리 고양이 사진을 지브리 애니메이션 스타일의 귀여운 캐릭터로 그려줘. 특징은 그대로 살리되 더 동글동글하고 사랑스럽게, 꽃밭에서 나비와 놀고 있는 모습으로."
+                                    </p>
+                                </div>
+                                <p class="text-xs text-stone-600">💡 결과: 세상에 하나뿐인 특별한 반려동물 아트워크</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 성공 비법 -->
+                    <div class="bg-gradient-to-r from-amber-100 to-orange-100 p-6 rounded-xl">
+                        <h3 class="text-lg font-bold mb-4 text-amber-900 flex items-center">
+                            <span class="mr-2">🏆</span>나노바나나 활용 성공 비법
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-white p-4 rounded-lg">
+                                <h4 class="font-semibold text-stone-800 mb-2 flex items-center">
+                                    <span class="mr-2">🎯</span>구체성이 핵심
+                                </h4>
+                                <ul class="space-y-1 text-sm text-stone-700">
+                                    <li>• "예쁘게" → "인스타그램 모델처럼"</li>
+                                    <li>• "멋있게" → "영화 포스터 스타일로"</li>
+                                    <li>• "자연스럽게" → "골든아워 조명으로"</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg">
+                                <h4 class="font-semibold text-stone-800 mb-2 flex items-center">
+                                    <span class="mr-2">🔄</span>반복 개선
+                                </h4>
+                                <ul class="space-y-1 text-sm text-stone-700">
+                                    <li>• 첫 결과에 만족하지 말고 피드백</li>
+                                    <li>• "더 밝게", "조금 더 왼쪽으로"</li>
+                                    <li>• 단계별로 점진적 개선</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg">
+                                <h4 class="font-semibold text-stone-800 mb-2 flex items-center">
+                                    <span class="mr-2">🎨</span>창의적 조합
+                                </h4>
+                                <ul class="space-y-1 text-sm text-stone-700">
+                                    <li>• 여러 스타일 믹스 시도</li>
+                                    <li>• 예상치 못한 조합 실험</li>
+                                    <li>• 실패도 새로운 아이디어의 시작</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 p-4 bg-white rounded-lg border-l-4 border-amber-400">
+                            <h4 class="font-semibold text-stone-800 mb-2 flex items-center">
+                                <span class="mr-2">💬</span>대화하듯 사용하기
+                            </h4>
+                            <p class="text-sm text-stone-700">
+                                나노바나나는 단순한 도구가 아닌 창작 파트너입니다. "이렇게 해줘"가 아닌 "이런 느낌으로 만들어볼까?"라는 
+                                마음가짐으로 대화하듯 사용하면 훨씬 더 만족스러운 결과를 얻을 수 있습니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+        
+        <footer class="text-center mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-stone-200 px-4">
+            <p class="text-xs sm:text-sm text-stone-500">&copy; 2025 NanoBanana Interactive Guide. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        const nanoBananaFeatures = {
+            "인물 편집": {
+                icon: "👤",
+                color: "rgba(251, 146, 60, 0.7)",
+                 items: ["포즈 변경", "다중 포즈/표정 시트", "의상 교체", "다중 착장", "인종/성별 변환", "표정 변환", "얼굴 교체", "인물 스튜디오 샷", "피부 보정", "메이크업 변환", "인물 일관성 유지", "캐릭터 시리즈 제작"],
+                 examples: [
+                     "모델이 의자에 앉아 있던 자세를, 팔을 벌리고 뛰어오르는 점프 동작으로 바꿔주세요.",
+                     "젊은 남성이 서기, 앉기, 달리기 포즈와 행복, 진지, 놀람 표정을 담은 캐릭터 시트를 만들어주세요.",
+                     "여성이 입은 캐주얼 복장을 블랙 정장으로 교체하되, 헤어스타일과 포즈는 유지해주세요.",
+                     "같은 모델을 세 장의 인스타그램 사진으로 만들되, 각각 운동복, 캐주얼, 파티 드레스를 입혀주세요.",
+                     "백인 남성의 초상 사진을 아시아 여성으로 변환하되, 조명과 표정은 그대로 유지해주세요.",
+                     "모델의 무표정을 즐겁게 웃는 표정으로 바꾸고, 눈가에 자연스러운 주름을 추가해주세요.",
+                     "모델의 얼굴을 다른 참조 얼굴로 교체하되, 몸, 포즈, 조명은 동일하게 유지해주세요.",
+                     "아시아 남성이 모노톤 의상을 입고 그레이 배경 앞에서 촬영한 스튜디오 초상 사진. 소프트박스 조명을 사용해주세요.",
+                     "피부 잡티는 보정하되 모공과 질감은 자연스럽게 남겨주세요.",
+                     "모델에 아이라이너와 레드 립스틱이 강조된 화려한 이브닝 메이크업을 적용해주세요.",
+                     "같은 여성 모델을 카페, 사무실, 공원 배경에서 촬영한 듯한 이미지 세 장을 만들되, 얼굴과 특징은 일관되게 유지해주세요.",
+                     "같은 여전사를 갑옷, 캐주얼 복장, 왕실 의상으로 표현한 판타지 캐릭터 시리즈를 제작해주세요."
+                 ],
+                 tips: [
+                     ["• 포즈는 구체적으로 묘사하세요 (예: '자연스럽게' → '한 손은 허리에, 다른 손은 턱을 괴며')", "• 기존 포즈와 충돌하지 않는 현실적인 동작을 지정하세요", "• 카메라 앵글도 함께 지정하면 더 정확한 결과를 얻을 수 있습니다"],
+                     ["• 각 포즈/표정을 명확히 구분해서 나열하세요", "• '시트' 또는 '컨셉 아트' 같은 키워드를 추가하면 체계적인 결과를 얻습니다", "• 배경은 단순하게 유지하여 인물에 집중하도록 하세요"],
+                     ["• 교체할 의상을 구체적으로 묘사하세요 (색상, 스타일, 재질)", "• '~은 유지하되' 구문으로 보존할 요소를 명시하세요", "• 의상과 어울리는 액세서리나 소품도 함께 언급하면 자연스럽습니다"],
+                     ["• 각 착장의 컨셉이나 상황을 함께 설명하세요", "• 인스타그램, 화보, 카탈로그 등 용도를 명시하면 적절한 스타일이 적용됩니다", "• 조명이나 배경도 착장에 맞게 자동 조정되도록 요청하세요"],
+                     ["• 변환할 인종/성별을 정확히 명시하세요", "• 보존할 요소(조명, 포즈, 표정 등)를 구체적으로 나열하세요", "• 자연스러운 결과를 위해 '현실적으로' 키워드를 추가하세요"],
+                     ["• 목표 표정을 구체적으로 묘사하세요 (미소의 정도, 눈의 표현 등)", "• 표정 변화에 따른 주변 근육의 자연스러운 변화도 언급하세요", "• 과도하지 않은 자연스러운 변화를 요청하는 것이 좋습니다"],
+                     ["• 참조할 얼굴 이미지를 함께 제공하세요", "• 보존할 요소(몸, 포즈, 의상, 배경)를 명확히 지정하세요", "• '자연스럽게 합성'이라는 표현으로 어색함을 방지하세요"],
+                     ["• 조명 타입을 구체적으로 지정하세요 (소프트박스, 링라이트, 자연광 등)", "• 배경색과 모델의 의상 색상을 조화롭게 선택하세요", "• 전문적인 촬영 용어를 사용하면 더 정확한 결과를 얻습니다"],
+                     ["• 보정 강도를 조절하세요 ('자연스럽게', '살짝', '부드럽게')", "• 보존할 자연스러운 요소를 명시하세요", "• 과도한 보정보다는 자연스러운 개선을 목표로 하세요"],
+                     ["• 메이크업 스타일을 구체적으로 지정하세요 (데일리, 이브닝, 스모키 등)", "• 색상을 정확히 명시하세요 (코랄 핑크, 버건디, 골드 등)", "• 메이크업과 어울리는 헤어스타일이나 액세서리도 함께 고려하세요"],
+                     ["• '일관성 유지' 키워드를 반드시 포함하세요", "• 각 배경의 특성을 구체적으로 묘사하세요", "• 조명이 배경에 맞게 자동 조정되도록 요청하세요"],
+                     ["• 캐릭터의 기본 특성과 세계관을 먼저 설정하세요", "• 각 의상의 상황이나 역할을 명시하세요", "• 시리즈 전체의 일관된 아트 스타일을 지정하세요"]
+                 ]
+            },
+            "광고/마케팅": {
+                icon: "📢",
+                color: "rgba(244, 114, 182, 0.7)",
+                 items: ["모델컷 합성", "다중 객체 합성", "광고 이미지 자동 생성", "목업 합성", "랜딩 페이지·배너 생성", "로고 스토리보드", "제품 홍보 이미지", "브랜드 캠페인 통일", "SNS 밈 콘텐츠", "전자상거래 이미지"],
+                 examples: [
+                     "여성 모델이 스마트폰을 들고 있는 장면에, 옆에 맥주잔과 브랜드 로고를 자연스럽게 합성해주세요.",
+                     "모델이 자동차 보닛 위에 앉아 있고, 옆에 강아지와 가방이 배치된 장면을 만들어주세요.",
+                     "무더운 여름날 시원한 맥주 광고 이미지를 만들어주세요. 땀이 맺힌 맥주잔과 햇살이 강조되도록.",
+                     "거리의 간판 이미지를 제공된 맥주 광고로 교체해주세요.",
+                     "최신 노트북을 강조한 울트라 모던 랜딩 페이지 이미지를 제작해주세요.",
+                     "카페 로고를 활용해 3컷의 시네마틱 광고 장면(바리스타, 테이크아웃 컵, 카페 외관)을 만들어주세요.",
+                     "하얀 배경 위에 고급스러운 향수 병을 올려놓고, 부드러운 그림자와 반사를 강조한 홍보 컷을 제작해주세요.",
+                     "같은 브랜드 로고를 사용해 사무실, 카페, 거리에서 모두 동일하게 적용된 캠페인 컷을 제작해주세요.",
+                     "귀여운 고양이가 커피를 마시는 밈 스타일 이미지를 제작해주세요.",
+                     "하얀 배경에서 의류 제품을 평평하게 놓은 듯한 전자상거래용 사진을 만들어주세요."
+                 ],
+                 tips: [
+                     ["• 합성할 요소들의 크기 비율을 현실적으로 지정하세요", "• 조명 방향과 그림자를 일치시키려면 '자연스러운 조명'을 언급하세요", "• 원본 이미지의 품질이 합성 결과에 큰 영향을 미칩니다"],
+                     ["• 각 객체의 위치를 구체적으로 지정하세요 (앞쪽, 뒤쪽, 왼쪽 등)", "• 객체들 간의 상호작용을 언급하면 더 자연스러운 장면이 됩니다", "• 전체적인 구도와 균형을 고려해서 배치를 요청하세요"],
+                     ["• 타겟 고객층과 제품의 특성을 프롬프트에 포함하세요", "• 계절감이나 시간대를 명시하면 적절한 분위기가 연출됩니다", "• 브랜드 컬러나 톤을 지정하면 일관성 있는 광고가 만들어집니다"],
+                     ["• 원본 목업의 원근감과 조명을 분석해서 언급하세요", "• 목업 표면의 재질(매트, 글로시 등)을 고려해서 요청하세요", "• 브랜드 로고나 텍스트의 가독성을 우선시하세요"],
+                     ["• 타겟 디바이스(모바일, 데스크톱)를 명시하세요", "• CTA 버튼이나 텍스트 영역을 고려한 레이아웃을 요청하세요", "• 브랜드 가이드라인에 맞는 색상과 폰트 스타일을 지정하세요"],
+                     ["• 각 컷의 스토리 연결성을 고려해서 시나리오를 구성하세요", "• 브랜드 로고의 노출 빈도와 위치를 전략적으로 배치하세요", "• 영화적 연출 기법(클로즈업, 와이드샷 등)을 활용하세요"],
+                     ["• 제품의 핵심 특징이 잘 드러나는 앵글을 선택하세요", "• 고급스러운 느낌을 위해 조명과 그림자 디테일을 요청하세요", "• 제품 카테고리에 맞는 배경과 소품을 활용하세요"],
+                     ["• 브랜드 아이덴티티 키워드를 일관되게 사용하세요", "• 각 매체별 특성을 고려한 구도와 비율을 요청하세요", "• 시즌이나 캠페인 테마를 모든 이미지에 반영하세요"],
+                     ["• 트렌드에 맞는 밈 포맷과 텍스트 스타일을 활용하세요", "• 과장되고 유머러스한 표현을 두려워하지 마세요", "• 타겟 연령층이 공감할 수 있는 상황을 설정하세요"],
+                     ["• 깔끔한 화이트 배경과 균등한 조명을 요청하세요", "• 제품의 디테일이 선명하게 보이도록 고해상도를 지정하세요", "• 그림자는 최소화하고 제품 자체에 집중하도록 하세요"]
+                 ]
+            },
+            "스타일 변환": {
+                icon: "🎨",
+                color: "rgba(168, 85, 247, 0.7)",
+                 items: ["드로잉/스케치 → 실사 변환", "실사 ↔ 만화, 픽셀아트", "이미지 스타일 일괄 적용", "퍼즐화, 미니어처화, 피규어화", "로고 스타일 변형", "지브리/디즈니 스타일", "빈티지/글리치 효과", "3D 렌더링 변환"],
+                 examples: [
+                     "연필로 그린 캐릭터 스케치를, 피부 질감과 옷의 재질이 사실적으로 표현된 실사 이미지로 변환해주세요.",
+                     "실제 인물 사진을 일본 만화풍 일러스트로 변환한 뒤, 같은 장면을 픽셀아트 스타일로도 제작해주세요.",
+                     "세 장의 서로 다른 풍경 사진을 모두 인상주의 화풍으로 변환하여 일관된 아트 시리즈를 만들어주세요.",
+                     "도시 전경 사진을 테이블 위에 올려진 미니어처 모형처럼 표현해주세요.",
+                     "기존 로고를 네온사인 스타일, 수채화 스타일, 메탈릭 3D 스타일로 각각 변환해주세요.",
+                     "숲속에서 피크닉하는 가족 장면을 지브리 애니메이션 스타일로 변환해주세요.",
+                     "최신 전자제품 광고 이미지를 1980년대 VHS 느낌의 빈티지 글리치 스타일로 변환해주세요.",
+                     "단순한 평면 로고를 고해상도 3D 렌더링으로 변환하고, 반짝이는 메탈 질감을 입혀주세요."
+                 ],
+                 tips: [
+                     ["• 스케치의 선명도와 대비를 높여서 업로드하세요", "• 원하는 실사 스타일을 구체적으로 지정하세요 (사진, 유화, 디지털아트 등)", "• 스케치에 없는 디테일은 '자연스럽게 추가'라고 요청하세요"],
+                     ["• 변환할 스타일의 대표적 특징을 언급하세요 (일본 만화: 큰 눈, 픽셀아트: 8비트 등)", "• 원본의 어떤 요소를 보존할지 명시하세요", "• 색상 팔레트 제한이나 해상도를 지정하면 더 정확한 결과를 얻습니다"],
+                     ["• 목표 스타일의 대표 작가나 작품을 참조하세요 (예: 모네 스타일, 반 고흐 풍)", "• 색상 톤과 브러시 터치 특성을 구체적으로 요청하세요", "• 시리즈 전체의 통일성을 위해 '일관된' 키워드를 사용하세요"],
+                     ["• 미니어처 효과를 위해 '틸트 시프트' 용어를 사용하세요", "• 스케일감을 강조하는 소품들을 추가 요청하세요", "• 조명은 위에서 내려오는 스튜디오 조명으로 지정하세요"],
+                     ["• 각 스타일의 핵심 특징을 명확히 구분해서 요청하세요", "• 로고의 가독성과 브랜드 인식을 유지하도록 주의하세요", "• 용도에 맞는 해상도와 포맷을 함께 고려하세요"],
+                     ["• 지브리/디즈니의 구체적 작품명을 참조하면 더 정확합니다", "• 캐릭터의 눈 크기, 얼굴 비율 등 스타일 특징을 언급하세요", "• 배경의 몽환적이고 따뜻한 색감을 강조하세요"],
+                     ["• 특정 연대의 기술적 특징을 언급하세요 (VHS 노이즈, 필름 그레인 등)", "• 당시 유행했던 색상 팔레트를 지정하세요", "• 글리치 효과의 강도를 조절하여 가독성을 유지하세요"],
+                     ["• 3D 소프트웨어 렌더링 용어를 사용하세요 (레이 트레이싱, 글로벌 일루미네이션)", "• 재질의 물리적 속성을 구체적으로 지정하세요 (반사율, 거칠기 등)", "• 조명 설정과 환경맵을 함께 고려하세요"]
+                 ]
+            },
+            "고급 편집": {
+                icon: "✂️",
+                color: "rgba(99, 102, 241, 0.7)",
+                 items: ["오브젝트 부분 삭제", "오브젝트 부분 교체", "이미지 주석 기반 편집", "인페인팅", "텍스트 제거/대체", "라이팅 변경", "색감 보정", "필터/후처리", "배경 교체", "연속 편집 대화"],
+                 examples: [
+                     "단체 사진에서 오른쪽 끝에 서 있는 사람만 자연스럽게 삭제해주세요.",
+                     "남성이 들고 있는 책을 노트북으로 교체하되, 손 위치와 그림자는 자연스럽게 유지해주세요.",
+                     "이미지에 표시된 빨간 네모 박스를 제거하고, 그 자리를 원래 배경과 어울리게 채워주세요.",
+                     "모델의 머리카락을 짧은 단발 스타일로 변경하되, 얼굴과 표정은 그대로 두세요.",
+                     "간판에 쓰여 있는 기존 문구를 지우고, \"Coffee & Books\"라는 새로운 텍스트로 교체해주세요.",
+                     "낮에 촬영된 인물 사진을 밤의 따뜻한 조명 아래서 찍은 듯한 분위기로 바꿔주세요.",
+                     "전체 이미지의 색감을 따뜻한 톤으로 보정해 아늑한 느낌을 강화해주세요.",
+                     "인물 사진에 아날로그 필름 카메라 느낌의 노이즈와 빛 번짐 효과를 적용해주세요.",
+                     "스튜디오에서 촬영된 인물 배경을 해변 풍경으로 교체해주세요.",
+                     "첫 번째로 배경을 교체한 후, 이어서 의상을 여름 옷으로 바꾸고, 마지막으로 햇살 효과를 추가해주세요."
+                 ],
+                 tips: [
+                     ["• 삭제할 객체를 정확히 지정하세요 (위치, 색상, 크기 등)", "• 주변 배경과 자연스럽게 이어지도록 '매끄럽게' 키워드 사용", "• 삭제 후 남는 공간의 채움 방식을 구체적으로 요청하세요"],
+                     ["• 교체할 객체의 크기와 비율을 현실적으로 맞춰 요청하세요", "• 조명과 그림자의 일관성을 유지하도록 명시하세요", "• 원본 객체와 유사한 각도와 원근감을 고려하세요"],
+                     ["• 편집할 영역을 명확히 표시하거나 설명하세요", "• 주변 맥락과 어울리는 자연스러운 편집을 요청하세요", "• 마킹이나 주석이 완전히 제거되도록 '깔끔하게' 표현 사용"],
+                     ["• 인페인팅할 영역의 경계를 명확히 하세요", "• 주변 텍스처와 패턴의 연속성을 고려해 요청하세요", "• 결과의 자연스러움을 위해 '원본과 구분되지 않게' 표현 사용"],
+                     ["• 기존 텍스트의 폰트 스타일과 크기를 분석해서 매칭 요청", "• 새로운 텍스트가 배경과 조화롭게 배치되도록 하세요", "• 텍스트 주변의 그림자나 효과도 함께 고려하세요"],
+                     ["• 목표 조명의 종류를 구체적으로 지정하세요 (황금빛, 네온, 촛불 등)", "• 그림자와 하이라이트의 변화도 함께 요청하세요", "• 조명 변경에 따른 색온도 조정도 고려하세요"],
+                     ["• 목표 색감을 구체적으로 표현하세요 (따뜻한/차가운, 빈티지/모던 등)", "• 특정 색상 채널의 강도 조절을 언급하세요", "• 전체적인 분위기와 어울리는 색조 통일성을 요청하세요"],
+                     ["• 원하는 필터의 강도를 조절하세요 ('살짝', '강하게', '자연스럽게')", "• 필터 적용 후에도 중요한 디테일이 손실되지 않도록 주의하세요", "• 여러 효과를 조합할 때는 순서와 강도를 명시하세요"],
+                     ["• 새 배경의 조명과 원본 인물의 조명을 매칭하도록 요청하세요", "• 배경의 원근감과 인물의 위치가 자연스럽게 어울리도록 하세요", "• 배경 교체 후 전체적인 색감 조화를 고려하세요"],
+                     ["• 각 단계별 편집 내용을 순서대로 명확히 나열하세요", "• 이전 편집 결과를 다음 단계에서 어떻게 활용할지 설명하세요", "• 최종 목표 이미지의 전체적인 컨셉을 미리 제시하세요"]
+                 ]
+            },
+            "환경/시간": {
+                icon: "🏞️",
+                color: "rgba(34, 197, 94, 0.7)",
+                 items: ["날씨 변경", "시간대 변경", "계절 변환", "카메라 앵글 전환", "조명 분위기 조정", "환경 맥락 유지"],
+                 examples: [
+                     "맑은 하늘의 도심 사진을 비가 내리는 장면으로 바꿔주세요.",
+                     "낮에 촬영된 해변 풍경을 저녁 노을이 물든 장면으로 변환해주세요.",
+                     "푸른 숲속 사진을 겨울 설경으로 바꿔주세요.",
+                     "정면에서 찍힌 건축물 사진을 위에서 내려다본 항공샷으로 전환해주세요.",
+                     "카페 내부 사진의 조명을 따뜻한 주황빛으로 조정해 아늑한 분위기를 강조해주세요.",
+                     "도시 거리 풍경을 밤 장면으로 변환하되, 간판과 가로등 불빛은 자연스럽게 빛나도록 유지해주세요."
+                 ],
+                 tips: [
+                     ["• 날씨 변화에 따른 조명 변화도 함께 요청하세요", "• 비, 눈, 안개 등의 자연스러운 효과를 구체적으로 묘사하세요", "• 사람들의 복장이나 행동도 날씨에 맞게 조정되도록 하세요"],
+                     ["• 시간대별 조명 특성을 명시하세요 (골든아워, 블루아워, 정오 등)", "• 그림자의 길이와 방향 변화를 고려하세요", "• 시간에 따른 활동이나 분위기 변화도 함께 반영하세요"],
+                     ["• 계절별 색상 팔레트를 구체적으로 지정하세요", "• 식물, 의상, 소품 등의 계절적 변화를 포괄적으로 요청하세요", "• 계절감을 강조하는 특징적 요소들을 추가하세요 (낙엽, 눈꽃, 꽃잎 등)"],
+                     ["• 새로운 앵글에서의 원근감과 비례를 고려하세요", "• 카메라 높이나 거리 변화에 따른 구도 조정을 요청하세요", "• 앵글 변경 시 중요한 피사체가 잘리지 않도록 주의하세요"],
+                     ["• 조명의 색온도와 강도를 구체적으로 지정하세요", "• 조명 변화에 따른 그림자와 반사광 효과도 고려하세요", "• 전체적인 분위기와 어울리는 조명 설정을 요청하세요"],
+                     ["• 환경 변화 시에도 유지해야 할 핵심 요소들을 명시하세요", "• 인물이나 주요 객체의 특성은 보존하되 환경만 변경하도록 하세요", "• 새로운 환경과 기존 요소들의 자연스러운 조화를 요청하세요"]
+                 ]
+            },
+            "정보/AR": {
+                icon: "🛰️",
+                color: "rgba(59, 130, 246, 0.7)",
+                 items: ["장소 인식", "지도 시점 렌더링", "AR 주석", "이미지에 데이터 삽입", "SWOT 차트 생성", "정보 그래픽 제작", "통계 시각화"],
+                 examples: [
+                     "도시 전경 이미지에 주요 랜드마크 위치를 하이라이트 표시하고 이름을 추가해주세요.",
+                     "실제 도심 사진을 항공 지도 스타일로 변환하고, 주요 건물에 아이콘을 삽입해주세요.",
+                     "박물관 전시품 사진에 \"기원전 200년 제작\"과 같은 AR 주석을 띄워주세요.",
+                     "운동 선수 사진 옆에 속도, 점프 높이, 기록 같은 데이터 그래픽을 삽입해주세요.",
+                     "제공된 기업 로고를 중앙에 배치하고, SWOT 분석을 사분면 차트로 시각화해주세요.",
+                     "지구 온난화의 연도별 온도 상승 데이터를 바탕으로, 직관적인 인포그래픽 이미지를 제작해주세요.",
+                     "커피 소비량 통계를 원형 차트와 막대 그래프를 결합한 시각 자료로 표현해주세요."
+                 ],
+                 tips: [
+                     ["• 인식하고자 하는 장소의 특징적 랜드마크를 명시하세요", "• 라벨링할 위치를 구체적으로 지정하세요 (좌측 상단, 중앙 등)", "• 텍스트 가독성을 위한 배경 처리를 요청하세요"],
+                     ["• 지도 스타일을 구체적으로 지정하세요 (구글맵, 위성뷰, 일러스트 맵 등)", "• 중요도에 따른 아이콘 크기 차별화를 요청하세요", "• 색상 코딩 시스템을 활용해 카테고리별 구분을 명확히 하세요"],
+                     ["• AR 주석의 위치와 스타일을 명확히 지정하세요", "• 실제 AR 앱처럼 보이도록 반투명 배경과 포인터 라인을 요청하세요", "• 주석 텍스트의 가독성을 위한 폰트와 크기를 고려하세요"],
+                     ["• 데이터와 이미지의 연관성을 명확히 설명하세요", "• 그래픽 요소의 배치가 원본 이미지를 가리지 않도록 주의하세요", "• 데이터의 중요도에 따른 시각적 위계를 설정하세요"],
+                     ["• SWOT의 각 요소를 구체적으로 제공하세요", "• 브랜드 컬러를 활용한 디자인을 요청하세요", "• 차트의 가독성을 위한 적절한 폰트 크기와 간격을 고려하세요"],
+                     ["• 복잡한 데이터를 단순화하여 전달할 핵심 메시지를 명확히 하세요", "• 색상과 아이콘을 활용해 직관적 이해를 돕는 디자인을 요청하세요", "• 타겟 오디언스에 맞는 디자인 톤앤매너를 지정하세요"],
+                     ["• 데이터의 정확성과 출처를 명시하세요", "• 차트 유형이 데이터 특성에 적합한지 확인하세요", "• 범례와 라벨링을 명확히 하여 오해의 소지를 없애세요"]
+                 ]
+            },
+            "3D/제품": {
+                icon: "🧊",
+                color: "rgba(14, 165, 233, 0.7)",
+                 items: ["오브젝트 추출", "간이 3D 시트", "소재 변환", "Exploded View(분해도)", "제품 컨셉/수합", "인테리어 가상 배치", "요리 변환", "다각도 제품샷", "재질 변환 실험"],
+                 examples: [
+                     "제품 사진에서 스마트워치만 추출해 투명 배경 PNG 이미지로 만들어주세요.",
+                     "의자 모델을 정면, 측면, 후면, 위쪽에서 본 3D 시트 형식 이미지로 제작해주세요.",
+                     "나무로 된 테이블 이미지를 투명한 유리 소재로 변환해주세요.",
+                     "카메라를 분해한 듯한 3D 분해도 이미지로 표현하되, 각 부품이 공중에 떠 있는 구도로 구성해주세요.",
+                     "미래형 전동 자전거의 콘셉트 이미지를 제작하고, 날렵한 디자인과 메탈릭 질감을 강조해주세요.",
+                     "거실 사진에 새로 디자인한 소파와 카펫을 가상으로 배치해주세요.",
+                     "제공된 재료들(토마토, 치즈, 바질)로 만든 완성 요리인 피자 이미지를 제작해주세요.",
+                     "스마트폰을 정면, 후면, 측면에서 각각 촬영한 듯한 다각도 제품샷을 만들어주세요.",
+                     "플라스틱 병을 크리스탈 유리 재질로 변환한 이미지를 제작해주세요."
+                 ],
+                 tips: [
+                     ["• 추출할 객체의 경계를 명확히 구분하세요", "• 복잡한 배경에서는 '정밀한 추출'을 요청하세요", "• 투명 배경 제작 시 가장자리의 자연스러운 처리를 언급하세요"],
+                     ["• 각 시점별 조명의 일관성을 유지하도록 요청하세요", "• 제품의 핵심 특징이 각 앵글에서 잘 보이도록 구성하세요", "• 기술 도면처럼 정확한 비례와 원근감을 요청하세요"],
+                     ["• 새로운 소재의 물리적 특성을 구체적으로 묘사하세요", "• 조명과 반사 효과가 새 소재에 맞게 조정되도록 하세요", "• 원본 형태는 유지하되 질감만 변경하도록 명시하세요"],
+                     ["• 분해 순서와 각 부품의 기능을 고려한 배치를 요청하세요", "• 부품 간 연결 관계를 시각적으로 표현하도록 하세요", "• 기술 매뉴얼 스타일의 깔끔한 레이아웃을 지정하세요"],
+                     ["• 제품의 핵심 기능과 타겟 사용자를 고려한 디자인을 요청하세요", "• 혁신적이면서도 현실적인 디자인 요소를 균형있게 배치하세요", "• 브랜드 아이덴티티나 디자인 철학을 반영하도록 하세요"],
+                     ["• 기존 인테리어와의 조화를 고려한 배치를 요청하세요", "• 조명과 그림자가 자연스럽게 어울리도록 하세요", "• 실제 공간의 스케일과 비례에 맞는 크기로 배치하세요"],
+                     ["• 재료의 신선함과 질감을 살린 조리 과정을 반영하세요", "• 완성 요리의 색감과 플레이팅을 매력적으로 표현하세요", "• 요리 사진 특유의 조명과 구도를 활용하세요"],
+                     ["• 각 앵글에서 제품의 디자인 특징이 잘 드러나도록 하세요", "• 일관된 조명과 배경으로 전문적인 제품샷을 연출하세요", "• 제품 카탈로그나 온라인 쇼핑몰에 적합한 품질로 제작하세요"],
+                     ["• 새로운 재질의 투명도, 반사율, 굴절률을 고려하세요", "• 재질 변환에 따른 무게감과 질감 변화를 표현하세요", "• 조명 효과가 새 재질의 특성을 잘 보여주도록 조정하세요"]
+                 ]
+            },
+            "복원/품질개선": {
+                icon: "✨",
+                color: "rgba(245, 158, 11, 0.7)",
+                 items: ["오래된 흑백 사진 컬러 복원", "사진 품질 개선", "창작 활용(환각)", "고해상도 업스케일", "흔들린 사진 복원", "저품질 이미지 개선", "실시간 품질 향상"],
+                 examples: [
+                     "1950년대 흑백 가족사진을 선명한 컬러 사진으로 복원해주세요.",
+                     "흐릿한 풍경 사진을 고화질로 선명하게 보정해주세요.",
+                     "단순한 인물 사진을 기반으로, 인물이 신화 속 영웅으로 변신한 듯한 창작 이미지를 만들어주세요.",
+                     "작은 해상도의 제품 사진을 디테일이 살아있는 고해상도 이미지로 업스케일해주세요.",
+                     "손떨림으로 흔들린 야경 사진을 안정적이고 선명한 이미지로 복원해주세요.",
+                     "오래된 휴대폰으로 찍은 저화질 이미지를 현대 카메라로 찍은 듯한 선명한 화질로 개선해주세요.",
+                     "웹캠으로 촬영한 영상 프레임을 실시간으로 고해상도 화질로 변환한 이미지 예시를 만들어주세요."
+                 ],
+                 tips: [
+                     ["• 원본 사진의 시대적 배경을 고려한 자연스러운 색상 선택을 요청하세요", "• 피부톤, 의상, 배경 등 각 요소별 색상을 단계적으로 지정하세요", "• 과도한 채색보다는 자연스러운 복원을 우선시하세요"],
+                     ["• 개선하고자 하는 구체적 문제점을 명시하세요 (노이즈, 흐림, 색감 등)", "• 원본의 중요한 디테일은 보존하면서 품질만 향상시키도록 요청하세요", "• 과도한 보정으로 인한 부자연스러움을 피하도록 주의하세요"],
+                     ["• 창작 방향과 컨셉을 구체적으로 제시하세요", "• 원본 인물의 특징은 유지하면서 창의적 요소를 추가하도록 하세요", "• 판타지적 요소와 현실성의 균형을 고려하여 요청하세요"],
+                     ["• 업스케일 목표 해상도를 구체적으로 지정하세요", "• 디테일 복원 시 중요한 부분(텍스트, 얼굴, 제품 특징)을 우선시하도록 하세요", "• 인공적인 선명화보다는 자연스러운 디테일 복원을 요청하세요"],
+                     ["• 흔들림의 방향과 정도를 파악하여 구체적으로 설명하세요", "• 중요한 피사체(얼굴, 텍스트)의 선명도 복원을 우선시하세요", "• 복원 과정에서 원본의 분위기와 색감은 유지하도록 하세요"],
+                     ["• 목표 화질 수준을 구체적으로 제시하세요 (DSLR급, 스마트폰 최신 기종급 등)", "• 노이즈 제거와 디테일 보존의 균형을 고려하여 요청하세요", "• 색상 정확도와 자연스러운 대비 개선을 함께 요청하세요"],
+                     ["• 실시간 처리의 한계를 고려한 현실적 품질 목표를 설정하세요", "• 처리 속도와 품질 간의 균형점을 명시하세요", "• 특정 용도(화상회의, 스트리밍 등)에 맞는 최적화를 요청하세요"]
+                 ]
+            },
+            "교육/창작": {
+                icon: "📚",
+                color: "rgba(139, 69, 19, 0.7)",
+                 items: ["과학 다이어그램 생성", "교육용 시각자료", "아이디어 스케치 구현", "창의적 브레인스토밍", "디자인 프로토타이핑", "학습용 캐릭터 제작", "교과서급 일러스트"],
+                 examples: [
+                     "태양계 행성들의 궤도를 설명하는 과학 다이어그램 이미지를 제작해주세요.",
+                     "초등학생용 동물 분류 학습 자료를 밝고 귀여운 일러스트 스타일로 제작해주세요.",
+                     "손으로 그린 로봇 스케치를 기반으로, 완성된 제품 콘셉트 아트 이미지를 만들어주세요.",
+                     "\"미래 도시 교통\"이라는 주제를 시각화한 브레인스토밍 아트워크를 제작해주세요.",
+                     "새로운 스마트워치 UI 아이디어를 반영한 프로토타입 목업 이미지를 제작해주세요.",
+                     "어린이를 위한 수학 학습 캐릭터(귀여운 펭귄 선생님)를 제작해주세요.",
+                     "고등학교 생물 교과서에 수록될 수준의 정밀한 세포 구조 일러스트를 만들어주세요."
+                 ],
+                 tips: [
+                     ["• 과학적 정확성을 위해 참고 자료나 데이터를 함께 제공하세요", "• 복잡한 개념을 단순화하되 핵심 정보는 누락하지 않도록 하세요", "• 색상 코딩이나 라벨링을 활용해 이해하기 쉽게 구성하세요"],
+                     ["• 대상 연령층에 맞는 시각적 복잡도를 조절하세요", "• 학습 목표와 핵심 개념을 명확히 전달할 수 있도록 구성하세요", "• 친근하고 매력적인 캐릭터나 색상을 활용해 흥미를 유발하세요"],
+                     ["• 스케치의 핵심 아이디어와 기능을 구체적으로 설명하세요", "• 기술적 실현 가능성을 고려한 현실적인 디자인을 요청하세요", "• 사용자 경험과 제품의 목적을 반영한 세부 디테일을 추가하세요"],
+                     ["• 브레인스토밍 주제의 다양한 관점과 가능성을 포함하도록 하세요", "• 창의적이면서도 논리적 연결고리가 있는 아이디어들을 시각화하세요", "• 미래 지향적이면서도 현실성 있는 컨셉들을 균형있게 배치하세요"],
+                     ["• UI/UX 원칙을 고려한 사용자 친화적 디자인을 요청하세요", "• 실제 디바이스의 제약사항(화면 크기, 해상도)을 반영하세요", "• 프로토타입의 주요 기능과 사용 시나리오를 명확히 표현하세요"],
+                     ["• 대상 연령층이 좋아할 만한 친근한 외모와 성격을 설정하세요", "• 교육 내용과 연관된 시각적 요소들을 캐릭터에 자연스럽게 포함하세요", "• 다양한 표정과 제스처로 활용할 수 있도록 확장성을 고려하세요"],
+                     ["• 교육 과정과 학습 수준에 맞는 정확하고 상세한 정보를 포함하세요", "• 전문적이면서도 학생들이 이해하기 쉬운 시각적 표현을 사용하세요", "• 교과서 인쇄 품질을 고려한 선명하고 명확한 이미지로 제작하세요"]
+                 ]
+            }
+        };
+
+        let currentCategory = Object.keys(nanoBananaFeatures)[0];
+
+        const navContainer = document.getElementById('category-nav');
+        const gridContainer = document.getElementById('features-grid');
+        const categoryTitle = document.getElementById('current-category-title');
+
+        function renderNav() {
+            navContainer.innerHTML = '';
+            Object.keys(nanoBananaFeatures).forEach((category, index) => {
+                const button = document.createElement('button');
+                button.dataset.category = category;
+                button.setAttribute('aria-label', `${category} 카테고리 보기`);
+                button.setAttribute('role', 'tab');
+                const isActive = category === currentCategory;
+                button.setAttribute('aria-selected', isActive);
+                button.className = `nav-button font-semibold py-3 px-4 sm:px-5 text-sm sm:text-base rounded-full transition-all duration-200 shadow-sm min-h-[44px] ${isActive ? 'bg-amber-500 text-white shadow-md' : 'bg-white text-stone-700 hover:bg-amber-100'}`;
+                button.textContent = `${nanoBananaFeatures[category].icon} ${category}`;
+                button.onclick = handleNavClick;
+                button.onkeydown = handleKeyNavigation;
+                // 간단한 애니메이션 (지연 제거)
+                if (index === 0) button.classList.add('fade-in');
+                navContainer.appendChild(button);
+            });
+        }
+
+        let selectedFeatureIndex = -1; // 선택된 기능의 인덱스
+
+        function renderContent() {
+            const categoryData = nanoBananaFeatures[currentCategory];
+            categoryTitle.textContent = `${categoryData.icon} ${currentCategory} 관련 기능`;
+            
+            gridContainer.innerHTML = '';
+            selectedFeatureIndex = -1; // 카테고리 변경 시 선택 초기화
+            
+            // 기능 목록 카드들 (순번 포함)
+            categoryData.items.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'feature-card bg-white p-4 sm:p-5 rounded-xl shadow-md hover-lift cursor-pointer transition-all duration-200 border-2 border-transparent hover:border-amber-300';
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('aria-label', `기능 ${index + 1}: ${item} - 클릭하여 예시 보기`);
+                card.onclick = () => showFeatureExample(index);
+                card.onkeydown = (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        showFeatureExample(index);
+                    }
+                };
+                
+                card.innerHTML = `
+                    <div class="text-center">
+                        <div class="mb-2">
+                            <span class="inline-flex items-center justify-center w-8 h-8 bg-amber-100 text-amber-800 rounded-full text-sm font-bold">${index + 1}</span>
+                        </div>
+                        <p class="font-medium text-stone-700 text-sm sm:text-base leading-relaxed">${item}</p>
+                        <p class="text-xs text-stone-500 mt-2">클릭하여 예시 보기</p>
+                    </div>
+                `;
+                gridContainer.appendChild(card);
+            });
+            
+            // 선택된 기능의 예시를 보여주는 섹션
+            renderExampleSection();
+        }
+        
+        function showFeatureExample(index) {
+            selectedFeatureIndex = index;
+            
+            // 모든 카드의 선택 상태 초기화
+            const allCards = gridContainer.querySelectorAll('.feature-card');
+            allCards.forEach(card => {
+                card.classList.remove('border-amber-500', 'bg-amber-50');
+                card.classList.add('border-transparent');
+            });
+            
+            // 선택된 카드 하이라이트
+            if (allCards[index]) {
+                allCards[index].classList.remove('border-transparent');
+                allCards[index].classList.add('border-amber-500', 'bg-amber-50');
+            }
+            
+            renderExampleSection();
+        }
+        
+        function renderExampleSection() {
+            // 기존 예시 섹션 제거
+            const existingExample = gridContainer.querySelector('.example-section');
+            if (existingExample) {
+                existingExample.remove();
+            }
+            
+            const categoryData = nanoBananaFeatures[currentCategory];
+            
+            if (selectedFeatureIndex >= 0 && categoryData.examples && categoryData.examples[selectedFeatureIndex]) {
+                const example = categoryData.examples[selectedFeatureIndex];
+                const featureName = categoryData.items[selectedFeatureIndex];
+                
+                const exampleSection = document.createElement('div');
+                exampleSection.className = 'example-section col-span-full mt-6 bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200 fade-in';
+                exampleSection.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-green-800 flex items-center">
+                            <span class="mr-2">✨</span>${selectedFeatureIndex + 1}. ${featureName} - 실제 프롬프트
+                        </h3>
+                        <button onclick="clearSelection()" class="text-green-600 hover:text-green-800 text-sm flex items-center transition-colors duration-200">
+                            <span class="mr-1">✕</span>닫기
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white p-5 rounded-lg border border-green-100">
+                        <div class="mb-3">
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">📝 바로 사용 가능한 프롬프트</span>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                            <p class="text-stone-800 font-mono text-sm leading-relaxed">${example}</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="copyToClipboard('${example.replace(/'/g, "\\'")}', this)" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-200">
+                                <span class="mr-2">📋</span>프롬프트 복사
+                            </button>
+                            <button onclick="showTips()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-200">
+                                <span class="mr-2">💡</span>활용 팁
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="tips-section" class="hidden mt-4 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                        <h4 class="font-semibold text-blue-800 mb-2">🎯 이 프롬프트 활용 팁</h4>
+                        <ul class="text-sm text-blue-700 space-y-1">
+                            <li>• 구체적인 세부사항을 추가하여 더 정확한 결과를 얻어보세요</li>
+                            <li>• "더 밝게", "좀 더 자연스럽게" 등으로 점진적 개선을 시도해보세요</li>
+                            <li>• 원하는 스타일이나 분위기를 명확히 지정해보세요</li>
+                            <li>• 여러 번 시도해서 가장 만족스러운 결과를 선택하세요</li>
+                        </ul>
+                    </div>
+                `;
+                gridContainer.appendChild(exampleSection);
+                
+                // 부드럽게 스크롤하여 예시 섹션으로 이동
+                setTimeout(() => {
+                    exampleSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
+        }
+        
+        function clearSelection() {
+            selectedFeatureIndex = -1;
+            
+            // 모든 카드의 선택 상태 초기화
+            const allCards = gridContainer.querySelectorAll('.feature-card');
+            allCards.forEach(card => {
+                card.classList.remove('border-amber-500', 'bg-amber-50');
+                card.classList.add('border-transparent');
+            });
+            
+            renderExampleSection();
+        }
+        
+         function showTips() {
+             const tipsSection = document.getElementById('tips-section');
+             if (tipsSection) {
+                 const categoryData = nanoBananaFeatures[currentCategory];
+                 const specificTips = categoryData.tips && categoryData.tips[selectedFeatureIndex] 
+                     ? categoryData.tips[selectedFeatureIndex] 
+                     : [
+                         "• 구체적인 세부사항을 추가하여 더 정확한 결과를 얻어보세요",
+                         "• \"더 밝게\", \"좀 더 자연스럽게\" 등으로 점진적 개선을 시도해보세요",
+                         "• 원하는 스타일이나 분위기를 명확히 지정해보세요",
+                         "• 여러 번 시도해서 가장 만족스러운 결과를 선택하세요"
+                       ];
+                 
+                 // 팁 내용 업데이트
+                 const tipsList = tipsSection.querySelector('ul');
+                 if (tipsList) {
+                     tipsList.innerHTML = specificTips.map(tip => `<li>${tip}</li>`).join('');
+                 }
+                 
+                 tipsSection.classList.toggle('hidden');
+             }
+         }
+
+        function handleNavClick(event) {
+            const newCategory = event.target.dataset.category;
+            if (newCategory && newCategory !== currentCategory) {
+                currentCategory = newCategory;
+                renderNav();
+                renderContent();
+                
+                // Google Analytics 등에서 사용할 수 있는 이벤트 트래킹
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'category_change', {
+                        'category_name': currentCategory
+                    });
+                }
+            }
+        }
+        
+        function handleKeyNavigation(event) {
+            const buttons = Array.from(navContainer.querySelectorAll('.nav-button'));
+            const currentIndex = buttons.indexOf(event.target);
+            
+            switch(event.key) {
+                case 'ArrowLeft':
+                    event.preventDefault();
+                    const prevIndex = currentIndex > 0 ? currentIndex - 1 : buttons.length - 1;
+                    buttons[prevIndex].focus();
+                    break;
+                case 'ArrowRight':
+                    event.preventDefault();
+                    const nextIndex = currentIndex < buttons.length - 1 ? currentIndex + 1 : 0;
+                    buttons[nextIndex].focus();
+                    break;
+                case 'Enter':
+                case ' ':
+                    event.preventDefault();
+                    event.target.click();
+                    break;
+            }
+        }
+        
+        // 클립보드 복사 기능
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(function() {
+                // 성공 피드백
+                const originalText = button.innerHTML;
+                button.innerHTML = '<span class="mr-1">✅</span>복사됨!';
+                button.classList.add('text-green-600');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('text-green-600');
+                }, 2000);
+            }).catch(function(err) {
+                // 실패 시 폴백
+                console.error('복사 실패:', err);
+                const originalText = button.innerHTML;
+                button.innerHTML = '<span class="mr-1">❌</span>복사 실패';
+                button.classList.add('text-red-600');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('text-red-600');
+                }, 2000);
+            });
+        }
+        
+        function createChart() {
+            const ctx = document.getElementById('featuresChart').getContext('2d');
+            const labels = Object.keys(nanoBananaFeatures);
+            const data = labels.map(label => nanoBananaFeatures[label].items.length);
+            const backgroundColors = labels.map(label => nanoBananaFeatures[label].color);
+
+            new Chart(ctx, {
+                type: 'polarArea',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '기능 수',
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            pointLabels: {
+                                display: true,
+                                centerPointLabels: true,
+                                font: {
+                                    size: window.innerWidth < 480 ? 10 : window.innerWidth < 768 ? 12 : 14,
+                                    weight: 'bold'
+                                },
+                                color: '#333'
+                            },
+                            ticks: {
+                                color: '#777',
+                                backdropColor: 'rgba(255, 255, 255, 0.75)',
+                                z: 1
+                            },
+                            grid: {
+                                color: '#e5e5e5'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: window.innerWidth < 480 ? 10 : 12
+                                },
+                                padding: window.innerWidth < 480 ? 8 : 15,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const categoryName = context.label;
+                                    const featureCount = context.raw;
+                                    const percentage = ((featureCount / Object.values(nanoBananaFeatures).reduce((sum, cat) => sum + cat.items.length, 0)) * 100).toFixed(1);
+                                    return [
+                                        `${categoryName}: ${featureCount}개 기능`,
+                                        `전체 대비 ${percentage}% 비중`,
+                                        `전문성 레벨: ⭐⭐⭐⭐⭐`
+                                    ];
+                                },
+                                title: function(context) {
+                                    return `${context[0].label} 카테고리`;
+                                }
+                            },
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: 'rgba(255, 255, 255, 0.3)',
+                            borderWidth: 1
+                        }
+                    }
+                }
+            });
+        }
+
+        // 스크롤 인디케이터 업데이트
+        function updateScrollIndicator() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercentage = (scrollTop / scrollHeight) * 100;
+            document.getElementById('scroll-indicator').style.width = scrollPercentage + '%';
+        }
+        
+        // 성능 최적화된 스크롤 리스너
+        let scrollTimeout;
+        function throttledScrollHandler() {
+            if (!scrollTimeout) {
+                scrollTimeout = setTimeout(() => {
+                    updateScrollIndicator();
+                    scrollTimeout = null;
+                }, 10);
+            }
+        }
+        
+        // 로딩 상태 관리
+        function showLoadingState() {
+            const loadingEl = document.createElement('div');
+            loadingEl.id = 'loading-overlay';
+            loadingEl.className = 'fixed inset-0 bg-white bg-opacity-90 flex items-center justify-center z-50';
+            loadingEl.innerHTML = '<div class="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500"></div>';
+            document.body.appendChild(loadingEl);
+        }
+        
+        function hideLoadingState() {
+            const loadingEl = document.getElementById('loading-overlay');
+            if (loadingEl) {
+                loadingEl.remove();
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // 초기 로딩 상태 표시
+            showLoadingState();
+            
+            try {
+                renderNav();
+                renderContent();
+                createChart();
+                
+                // 스크롤 이벤트 리스너 등록
+                window.addEventListener('scroll', throttledScrollHandler);
+                
+                // 초기 스크롤 인디케이터 설정
+                updateScrollIndicator();
+                
+                // 로딩 완료 후 오버레이 숨기기
+                setTimeout(hideLoadingState, 500);
+                
+            } catch (error) {
+                console.error('초기화 오류:', error);
+                hideLoadingState();
+                // 사용자에게 오류 메시지 표시
+                const errorEl = document.createElement('div');
+                errorEl.className = 'fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50';
+                errorEl.textContent = '페이지 로딩 중 오류가 발생했습니다. 페이지를 새로고침해 주세요.';
+                document.body.appendChild(errorEl);
+                setTimeout(() => errorEl.remove(), 5000);
+            }
+        });
+        
+        // 리사이즈 이벤트 리스너 (차트 반응형 대응)
+        window.addEventListener('resize', () => {
+            // 차트 리렌더링 디바운스
+            clearTimeout(window.resizeTimeout);
+            window.resizeTimeout = setTimeout(() => {
+                const chart = Chart.getChart('featuresChart');
+                if (chart) {
+                    chart.resize();
+                }
+            }, 250);
+        });
+
+    </script>
+</body>
+</html>
