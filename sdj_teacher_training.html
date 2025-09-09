@@ -322,8 +322,10 @@
         <section id="principles" class="mb-16">
             <br><br>
             <div class="text-center mb-10">
-                <h2 class="text-4xl font-bold mb-4 text-gray-900">생성형 AI를 활용한 학생부 작성 원칙</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">생성형 AI는 교사의 업무를 돕는 강력한 도구입니다.<br>올바른 활용으로 효율성을 높이면서도 교육적 책임을 다해야 합니다.</p>
+                <h2 class="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent relative">
+                     생성형 AI를 활용한 학생부 작성 원칙
+                </h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">생성형 AI는 교사의 업무를 돕는 강력한 도구입니다.<br><b>올바른 활용으로 효율성을 높이면서도 교육적 책임을 다해야 합니다.</b></p>
             </div>
             
             <!-- 인터랙티브 Do's and Don'ts -->
@@ -506,7 +508,7 @@
                                 1
                             </div>
                             <div class="bg-blue-50 rounded-xl p-6 border-2 border-blue-200 group-hover:border-blue-400 transition-colors duration-300">
-                                <h4 class="text-xl font-bold text-blue-800 mb-3">관찰 및 기록</h4>
+                                <h4 class="text-xl font-bold text-blue-800 mb-3">관찰 및 기록<br>(데이터 수집)</h4>
                                 <p class="text-sm text-blue-700 leading-relaxed">학생의 실제 활동과 결과물을<br>교사가 직접 관찰하고 상세히 기록</p>
                                 <div class="mt-3 text-xs text-blue-600 bg-blue-100 rounded-full px-3 py-1 inline-block">
                                     👁️ 교사의 전문성
@@ -520,7 +522,7 @@
                                 2
                             </div>
                             <div class="bg-green-50 rounded-xl p-6 border-2 border-green-200 group-hover:border-green-400 transition-colors duration-300">
-                                <h4 class="text-xl font-bold text-green-800 mb-3">AI 아이디어 생성</h4>
+                                <h4 class="text-xl font-bold text-green-800 mb-3">AI 아이디어 생성<br>(초안 작성)</h4>
                                 <p class="text-sm text-green-700 leading-relaxed">관찰 기록을 바탕으로 표현 아이디어와 문장 구조를 도출</p>
                                 <div class="mt-3 text-xs text-green-600 bg-green-100 rounded-full px-3 py-1 inline-block">
                                     💡 AI의 보조 역할
@@ -534,7 +536,7 @@
                                 3
                             </div>
                             <div class="bg-purple-50 rounded-xl p-6 border-2 border-purple-200 group-hover:border-purple-400 transition-colors duration-300">
-                                <h4 class="text-xl font-bold text-purple-800 mb-3">교사 직접 작성</h4>
+                                <h4 class="text-xl font-bold text-purple-800 mb-3">교사 직접 작성<br>(최종안 작성)</h4>
                                 <p class="text-sm text-purple-700 leading-relaxed">AI 아이디어를 참고하여 교사가 직접 최종 문장을 작성</p>
                                 <div class="mt-3 text-xs text-purple-600 bg-purple-100 rounded-full px-3 py-1 inline-block">
                                     ✍️ 최종 책임
@@ -548,7 +550,7 @@
                                 4
                             </div>
                             <div class="bg-orange-50 rounded-xl p-6 border-2 border-orange-200 group-hover:border-orange-400 transition-colors duration-300">
-                                <h4 class="text-xl font-bold text-orange-800 mb-3">최종 검증</h4>
+                                <h4 class="text-xl font-bold text-orange-800 mb-3">최종 검증<br>(제출 전 확인)</h4>
                                 <p class="text-sm text-orange-700 leading-relaxed">사실 확인, 표절 검사, 개인정보 점검 후 완성</p>
                                 <div class="mt-3 text-xs text-orange-600 bg-orange-100 rounded-full px-3 py-1 inline-block">
                                     🔍 품질 보증
@@ -572,10 +574,18 @@
 
            
         </section>
-        <br><br>
+        <br><br><br><br><br>
         <!-- 2. 맞춤형 GPT 제작법 -->
         <section id="gpt" class="mb-16">
-            <h2 class="text-4xl font-bold text-center mb-8 text-gray-900">학생부 작성을 위한 맞춤형 GPT 제작</h2>
+            <div class="text-center mb-8">
+                <div class="inline-block bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 p-1 rounded-2xl shadow-lg">
+                    <div class="bg-white px-8 py-4 rounded-xl">
+                        <h2 class="text-4xl font-bold bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center justify-center">
+                            학생부 작성을 위한 맞춤형 프롬프트 제작
+                        </h2>
+                    </div>
+                </div>
+            </div>
             
             <!-- NotebookLM 소개 -->
             <div class="success-box p-6 rounded-xl mb-8">
@@ -587,9 +597,9 @@
                             사용자가 업로드한 자료에만 기반하여 답변하는 AI로, 출처가 명확하고 신뢰할 수 있습니다.
                         </p>
                         <ul class="text-sm text-gray-700 space-y-1 mb-4">
-                            <li>• 학생 포트폴리오, 담임 메모 등을 업로드하여 활용</li>
-                            <li>• 허위 생성(환각) 현상 최소화</li>
-                            <li>• 교육용 계정 사용 시 데이터 보안 강화</li>
+                            <li>• 학생 포트폴리오, 담임 메모, 학습·활동 기록, 평가 자료 등을 업로드해 생기부 작성에 활용</li>
+                            <li>• RAG(Retrieval-Augmented Generation)를 활용해 허위 생성(환각) 현상 최소화</li>
+                            <li>• 교육용 계정 사용 시, 관리자 통제·암호화·법규 준수 등을 통해 학생 개인정보와 학습 데이터 보안을 강화</li>
                         </ul>
                         <div class="flex gap-3">
                             <a href="https://notebooklm.google.com/" target="_blank" rel="noopener noreferrer" 
@@ -608,11 +618,76 @@
                 </div>
             </div>
 
+            <!-- 서대전여고 학교생활기록부 종합 자료실 소개 -->
+            <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-xl p-6 mb-8">
+                <div class="flex items-start">
+                    <span class="text-3xl mr-4">🏫</span>
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">서대전여자고등학교 학교생활기록부 종합 자료실</h3>
+                        <p class="text-gray-800 mb-3">
+                            서대전여자고등학교 선생님들을 위해 여러 책들을 참고하여 자체 제작한 전문 웹페이지입니다.
+                        </p>
+                        
+                        <div class="bg-white rounded-lg p-4 mb-4 border border-emerald-200">
+                            <h4 class="font-bold text-emerald-800 mb-2">⭐ 2025학년도 목표</h4>
+                            <p class="text-sm text-gray-700 mb-2">
+                                올해의 학교생활기록부 목표는 <strong class="text-emerald-700">방학 전에 모든 내용을 입력하고 점검하는 것</strong>입니다!
+                            </p>
+                            <p class="text-sm text-gray-600">
+                                방학 기간에는 수정·보완만 하면 되도록 미리미리 계획을 세워주세요~!
+                            </p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div class="bg-white rounded-lg p-3 border border-emerald-200">
+                                <h4 class="font-bold text-emerald-800 mb-2">📋 주요 자료</h4>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>• 자기평가서 (ver.2025)</li>
+                                    <li>• 교과 세특 자기평가서</li>
+                                    <li>• 자율·진로활동 자기평가서</li>
+                                    <li>• 2025 학교생활기록부 기재요령 연수 자료</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white rounded-lg p-3 border border-emerald-200">
+                                <h4 class="font-bold text-emerald-800 mb-2">📚 영역별 작성 안내</h4>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>• 자율·자치활동 특기사항 작성방법</li>
+                                    <li>• 진로활동 특기사항 작성방법</li>
+                                    <li>• 영역별 우수 사례 모음</li>
+                                    <li>• 교과별 주제탐구 가이드</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+                            <p class="text-sm text-yellow-800">
+                                <strong>⚠️ 중요 공지:</strong> 이 자료는 서대전여자고등학교 선생님들 전용으로 제작되었습니다. 
+                                사설업체, 학원, 타학교 등에 절대 공유하지 말아주세요.
+                            </p>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <a href="https://topaz-fascinator-bf0.notion.site/1a5a7d92fd60807dae2af424afbdb0e3#1e6a7d92fd608057863ec2a54ad76bcb" 
+                               target="_blank" rel="noopener noreferrer" 
+                               class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold rounded-lg hover:from-emerald-700 hover:to-teal-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+                                </svg>
+                                서대전여자고등학교 학교생활기록부부 종합 자료실 바로가기
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- GPT 설정 빌더 -->
             <div class="bg-white rounded-xl p-8 section-card">
                 <div class="text-center mb-8">
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">🤖 맞춤형 GPT 설정 도구</h3>
-                    <p class="text-gray-600">단계별로 옵션을 선택하여 전문적인 GPT 설정을 생성하세요</p>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">🤖 학생부 작성을 위한 맞춤형 프롬프트 제작 자동화 도구</h3>
+                    <p class="text-gray-600">단계별로 옵션을 선택하여 전문적인 GPT 프롬프트를 생성하세요</p>
                 </div>
                 
                 <!-- 선택된 옵션 요약 -->
@@ -624,7 +699,7 @@
                 <!-- 생성된 GPT 설정 - 상단 배치 -->
                 <div class="mb-8">
                     <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
-                        <h4 class="font-bold text-lg mb-4 text-gray-900">📋 생성된 GPT 설정</h4>
+                        <h4 class="font-bold text-lg mb-4 text-gray-900">📋 자동화된 GPT 프롬프트 </h4>
                         <textarea id="gptInstructions" class="w-full h-64 p-4 border border-gray-300 rounded-lg bg-white font-mono text-sm resize-none" readonly placeholder="옵션을 선택하면 전문적인 GPT 설정이 자동으로 생성됩니다."></textarea>
                         <div class="flex gap-2 mt-4">
                             <button id="copyBtn" class="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold flex items-center justify-center gap-2">
@@ -1006,60 +1081,90 @@
             </div>
         </section>
 
+        <br><br><br><br><br>
         <!-- 3. AI 도구 소개 -->
         <section id="tools" class="mb-16">
-            <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">3. 학교 현장에서 활용할 수 있는 AI 도구</h2>
-            
-            <!-- 필수 검증 도구 -->
-            <div class="warning-box p-6 rounded-xl mb-8">
-                <div class="flex items-start">
-                    <span class="text-3xl mr-4">⚠️</span>
-                    <div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">필수 검증 도구</h3>
-                        <div class="space-y-2">
-                            <p><strong>GPT 킬러:</strong> 83개 대학에서 도입, 99% 정확도로 AI 생성 여부 탐지</p>
-                            <p><strong>카피킬러:</strong> 표절 및 유사성 검사</p>
-                            <p class="text-sm font-bold text-red-700">💡 학생부 제출 전 반드시 검증하세요!</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-bold mb-4 relative inline-block">
+                    <span class="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent">
+                        🛠️ 학교 현장에서 활용할 수 있는 AI 도구
+                    </span>
+                    <div class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 rounded-full"></div>
+                </h2>
+                <p class="text-gray-600 mt-4">실제 교육 현장에서 바로 사용할 수 있는 검증된 AI 도구들을 소개합니다</p>
             </div>
 
             <!-- 도구 카드들 -->
-            <div class="grid md:grid-cols-3 gap-6 mb-8">
-                <div class="tool-card bg-white p-6 rounded-xl" data-tool="verification">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="tool-card bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300" data-tool="materials">
+                    <div class="text-center mb-4">
+                        <span class="text-4xl">🎨</span>
+                        <h3 class="text-xl font-bold mt-2 text-purple-600">교수·학습 자료 제작</h3>
+                    </div>
+                    <p class="text-gray-600 text-center">수업용 PPT, 인포그래픽, 교과 삽화 등 시각적 자료를 쉽게 제작합니다.</p>
+                </div>
+                
+                <div class="tool-card bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300" data-tool="writing">
+                    <div class="text-center mb-4">
+                        <span class="text-4xl">✍️</span>
+                        <h3 class="text-xl font-bold mt-2 text-blue-600">텍스트 생성·세특 보조</h3>
+                    </div>
+                    <p class="text-gray-600 text-center">세특 초안 아이디어, 문장 윤문, 가정통신문 작성을 지원합니다.</p>
+                </div>
+                
+                <div class="tool-card bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300" data-tool="management">
+                    <div class="text-center mb-4">
+                        <span class="text-4xl">📊</span>
+                        <h3 class="text-xl font-bold mt-2 text-green-600">학생 수행 관리 및 연구</h3>
+                    </div>
+                    <p class="text-gray-600 text-center">학생 보고서 정리, 포트폴리오 구축, 연구 자료 관리를 도와줍니다.</p>
+                </div>
+                
+                <div class="tool-card bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300" data-tool="experience">
+                    <div class="text-center mb-4">
+                        <span class="text-4xl">🔬</span>
+                        <h3 class="text-xl font-bold mt-2 text-orange-600">AI 실험·체험 학습</h3>
+                    </div>
+                    <p class="text-gray-600 text-center">다양한 AI 모델 체험, 맞춤형 챗봇 제작으로 AI 교육을 실습합니다.</p>
+                </div>
+                
+                <div class="tool-card bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300" data-tool="voice">
+                    <div class="text-center mb-4">
+                        <span class="text-4xl">🎙️</span>
+                        <h3 class="text-xl font-bold mt-2 text-indigo-600">음성·회의·기록 활용</h3>
+                    </div>
+                    <p class="text-gray-600 text-center">수업 녹음 자동 요약, 학부모 상담 기록, 회의 속기를 지원합니다.</p>
+                </div>
+                
+                <div class="tool-card bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300" data-tool="verification">
                     <div class="text-center mb-4">
                         <span class="text-4xl">🛡️</span>
                         <h3 class="text-xl font-bold mt-2 text-red-600">표절 및 AI 검증</h3>
                     </div>
                     <p class="text-gray-600 text-center">AI 생성 여부와 표절을 검사하여 학생부의 신뢰성을 확보합니다.</p>
                 </div>
-                
-                <div class="tool-card bg-white p-6 rounded-xl" data-tool="summary">
-                    <div class="text-center mb-4">
-                        <span class="text-4xl">📄</span>
-                        <h3 class="text-xl font-bold mt-2 text-blue-600">자료 요약 및 분석</h3>
-                    </div>
-                    <p class="text-gray-600 text-center">긴 보고서나 논문을 빠르게 요약하고 핵심 내용을 파악합니다.</p>
-                </div>
-                
-                <div class="tool-card bg-white p-6 rounded-xl" data-tool="lesson">
-                    <div class="text-center mb-4">
-                        <span class="text-4xl">📚</span>
-                        <h3 class="text-xl font-bold mt-2 text-green-600">수업 및 평가 설계</h3>
-                    </div>
-                    <p class="text-gray-600 text-center">수업 계획, 활동 아이디어, 평가 문항 등을 생성해 수업을 지원합니다.</p>
-                </div>
             </div>
 
             <!-- 도구 상세 정보 -->
-            <div id="toolDetails" class="bg-white rounded-xl p-8 section-card hidden">
-                <h3 id="toolTitle" class="text-2xl font-bold mb-4"></h3>
+            <div id="toolDetails" class="bg-white rounded-xl p-8 section-card hidden shadow-lg">
+                <h3 id="toolTitle" class="text-2xl font-bold mb-6"></h3>
                 <div id="toolContent" class="text-gray-700"></div>
             </div>
         </section>
 
-        
+        <br><br><br><br><br>
+        <div class="text-center mb-12">
+            <div class="relative inline-block">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-500 rounded-2xl blur-sm opacity-30"></div>
+                <h2 class="relative text-4xl font-bold px-8 py-4 bg-white rounded-2xl shadow-xl border-2 border-transparent bg-gradient-to-r from-blue-100 to-cyan-100">
+                    <span class="bg-gradient-to-r from-blue-700 via-cyan-600 to-teal-600 bg-clip-text text-transparent">
+                        AI 기반 학교생활기록부 문장평가 시스템
+                    </span>
+                </h2>
+                <div class="absolute -bottom-1 -left-1 -right-1 h-2 bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-400 rounded-b-2xl opacity-50"></div>
+            </div>
+            <p class="text-gray-600 mt-4 text-lg">교내망 전용 AI 문장 평가 도구로 생기부 특기사항 작성을 지원합니다</p>
+        </div>
 
         <!-- AI 기반 문장평가 시스템 소개 -->
         <section class="mb-16">
@@ -1067,7 +1172,9 @@
                 <div class="flex items-center mb-6">
                     <span class="text-5xl mr-4">🎓</span>
                     <div>
-                        <h2 class="text-3xl font-bold mb-2 text-gray-900">LifeRecordReview System</h2>
+                        <h2 class="text-3xl font-bold mb-2 bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                            LifeRecordReview System
+                        </h2>
                         <p class="text-xl text-gray-600">AI 기반 학교생활기록부 특기사항 문장 평가 시스템</p>
                     </div>
                 </div>
@@ -1193,10 +1300,10 @@
             <div class="text-center mb-16">
                 
                 <h2 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-                    디지털 시대의 교육 큐레이터가 되어주세요
+                    AI 시대의 교육 큐레이터가 되어주세요
                 </h2>
                 <p class="text-xl md:text-2xl mb-4 leading-relaxed max-w-4xl mx-auto">
-                    AI는 강력한 도구이지만, <strong class="text-yellow-300">학생의 성장을 발견하고 의미를 부여하는 것은 오직 교사만의 고유한 능력</strong>입니다.
+                    AI는 강력한 도구이지만, <strong class="text-yellow-300">학생의 성장을 발견하고 의미를 부여하는 것은</strong> <br><strong class="text-purple-300">오직 교사만의 고유한 능력</strong>입니다.
                 </p>
                 <p class="text-lg md:text-xl leading-relaxed max-w-3xl mx-auto text-blue-100">
                     우리는 기술을 활용하되 교육의 본질을 지키는 현명한 교육자입니다.
@@ -1204,117 +1311,153 @@
             </div>
 
             <!-- 핵심 실행 가이드 -->
-            <div class="grid md:grid-cols-3 gap-8 mb-16">
+            <div class="space-y-8 mb-16">
+                <!-- 1단계 -->
                 <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300">
-                    <div class="text-center mb-6">
-                        <div class="bg-green-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                            <span class="text-2xl">✨</span>
+                    <div class="flex items-center mb-8">
+                        <div class="bg-gradient-to-br from-green-400 to-emerald-500 rounded-full w-20 h-20 flex items-center justify-center mr-6 shadow-lg flex-shrink-0">
+                            <span class="text-3xl">👁️</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-green-300">관찰하고 기록하세요</h3>
+                        <div>
+                            <h3 class="text-3xl font-bold text-green-300 mb-2">1단계: 관찰과 기록</h3>
+                            <p class="text-green-200 text-lg">교사 전문성의 출발점 - 학생 성장의 순간을 포착하세요</p>
+                        </div>
                     </div>
-                    <ul class="space-y-3 text-sm">
-                        <li class="flex items-start">
-                            <span class="text-green-400 mr-2 mt-1">▸</span>
-                            학생의 실제 활동과 변화 과정을 세심하게 관찰
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-green-400 mr-2 mt-1">▸</span>
-                            구체적인 행동과 사고의 변화를 상세히 기록
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-green-400 mr-2 mt-1">▸</span>
-                            교사만이 포착할 수 있는 미묘한 성장 순간들
-                        </li>
-                    </ul>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white bg-opacity-5 rounded-xl p-4">
+                            <div class="flex items-center text-green-300 mb-2">
+                                <span class="text-2xl mr-3">📝</span>
+                                <span class="font-bold text-lg">실시간 관찰 메모</span>
+                            </div>
+                            <p class="text-green-100">수업·활동 중 학생의 구체적 행동과 발언을 실시간으로 세심하게 기록</p>
+                        </div>
+                        <div class="bg-white bg-opacity-5 rounded-xl p-4">
+                            <div class="flex items-center text-green-300 mb-2">
+                                <span class="text-2xl mr-3">🔍</span>
+                                <span class="font-bold text-lg">성장 순간 포착</span>
+                            </div>
+                            <p class="text-green-100">"어떻게 변했는가"에 집중하여 학생의 발전 과정을 추적</p>
+                        </div>
+                        <div class="bg-white bg-opacity-5 rounded-xl p-4">
+                            <div class="flex items-center text-green-300 mb-2">
+                                <span class="text-2xl mr-3">📊</span>
+                                <span class="font-bold text-lg">포트폴리오 구축</span>
+                            </div>
+                            <p class="text-green-100">개별 학생별 과정 중심 기록을 체계적으로 축적하는 습관화</p>
+                        </div>
+                        <div class="bg-white bg-opacity-5 rounded-xl p-4">
+                            <div class="flex items-center text-green-300 mb-2">
+                                <span class="text-2xl mr-3">💭</span>
+                                <span class="font-bold text-lg">사고과정 기록</span>
+                            </div>
+                            <p class="text-green-100">학생의 사고과정과 문제해결 방식을 구체적으로 관찰·기록</p>
+                        </div>
+                    </div>
                 </div>
 
+                <!-- 2-3단계 -->
                 <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300">
-                    <div class="text-center mb-6">
-                        <div class="bg-blue-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                            <span class="text-2xl">🤖</span>
+                    <div class="flex items-center mb-8">
+                        <div class="bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full w-20 h-20 flex items-center justify-center mr-6 shadow-lg flex-shrink-0">
+                            <span class="text-3xl">🤖</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-blue-300">AI와 협업하세요</h3>
+                        <div>
+                            <h3 class="text-3xl font-bold text-blue-300 mb-2">2-3단계: 스마트 협업</h3>
+                            <p class="text-blue-200 text-lg">AI 도구와의 현명한 협업 - 아이디어 생성부터 윤문까지</p>
+                        </div>
                     </div>
-                    <ul class="space-y-3 text-sm">
-                        <li class="flex items-start">
-                            <span class="text-blue-400 mr-2 mt-1">▸</span>
-                            AI를 아이디어 생성과 표현 개선의 파트너로 활용
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-blue-400 mr-2 mt-1">▸</span>
-                            개인정보는 철저히 비식별화하여 안전하게 사용
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-blue-400 mr-2 mt-1">▸</span>
-                            최종 문장은 반드시 교사가 직접 작성하고 검증
-                        </li>
-                    </ul>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white bg-opacity-5 rounded-xl p-4">
+                            <div class="flex items-center text-blue-300 mb-2">
+                                <span class="text-2xl mr-3">🔐</span>
+                                <span class="font-bold text-lg">안전한 정보 처리</span>
+                            </div>
+                            <p class="text-blue-100">개인정보 완전 비식별화: "1번 학생", "A학생" 등으로 변환</p>
+                        </div>
+                        <div class="bg-white bg-opacity-5 rounded-xl p-4">
+                            <div class="flex items-center text-blue-300 mb-2">
+                                <span class="text-2xl mr-3">💡</span>
+                                <span class="font-bold text-lg">아이디어 도출</span>
+                            </div>
+                            <p class="text-blue-100">맞춤형 GPT로 표현 아이디어와 문장 구조 개선안 도출</p>
+                        </div>
+                        <div class="bg-white bg-opacity-5 rounded-xl p-4">
+                            <div class="flex items-center text-blue-300 mb-2">
+                                <span class="text-2xl mr-3">✏️</span>
+                                <span class="font-bold text-lg">교사 중심 완성</span>
+                            </div>
+                            <p class="text-blue-100">AI 제안을 참고하여 교사가 직접 최종 문장을 완성</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 bg-red-900 bg-opacity-30 border border-red-400 rounded-lg p-4">
+                        <div class="flex items-center text-red-300">
+                            <span class="text-2xl mr-3">🚫</span>
+                            <span class="font-bold text-lg">절대 금지: AI 생성 문장 그대로 복사-붙여넣기</span>
+                        </div>
+                    </div>
                 </div>
 
+                <!-- 4단계 -->
                 <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300">
-                    <div class="text-center mb-6">
-                        <div class="bg-purple-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                            <span class="text-2xl">🎓</span>
+                    <div class="flex items-center mb-8">
+                        <div class="bg-gradient-to-br from-purple-400 to-pink-500 rounded-full w-20 h-20 flex items-center justify-center mr-6 shadow-lg flex-shrink-0">
+                            <span class="text-3xl">🛡️</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-purple-300">학생을 위해 완성하세요</h3>
+                        <div>
+                            <h3 class="text-3xl font-bold text-purple-300 mb-2">4단계: 완벽 마무리</h3>
+                            <p class="text-purple-200 text-lg">최종 품질 보장 - 신뢰할 수 있는 학생부 완성</p>
+                        </div>
                     </div>
-                    <ul class="space-y-3 text-sm">
-                        <li class="flex items-start">
-                            <span class="text-purple-400 mr-2 mt-1">▸</span>
-                            각 학생의 고유한 성장 스토리를 생동감 있게 서술
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-purple-400 mr-2 mt-1">▸</span>
-                            입학사정관이 학생을 만나고 싶게 만드는 기록
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-purple-400 mr-2 mt-1">▸</span>
-                            표절 검사와 사실 확인으로 완벽하게 마무리
-                        </li>
-                    </ul>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white bg-opacity-5 rounded-xl p-4">
+                            <div class="flex items-center text-purple-300 mb-2">
+                                <span class="text-2xl mr-3">🔍</span>
+                                <span class="font-bold text-lg">필수 검증</span>
+                            </div>
+                            <p class="text-purple-100">GPT킬러·카피킬러로 AI 생성 여부 및 표절 검사 필수 실시</p>
+                        </div>
+                        <div class="bg-white bg-opacity-5 rounded-xl p-4">
+                            <div class="flex items-center text-purple-300 mb-2">
+                                <span class="text-2xl mr-3">✅</span>
+                                <span class="font-bold text-lg">사실 확인</span>
+                            </div>
+                            <p class="text-purple-100">기록된 내용이 실제 관찰과 100% 일치하는지 점검</p>
+                        </div>
+                        <div class="bg-white bg-opacity-5 rounded-xl p-4">
+                            <div class="flex items-center text-purple-300 mb-2">
+                                <span class="text-2xl mr-3">🎯</span>
+                                <span class="font-bold text-lg">개성 검토</span>
+                            </div>
+                            <p class="text-purple-100">학생별 개성과 차별화 포인트가 명확히 드러나는지 검토</p>
+                        </div>
+                        <div class="bg-white bg-opacity-5 rounded-xl p-4">
+                            <div class="flex items-center text-purple-300 mb-2">
+                                <span class="text-2xl mr-3">📚</span>
+                                <span class="font-bold text-lg">최종 검토</span>
+                            </div>
+                            <p class="text-purple-100">입학사정관 관점에서 "만나고 싶은 학생"인지 확인</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- 다음 단계 액션 -->
-            <div class="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-3xl p-8 text-center shadow-2xl">
-                <h3 class="text-2xl md:text-3xl font-bold mb-6 text-gray-900">
-                    🚀 오늘부터 시작해보세요!
-                </h3>
-                <div class="grid md:grid-cols-4 gap-6 text-gray-900">
-                    <div class="bg-white bg-opacity-80 rounded-xl p-4">
-                        <div class="text-3xl mb-2">1️⃣</div>
-                        <div class="font-bold mb-2">GPT 설정</div>
-                        <div class="text-sm">위에서 생성한 맞춤형 GPT 설정을 ChatGPT에 적용</div>
-                    </div>
-                    <div class="bg-white bg-opacity-80 rounded-xl p-4">
-                        <div class="text-3xl mb-2">2️⃣</div>
-                        <div class="font-bold mb-2">첫 시도</div>
-                        <div class="text-sm">한 명의 학생 기록으로 AI 보조 활용법을 연습</div>
-                    </div>
-                    <div class="bg-white bg-opacity-80 rounded-xl p-4">
-                        <div class="text-3xl mb-2">3️⃣</div>
-                        <div class="font-bold mb-2">검증 도구</div>
-                        <div class="text-sm">GPT킬러와 카피킬러로 안전성을 확인</div>
-                    </div>
-                    <div class="bg-white bg-opacity-80 rounded-xl p-4">
-                        <div class="text-3xl mb-2">4️⃣</div>
-                        <div class="font-bold mb-2">지속 개선</div>
-                        <div class="text-sm">동료 교사들과 경험을 공유하며 함께 발전</div>
-                    </div>
-                </div>
-            </div>
-
+            
+            
             <!-- 마지막 메시지 -->
             <div class="text-center mt-16">
-                <p class="text-lg md:text-xl leading-relaxed mb-4 italic">
-                    "AI는 우리의 업무 효율을 높여주지만, 
+                <p class="text-lg md:text-xl leading-relaxed mb-8 italic">
+                    AI는 교사의 업무 효율을 높여주지만, 
                     <br class="hidden md:block">
-                    <span class="text-yellow-300 font-bold text-2xl">교육의 따뜻함과 깊이는 오직 교사만이 만들어낼 수 있습니다."</span>
+                    <span class="text-yellow-300 font-bold text-2xl">교육의 따뜻함과 깊이는 오직 교사만이 만들어낼 수 있습니다.</span>
                 </p>
-                <div class="flex justify-center items-center space-x-2 mt-8">
-                    <span class="text-2xl">🤝</span>
-                    <span class="text-lg font-semibold">함께 만들어가는 스마트한 교육 현장</span>
-                    <span class="text-2xl">📚</span>
+                
+                <!-- 교사 응원 메시지 -->
+                <div class="flex justify-center items-center space-x-4 mt-8">
+                    <span class="text-4xl">🌟</span>
+                    <span class="text-2xl md:text-3xl font-bold text-yellow-300">
+                        선생님, 당신은 학생들의 <span class="text-orange-300">희망</span>입니다.
+                    </span>
+                    <span class="text-4xl">🌟</span>
                 </div>
             </div>
         </div>
@@ -1560,66 +1703,194 @@
         });
 
         // 도구 카드 클릭 이벤트
-            const toolInfo = {
-            verification: {
-                title: '표절 및 AI 검증 도구',
+        const toolInfo = {
+            materials: {
+                title: '교수·학습 자료 제작 도구',
                 content: `
-                    <div class="space-y-4">
-                        <div>
-                            <h4 class="font-bold text-lg mb-2">GPT 킬러</h4>
-                            <p>83개 대학에서 도입한 AI 생성 검사 프로그램으로 약 99% 정확도로 AI 생성 여부를 탐지합니다.</p>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-lg flex items-center"><span class="text-purple-600 mr-2">🎨</span>Canva AI</h4>
+                                <a href="https://www.canva.com/ai" target="_blank" class="text-purple-600 hover:text-purple-800 text-sm font-medium">🔗 사이트 이동</a>
+                            </div>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>수업용 PPT 제작</li>
+                                <li>행사 포스터 디자인</li>
+                                <li>인포그래픽 제작</li>
+                                <li>학생 발표 자료 시각화</li>
+                            </ul>
                         </div>
-                        <div>
-                            <h4 class="font-bold text-lg mb-2">카피킬러</h4>
-                            <p>표절 및 유사성을 검사하여 기존 자료와의 중복을 방지합니다.</p>
+                        <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-lg flex items-center"><span class="text-purple-600 mr-2">🖼️</span>ImageFX</h4>
+                                <a href="https://labs.google/fx/tools/image-fx" target="_blank" class="text-purple-600 hover:text-purple-800 text-sm font-medium">🔗 사이트 이동</a>
+                            </div>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>교과 삽화 제작</li>
+                                <li>실험 그림 생성</li>
+                                <li>학급 안내 이미지 제작</li>
+                            </ul>
                         </div>
-                        <div class="bg-red-50 p-4 rounded-lg">
-                            <p class="font-bold text-red-700">⚠️ 학생부 제출 전 반드시 검증하세요!</p>
+                        <div class="bg-purple-100 p-4 rounded-lg border border-purple-300 flex items-center justify-center">
+                            <p class="font-bold text-purple-700 text-center">💡 시각적 자료는 학생들의 이해도와 참여도를 크게 높입니다!</p>
                         </div>
                     </div>
                 `
             },
-                summary: {
-                    title: '자료 요약 및 분석 도구',
+            writing: {
+                title: '텍스트 생성·세특 보조 도구',
                 content: `
-                    <div class="space-y-4">
-                        <div>
-                            <h4 class="font-bold text-lg mb-2">추천 도구</h4>
-                            <p>ChatGPT, Google Gemini, NotebookLM</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg mb-2">주요 기능</h4>
-                            <ul class="list-disc list-inside space-y-1">
-                                <li>PDF 파일이나 웹페이지 링크 요약</li>
-                                <li>교과 연구 자료 분석</li>
-                                <li>학생 탐구 보고서 검토</li>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-lg flex items-center"><span class="text-blue-600 mr-2">💬</span>ChatGPT</h4>
+                                <a href="https://chat.openai.com" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium">🔗 사이트 이동</a>
+                            </div>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>세특 초안 아이디어 제공</li>
+                                <li>문장 윤문 및 개선</li>
+                                <li>토론 질문·수행평가 문항 제작</li>
+                                <li>가정통신문·공문 초안 작성</li>
                             </ul>
                         </div>
-                        <div class="bg-blue-50 p-4 rounded-lg">
-                            <p class="font-bold text-blue-700">💡 대화 기록 저장 기능을 비활성화하여 사용하세요.</p>
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-lg flex items-center"><span class="text-blue-600 mr-2">🔍</span>Gemini</h4>
+                                <a href="https://gemini.google.com" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium">🔗 사이트 이동</a>
+                            </div>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>시사·최신 자료 검색</li>
+                                <li>교과 토론 주제 발굴</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-lg flex items-center"><span class="text-blue-600 mr-2">🇰🇷</span>Wrtn</h4>
+                                <a href="https://wrtn.ai" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium">🔗 사이트 이동</a>
+                            </div>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>한국어 글쓰기 보조</li>
+                                <li>소식지·공지문 초안 제작</li>
+                            </ul>
+                        </div>
+                        <div class="col-span-full bg-blue-100 p-4 rounded-lg border border-blue-300">
+                            <p class="font-bold text-blue-700 text-center">⚠️ AI 생성 내용은 반드시 교사가 검토하고 수정하세요!</p>
                         </div>
                     </div>
                 `
-                },
-                lesson: {
-                    title: '수업 및 평가 설계 도구',
+            },
+            management: {
+                title: '학생 수행 관리 및 연구 지원 도구',
                 content: `
-                    <div class="space-y-4">
-                        <div>
-                            <h4 class="font-bold text-lg mb-2">추천 도구</h4>
-                            <p>클래스팅 AI, 칸 아카데미, Quillionz</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg mb-2">주요 기능</h4>
-                            <ul class="list-disc list-inside space-y-1">
-                                <li>개인 맞춤형 학습 콘텐츠 제공</li>
-                                <li>오답노트 자동 생성</li>
-                                <li>수업 활동 아이디어 제안</li>
-                                <li>토론 질문 및 퀴즈 문항 생성</li>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-lg flex items-center"><span class="text-green-600 mr-2">📚</span>NotebookLM</h4>
+                                <a href="https://notebooklm.google" target="_blank" class="text-green-600 hover:text-green-800 text-sm font-medium">🔗 사이트 이동</a>
+                            </div>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>학생 보고서·수행평가 기록 정리</li>
+                                <li>포트폴리오 구축 지원</li>
+                                <li>교사 연구 자료 관리</li>
                             </ul>
                         </div>
-                        <div class="bg-green-50 p-4 rounded-lg">
-                            <p class="font-bold text-green-700">💡 Zapier, Make 등으로 반복 업무를 자동화할 수 있습니다.</p>
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-lg flex items-center"><span class="text-green-600 mr-2">🎯</span>Napkin</h4>
+                                <a href="https://napkin.ai" target="_blank" class="text-green-600 hover:text-green-800 text-sm font-medium">🔗 사이트 이동</a>
+                            </div>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>아이디어 구조화</li>
+                                <li>프로젝트·연수 기획</li>
+                                <li>자료 시각적 연결 정리</li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-100 p-4 rounded-lg border border-green-300 flex items-center justify-center">
+                            <p class="font-bold text-green-700 text-center">💡 체계적인 자료 관리로 업무 효율성을 크게 향상시킬 수 있습니다!</p>
+                        </div>
+                    </div>
+                `
+            },
+            experience: {
+                title: 'AI 실험·체험 학습 도구',
+                content: `
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-lg flex items-center"><span class="text-orange-600 mr-2">⚔️</span>LMArena</h4>
+                                <a href="https://lmarena.ai" target="_blank" class="text-orange-600 hover:text-orange-800 text-sm font-medium">🔗 사이트 이동</a>
+                            </div>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>다양한 AI 모델 성능 비교 체험</li>
+                                <li>정보·사회 교과에서 AI 비판적 이해 교육</li>
+                            </ul>
+                        </div>
+                        <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-lg flex items-center"><span class="text-orange-600 mr-2">🤖</span>GoogleAI Studio</h4>
+                                <a href="https://aistudio.google.com" target="_blank" class="text-orange-600 hover:text-orange-800 text-sm font-medium">🔗 사이트 이동</a>
+                            </div>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>Gemini AI 모델 프롬프트 테스트</li>
+                                <li>멀티모달 AI 실험 (텍스트/이미지/동영상)</li>
+                                <li>코드 생성 및 API 통합</li>
+                                <li>AI 애플리케이션 프로토타입 개발</li>
+                            </ul>
+                        </div>
+                        <div class="bg-orange-100 p-4 rounded-lg border border-orange-300 flex items-center justify-center">
+                            <p class="font-bold text-orange-700 text-center">🎯 학생들이 직접 AI를 체험하며 디지털 리터러시를 기를 수 있습니다!</p>
+                        </div>
+                    </div>
+                `
+            },
+            voice: {
+                title: '음성·회의·기록 활용 도구',
+                content: `
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-lg flex items-center"><span class="text-indigo-600 mr-2">🎙️</span>Clova Note</h4>
+                                <a href="https://clovanote.naver.com" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">🔗 사이트 이동</a>
+                            </div>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>수업·회의 녹음 자동 요약</li>
+                                <li>학부모 상담 기록 정리</li>
+                                <li>학생 발표 기록 관리</li>
+                            </ul>
+                        </div>
+                        <div class="bg-indigo-100 p-4 rounded-lg border border-indigo-300 flex items-center justify-center">
+                            <p class="font-bold text-indigo-700 text-center">⏰ 회의나 상담 내용을 자동으로 기록하여 시간을 절약하세요!</p>
+                        </div>
+                    </div>
+                `
+            },
+            verification: {
+                title: '표절 및 AI 검증 도구',
+                content: `
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-lg flex items-center"><span class="text-red-600 mr-2">🔍</span>GPT 킬러</h4>
+                                <span class="text-red-600 text-sm font-medium">🏛️ 대학용</span>
+                            </div>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>83개 대학에서 도입한 AI 생성 검사 프로그램</li>
+                                <li>약 99% 정확도로 AI 생성 여부 탐지</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-lg flex items-center"><span class="text-red-600 mr-2">📋</span>카피킬러</h4>
+                                <span class="text-red-600 text-sm font-medium">📝 표절검사</span>
+                            </div>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>표절 및 유사성 검사</li>
+                                <li>기존 자료와의 중복 방지</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-100 p-4 rounded-lg border border-red-300 border-l-4 border-l-red-500">
+                            <p class="font-bold text-red-700 text-center">⚠️ 학생부 제출 전 반드시 검증하세요!</p>
+                            <p class="text-red-600 mt-2 text-center text-sm">AI 도구 사용 후 반드시 검증 절차를 거쳐 신뢰성을 확보해야 합니다.</p>
                         </div>
                     </div>
                 `
