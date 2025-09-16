@@ -3,233 +3,617 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>레슨 7: 클래스와 객체 개념 - MechDog 파이썬</title>
+    <title>레슨 7: 클래스와 객체 개념 | MechDog 파이썬 학습</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- CodeMirror 라이브러리 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/selection/active-line.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/foldcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/foldgutter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/brace-fold.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/indent-fold.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/foldgutter.min.css">
+    
+    <!-- 공통 스타일 -->
+    <link rel="stylesheet" href="common-styles.css">
+    
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Noto Sans KR', sans-serif;
             min-height: 100vh;
-            color: #333;
-            line-height: 1.6;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .header h1 {
-            color: #fff;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.1em;
-        }
-
-        .lesson-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .content-section {
+        
+        .lesson-card {
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
-
-        .content-section h2 {
-            color: #4A90E2;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-            border-bottom: 2px solid #4A90E2;
-            padding-bottom: 5px;
-        }
-
-        .code-container {
-            margin: 15px 0;
-        }
-
-        .code-editor {
-            background: #2d3748;
-            border-radius: 10px;
-            padding: 15px;
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 14px;
-            color: #e2e8f0;
-            border: none;
-            width: 100%;
-            min-height: 150px;
-            resize: vertical;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .run-button {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 10px 5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-        }
-
-        .run-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-        }
-
-        .output {
-            background: #1a202c;
-            color: #00ff00;
-            font-family: 'Monaco', 'Menlo', monospace;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 10px;
-            min-height: 100px;
-            white-space: pre-wrap;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .concept-box {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 15px 0;
-            border-left: 5px solid #ff6b6b;
-        }
-
-        .tip-box {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 15px 0;
-            border-left: 5px solid #4ecdc4;
-        }
-
-        .navigation {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .nav-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-decoration: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            margin: 0 10px;
-            display: inline-block;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .nav-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .exercise-section {
-            grid-column: 1 / -1;
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-        }
-
-        .mechdog-demo {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 10px 0;
-            font-family: monospace;
-            color: #2d3748;
-        }
-
-        @media (max-width: 768px) {
-            .lesson-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-            }
-        }
-
-        .output-panel {
-            background: #0d1117;
-            color: #e6edf3;
+        
+        /* 인터랙티브 클래스 빌더 스타일 */
+        .step-card {
+            background: white;
             border-radius: 12px;
             padding: 1.5rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 14px;
-            min-height: 120px;
-            border: 2px solid #30363d;
-            white-space: pre-wrap;
-            overflow-y: auto;
-            resize: vertical;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .color-btn {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .color-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* MechDog 시뮬레이터 스타일 */
+        .mechdog-dashboard {
+            transition: all 0.3s ease;
+        }
+        
+        .mechdog-dashboard:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        #mechdog-avatar {
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+        
+        #mechdog-avatar:hover {
+            transform: rotate(15deg) scale(1.1);
+        }
+        
+        /* 액션 로그 스타일 */
+        #action-log {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
+            border: 1px solid #16213e;
+        }
+        
+        #action-log::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #action-log::-webkit-scrollbar-track {
+            background: #16213e;
+            border-radius: 4px;
+        }
+        
+        #action-log::-webkit-scrollbar-thumb {
+            background: #0f3460;
+            border-radius: 4px;
+        }
+        
+        #action-log::-webkit-scrollbar-thumb:hover {
+            background: #16537e;
+        }
+        
+        /* 슬라이더 스타일 */
+        input[type="range"] {
+            appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: #e5e7eb;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: #2563eb;
+            transform: scale(1.1);
+        }
+        
+        /* 배터리 바 애니메이션 */
+        #battery-bar {
+            transition: width 0.8s ease, background-color 0.3s ease;
+        }
+        
+        /* 버튼 호버 효과 */
+        button {
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-1px);
+        }
+        
+        button:active {
+            transform: translateY(0px);
+        }
+        
+        /* 상태 표시 애니메이션 */
+        #status-display {
+            transition: all 0.3s ease;
+        }
+        
+        /* 펄스 애니메이션 */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .animate-pulse-custom {
+            animation: pulse 2s infinite;
+        }
+        
+        /* 입력 필드 포커스 효과 */
+        input[type="text"], input[type="number"], select {
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            outline: none;
+            border: 2px solid #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🏗️ 레슨 7: 클래스와 객체 개념</h1>
-            <p>객체 지향 프로그래밍으로 MechDog을 더 체계적으로 설계해보세요!</p>
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-sm sticky top-0 z-40 mx-4 mt-4 rounded-2xl shadow-lg">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <a href="../home.html" class="text-2xl hover:text-purple-600">🏠</a>
+                <h1 class="text-xl font-bold text-gray-800">레슨 7: 클래스와 객체</h1>
+                <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-sm">고급</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="lesson6.html" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm">← 이전</a>
+                <a href="lesson8.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">다음 →</a>
+            </div>
         </div>
+    </nav>
 
-        <div class="lesson-content">
-            <div class="content-section">
-                <h2>🎯 클래스 기본 개념</h2>
-                <p><strong>클래스</strong>는 객체를 만들기 위한 설계도입니다. 로봇의 특성과 행동을 체계적으로 정의할 수 있습니다.</p>
+    <main class="container mx-auto px-4 py-8">
+        <!-- Lesson Introduction -->
+        <section class="lesson-card mb-8">
+            <div class="flex items-center mb-6">
+                <span class="text-4xl mr-4">🏗️</span>
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">클래스와 객체 개념</h2>
+                    <p class="text-gray-600">객체 지향 프로그래밍으로 MechDog을 더 체계적으로 설계하기</p>
+                </div>
+            </div>
+            
+            <div class="bg-purple-50 border-l-4 border-purple-500 p-4">
+                <h3 class="text-lg font-bold text-purple-800 mb-2">🎯 학습 목표</h3>
+                <ul class="text-purple-700 space-y-1">
+                    <li>• 클래스와 객체의 개념 이해하기</li>
+                    <li>• MechDog 클래스 설계 방법 배우기</li>
+                    <li>• 생성자와 메서드 활용하기</li>
+                    <li>• 특수 메서드로 클래스 기능 확장하기</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Theory Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📖 클래스와 객체 배우기</h3>
+            
+            <!-- 클래스의 개념 설명 -->
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-6 mb-6">
+                <h4 class="text-lg font-bold text-blue-800 mb-3">🤔 클래스란 무엇일까요?</h4>
+                <p class="text-blue-700 mb-3"><strong>클래스</strong>는 객체를 만들기 위한 설계도입니다. 마치 로봇 제작을 위한 도면처럼, MechDog의 특성과 행동을 체계적으로 정의할 수 있습니다.</p>
                 
-                <div class="concept-box">
-                    <h4>📝 클래스와 객체</h4>
-                    <ul>
-                        <li><strong>클래스</strong>: 객체를 만들기 위한 설계도</li>
-                        <li><strong>객체</strong>: 클래스를 바탕으로 만든 실체</li>
-                        <li><strong>속성</strong>: 객체의 특성 (변수)</li>
-                        <li><strong>메서드</strong>: 객체의 행동 (함수)</li>
+                <div class="bg-white p-4 rounded-lg border">
+                    <h5 class="font-semibold text-blue-700 mb-2">🏠 실생활 비유</h5>
+                    <ul class="text-blue-700 space-y-1 text-sm">
+                        <li>• <strong>설계도</strong>: 집을 짓기 위한 도면</li>
+                        <li>• <strong>붕어빵 틀</strong>: 붕어빵을 만드는 틀</li>
+                        <li>• <strong>쿠키 커터</strong>: 쿠키 모양을 만드는 틀</li>
+                        <li>• <strong>로봇 설계서</strong>: MechDog를 만들기 위한 명세서</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 객체의 개념 설명 -->
+            <div class="bg-green-50 border-l-4 border-green-500 p-6 mb-6">
+                <h4 class="text-lg font-bold text-green-800 mb-3">🤖 객체란 무엇일까요?</h4>
+                <p class="text-green-700 mb-3"><strong>객체</strong>는 클래스를 바탕으로 실제로 만들어진 실체입니다. 하나의 MechDog 클래스로 여러 개의 MechDog 객체를 만들 수 있습니다.</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-green-700 mb-2">📝 클래스 vs 객체</h5>
+                        <ul class="text-green-700 space-y-1 text-sm">
+                            <li>• <strong>클래스</strong>: MechDog 설계도 (1개)</li>
+                            <li>• <strong>객체</strong>: 실제 MechDog들 (여러 개)</li>
+                            <li>• <strong>속성</strong>: 이름, 배터리, 위치</li>
+                            <li>• <strong>메서드</strong>: 움직이기, 짖기, 앉기</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-green-700 mb-2">🐕 MechDog 예시</h5>
+                        <pre class="text-sm"><code>class MechDog:           # 클래스 (설계도)
+    def __init__(self, name):
+        self.name = name     # 속성
+
+buddy = MechDog("Buddy")     # 객체 (실체)
+max = MechDog("Max")         # 또 다른 객체</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 인터랙티브 클래스 빌더 -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🏗️ 나만의 MechDog 클래스 만들기</h3>
+            <p class="text-gray-600 mb-4">✨ 마우스 클릭만으로 MechDog 클래스를 만들고 바로 테스트해보세요!</p>
+            
+            <!-- 단계별 클래스 빌더 -->
+            <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl mb-6">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- 1단계: 기본 정보 -->
+                    <div class="step-card">
+                        <h4 class="text-lg font-bold text-blue-800 mb-3">1️⃣ MechDog 정보</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">이름:</label>
+                                <input type="text" id="dog-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="예: Buddy" value="Buddy">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">모델:</label>
+                                <select id="dog-model" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                                    <option value="Basic">Basic</option>
+                                    <option value="Premium">Premium</option>
+                                    <option value="Super">Super</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">색상:</label>
+                                <div class="flex space-x-2">
+                                    <button class="color-btn w-8 h-8 rounded-full bg-blue-500" data-color="🔵" onclick="selectColor('🔵')"></button>
+                                    <button class="color-btn w-8 h-8 rounded-full bg-red-500" data-color="🔴" onclick="selectColor('🔴')"></button>
+                                    <button class="color-btn w-8 h-8 rounded-full bg-green-500" data-color="🟢" onclick="selectColor('🟢')"></button>
+                                    <button class="color-btn w-8 h-8 rounded-full bg-yellow-500" data-color="🟡" onclick="selectColor('🟡')"></button>
+                                </div>
+                                <span id="selected-color" class="text-2xl">🔵</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2단계: 속성 추가 -->
+                    <div class="step-card">
+                        <h4 class="text-lg font-bold text-green-800 mb-3">2️⃣ 속성 설정</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">배터리:</label>
+                                <input type="range" id="battery-slider" min="0" max="100" value="100" class="w-full">
+                                <span class="text-sm text-gray-600">🔋 <span id="battery-value">100</span>%</span>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">속도:</label>
+                                <input type="range" id="speed-slider" min="1" max="10" value="5" class="w-full">
+                                <span class="text-sm text-gray-600">⚡ <span id="speed-value">5</span></span>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">위치:</label>
+                                <div class="flex space-x-2">
+                                    <input type="number" id="pos-x" value="0" class="w-16 px-2 py-1 border rounded" placeholder="X">
+                                    <input type="number" id="pos-y" value="0" class="w-16 px-2 py-1 border rounded" placeholder="Y">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3단계: 메서드 선택 -->
+                    <div class="step-card">
+                        <h4 class="text-lg font-bold text-purple-800 mb-3">3️⃣ 기능 선택</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" id="method-bark" checked class="mr-2">
+                                <span>🗣️ 짖기 (bark)</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="method-move" checked class="mr-2">
+                                <span>🚶 이동 (move)</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="method-sit" checked class="mr-2">
+                                <span>🪑 앉기 (sit)</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="method-play" class="mr-2">
+                                <span>🎾 놀기 (play)</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="method-sleep" class="mr-2">
+                                <span>😴 잠자기 (sleep)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-6">
+                    <button id="generate-class" class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-lg text-lg font-medium transform transition-all hover:scale-105">
+                        🚀 MechDog 클래스 생성하기!
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 실시간 MechDog 시뮬레이터 -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🐕 실시간 MechDog 시뮬레이터</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- MechDog 대시보드 -->
+                <div class="mechdog-dashboard bg-gradient-to-br from-gray-100 to-gray-200 p-6 rounded-xl">
+                    <div class="text-center mb-4">
+                        <div id="mechdog-avatar" class="text-8xl mb-2">🐕</div>
+                        <h4 id="mechdog-display-name" class="text-xl font-bold">Buddy</h4>
+                        <span id="mechdog-display-model" class="text-sm text-gray-600">Basic Model</span>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <!-- 배터리 바 -->
+                        <div class="flex items-center">
+                            <span class="w-12 text-sm">🔋</span>
+                            <div class="flex-1 bg-gray-300 rounded-full h-4">
+                                <div id="battery-bar" class="bg-green-500 h-4 rounded-full transition-all" style="width: 100%"></div>
+                            </div>
+                            <span id="battery-percent" class="w-12 text-sm text-right">100%</span>
+                        </div>
+                        
+                        <!-- 위치 표시 -->
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm">📍 위치:</span>
+                            <span id="position-display" class="text-sm font-mono">(0, 0)</span>
+                        </div>
+                        
+                        <!-- 상태 표시 -->
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm">💭 상태:</span>
+                            <span id="status-display" class="text-sm bg-blue-100 px-2 py-1 rounded">대기</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 컨트롤 버튼 -->
+                    <div class="mt-6 grid grid-cols-2 gap-2">
+                        <button id="test-bark" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">🗣️ 짖기</button>
+                        <button id="test-sit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm">🪑 앉기</button>
+                        <button id="test-move" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg text-sm">🚶 이동</button>
+                        <button id="test-play" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm">🎾 놀기</button>
+                    </div>
+                </div>
+                
+                <!-- 액션 로그 -->
+                <div>
+                    <h4 class="text-lg font-bold text-gray-800 mb-3">📋 액션 로그</h4>
+                    <div id="action-log" class="bg-black text-green-400 font-mono text-sm p-4 rounded-lg h-80 overflow-y-auto">
+                        > MechDog 시뮬레이터 시작됨...<br>
+                        > 클래스를 생성하고 테스트해보세요!<br>
+                    </div>
+                    <div class="mt-3">
+                        <button id="clear-log" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm">🗑️ 로그 지우기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">💻 고급 클래스 실습</h3>
+            <p class="text-gray-600 mb-4">✨ 직접 코드를 수정하고 실시간으로 결과를 확인해보세요!</p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        🎨 코드 에디터
+                    </label>
+                    <div id="code-editor-container">
+                        <!-- CodeMirror will be initialized here -->
+                    </div>
+                    
+                    <div class="flex space-x-2 mt-4">
+                        <button id="run-code" class="btn-primary text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center">
+                            <span class="mr-2">▶️</span> 실행하기
+                        </button>
+                        <button id="clear-code" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            🗑️ 지우기
+                        </button>
+                    </div>
+                    
+                    <div class="flex space-x-2 mt-2">
+                        <button id="basic-class" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            📝 기본 클래스
+                        </button>
+                        <button id="mechdog-class" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            🤖 MechDog 클래스
+                        </button>
+                    </div>
+                    
+                    <div class="flex space-x-2 mt-2">
+                        <button id="special-methods" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">⚙️ 특수 메서드</button>
+                        <button id="exercise-challenge" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">🎯 도전 과제</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">🖥️ 실행 결과</label>
+                    <div id="output" class="output-panel h-96">
+                        실행 버튼을 눌러 클래스 코드를 실행해보세요!
+                        
+💡 코드 에디터에서 다음 기능들을 확인해보세요:
+• class 키워드가 파란색으로 표시됩니다
+• 메서드와 함수가 자동으로 색칠됩니다
+• 문자열과 주석이 초록색으로 표시됩니다
+• 라인 번호가 표시됩니다
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Real Examples Section -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🤖 실제 MechDog 클래스 예제들</h3>
+            
+            <!-- 기본 클래스 설명 -->
+            <div class="bg-indigo-50 border-l-4 border-indigo-500 p-6 mb-6">
+                <h4 class="text-lg font-bold text-indigo-800 mb-3">📝 MechDog 클래스 구조</h4>
+                <p class="text-indigo-700 mb-3">실제 MechDog는 이런 구조로 설계됩니다:</p>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <pre class="text-sm"><code>class MechDog:
+    """MechDog 클래스 - 로봇강아지의 설계도"""
+    
+    def __init__(self, name):
+        """생성자 - MechDog 초기화"""
+        self.name = name         # 속성: 이름
+        self.battery = 100       # 속성: 배터리
+        self.status = "대기"     # 속성: 상태
+        print(f"🤖 {self.name} MechDog 생성됨!")
+    
+    def bark(self):
+        """메서드: 짖기 기능"""
+        if self.battery > 5:
+            print(f"{self.name}: 멍멍! 🐕")
+            self.battery -= 5
+        else:
+            print(f"{self.name}: 배터리 부족... 😴")
+    
+    def move(self, direction):
+        """메서드: 이동 기능"""
+        if self.battery > 10:
+            print(f"{self.name}이 {direction}으로 이동합니다! 🚶")
+            self.battery -= 10
+        else:
+            print(f"{self.name}: 배터리 부족으로 이동 불가 ❌")
+
+# 객체 생성과 사용
+buddy = MechDog("Buddy")    # 첫 번째 MechDog 객체
+max_dog = MechDog("Max")    # 두 번째 MechDog 객체</code></pre>
+                </div>
+        </div>
+        </section>
+
+        <!-- 고급 개념 섹션 -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🔧 속성과 메서드 심화</h3>
+            
+            <!-- 속성과 메서드 설명 -->
+            <div class="bg-orange-50 border-l-4 border-orange-500 p-6 mb-6">
+                <h4 class="text-lg font-bold text-orange-800 mb-3">🎯 MechDog의 속성과 메서드</h4>
+                <p class="text-orange-700 mb-3">클래스의 <strong>속성</strong>(변수)과 <strong>메서드</strong>(함수)를 통해 MechDog의 상태와 행동을 정의합니다.</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-orange-700 mb-2">📊 MechDog 속성들</h5>
+                        <ul class="text-orange-700 space-y-1 text-sm">
+                            <li>• <strong>self.name</strong>: MechDog의 이름</li>
+                            <li>• <strong>self.battery</strong>: 배터리 잔량 (0-100)</li>
+                            <li>• <strong>self.status</strong>: 현재 상태 (대기/이동/짖기)</li>
+                            <li>• <strong>self.position</strong>: 현재 위치 좌표</li>
                     </ul>
                 </div>
 
-                <div class="code-container">
-                    <textarea class="code-editor" id="editor1"># 간단한 로봇 클래스 정의
-class SimpleRobot:
-    """간단한 로봇 클래스"""
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-orange-700 mb-2">🎭 MechDog 메서드들</h5>
+                        <ul class="text-orange-700 space-y-1 text-sm">
+                            <li>• <strong>__init__()</strong>: 초기화/생성자</li>
+                            <li>• <strong>bark()</strong>: 짖기 동작</li>
+                            <li>• <strong>move()</strong>: 이동 동작</li>
+                            <li>• <strong>sit()</strong>: 앉기 동작</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 도전 과제 -->
+        <section class="lesson-card mb-8">
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6">
+                <h4 class="text-lg font-bold text-yellow-800 mb-4">🎯 도전 과제</h4>
+                <p class="text-yellow-700 mb-4">배운 클래스 개념을 활용해서 나만의 MechDog를 설계해보세요:</p>
+                <ol class="text-yellow-700 space-y-1 mb-4">
+                    <li>1. <strong>🤖 기본 MechDog 클래스</strong>: 이름, 배터리, 기본 동작들</li>
+                    <li>2. <strong>🚀 고급 MechDog 클래스</strong>: 센서, 위치, 특수 동작들</li>
+                    <li>3. <strong>⚙️ 특수 메서드</strong>: __str__, __eq__ 등으로 기능 확장</li>
+                    <li>4. <strong>🎮 MechDog 게임</strong>: 여러 MechDog가 상호작용하는 시스템</li>
+                </ol>
+                <p class="text-yellow-600 text-sm mb-4">💡 힌트: 위의 예제 버튼들을 활용해서 단계별로 도전해보세요!</p>
+                <button id="show-challenge" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">🚀 도전 과제 시작하기</button>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="lesson-card mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">📝 정리</h3>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-6">
+                <h4 class="text-lg font-bold text-green-800 mb-3">✅ 핵심 내용</h4>
+                <ul class="text-green-700 space-y-2">
+                    <li>• <strong>클래스(Class):</strong> 객체를 만들기 위한 설계도</li>
+                    <li>• <strong>객체(Object):</strong> 클래스를 바탕으로 만든 실체</li>
+                    <li>• <strong>속성(Attribute):</strong> 객체의 특성 (변수)</li>
+                    <li>• <strong>메서드(Method):</strong> 객체의 행동 (함수)</li>
+                    <li>• <strong>생성자(__init__):</strong> 객체 초기화 메서드</li>
+                    <li>• <strong>특수 메서드:</strong> __str__, __eq__ 등으로 기능 확장</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Navigation -->
+    <section class="flex justify-between items-center container mx-auto px-4 pb-8">
+        <a href="lesson6.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg">← 이전</a>
+        <a href="lesson8.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg">다음 →</a>
+    </section>
+
+    <!-- 공통 스크립트 -->
+    <script src="common-scripts.js" onload="console.log('✅ common-scripts.js 로드 완료')" onerror="console.error('❌ common-scripts.js 로드 실패')"></script>
+    
+    <script>
+        // 레슨 7 전용 설정
+        const currentLesson = 7;
+        
+        // 기본 코드 설정
+        const defaultCode = `# 🤖 MechDog 클래스 배우기
+
+print("🏗️ 클래스와 객체 개념 학습!")
+print("MechDog를 클래스로 설계해봅시다!")
+print()
+
+# 간단한 MechDog 클래스
+class SimpleMechDog:
+    """간단한 MechDog 클래스"""
     
     def __init__(self, name):
-        """로봇 초기화 (생성자)"""
+        """MechDog 초기화 (생성자)"""
         self.name = name
         self.battery = 100
         self.status = "대기"
-        print(f"🤖 {self.name} 로봇이 생성되었습니다!")
+        print(f"🤖 {self.name} MechDog이 생성되었습니다!")
     
     def introduce(self):
         """자기소개 메서드"""
@@ -239,493 +623,638 @@ class SimpleRobot:
     
     def bark(self):
         """짖기 메서드"""
-        if self.battery > 10:
+        if self.battery > 5:
             print(f"{self.name}: 멍멍! 🐕")
             self.battery -= 5
             self.status = "짖기"
         else:
             print(f"{self.name}: 배터리가 부족합니다... 😴")
     
-    def charge(self):
-        """충전 메서드"""
-        print(f"{self.name}이 충전을 시작합니다 🔌")
-        self.battery = 100
-        self.status = "충전 완료"
-        print("충전 완료! ⚡")
+# MechDog 객체 생성과 사용
+print("=== MechDog 객체 생성 ===")
+my_mechdog = SimpleMechDog("Buddy")
 
-# 로봇 객체 생성과 사용
-print("=== 로봇 객체 생성 ===")
-my_robot = SimpleRobot("MechDoggy")
+print("\\n=== MechDog 동작 테스트 ===")
+my_mechdog.introduce()
+print()
+my_mechdog.bark()
+my_mechdog.bark()
+print()
+my_mechdog.introduce()`;
 
-print("\n=== 로봇 동작 테스트 ===")
-my_robot.introduce()
-print()
-my_robot.bark()
-my_robot.bark()
-print()
-my_robot.introduce()
-print()
-my_robot.charge()
-print()
-my_robot.introduce()</textarea>
-                    <button class="run-button" onclick="runCode('editor1', 'output1')">실행 ▶</button>
-                    <div class="output" id="output1">여기에 실행 결과가 표시됩니다</div>
-                </div>
-            </div>
-
-            <div class="content-section">
-                <h2>🔧 속성과 메서드</h2>
-                <p>클래스의 <strong>속성</strong>(변수)과 <strong>메서드</strong>(함수)를 통해 객체의 상태와 행동을 정의합니다.</p>
-
-                <div class="code-container">
-                    <textarea class="code-editor" id="editor2"># 고급 로봇 클래스
-class AdvancedRobot:
-    """고급 로봇 클래스"""
-    
-    # 클래스 변수 (모든 객체가 공유)
-    robot_count = 0
-    
-    def __init__(self, name, model="기본형"):
-        """로봇 초기화"""
-        # 인스턴스 변수 (각 객체마다 다름)
-        self.name = name
-        self.model = model
-        self.battery = 100
-        self.position = {"x": 0, "y": 0}
-        self.sensors = {
-            "camera": True,
-            "microphone": True,
-            "distance": True
-        }
+        // 전역 변수들
+        let currentMechDog = null;
+        let selectedColor = '🔵';
         
-        # 클래스 변수 증가
-        AdvancedRobot.robot_count += 1
-        print(f"🤖 {self.name}({self.model}) 생성됨!")
-        print(f"📊 총 로봇 수: {AdvancedRobot.robot_count}")
+        // MechDog 시뮬레이터 클래스
+        class MechDogSimulator {
+            constructor() {
+                this.name = 'Buddy';
+                this.model = 'Basic';
+                this.color = '🔵';
+                this.battery = 100;
+                this.speed = 5;
+                this.position = {x: 0, y: 0};
+                this.status = '대기';
+                this.actions = [];
+            }
+            
+            updateDisplay() {
+                document.getElementById('mechdog-display-name').textContent = this.name;
+                document.getElementById('mechdog-display-model').textContent = this.model + ' Model';
+                document.getElementById('mechdog-avatar').textContent = this.color === '🔵' ? '🐕' : 
+                    this.color === '🔴' ? '🔥' : this.color === '🟢' ? '🌱' : '⭐';
+                
+                const batteryBar = document.getElementById('battery-bar');
+                const batteryPercent = document.getElementById('battery-percent');
+                batteryBar.style.width = this.battery + '%';
+                batteryBar.className = 'h-4 rounded-full transition-all ' + 
+                    (this.battery > 60 ? 'bg-green-500' : 
+                     this.battery > 30 ? 'bg-yellow-500' : 'bg-red-500');
+                batteryPercent.textContent = this.battery + '%';
+                
+                document.getElementById('position-display').textContent = `(${this.position.x}, ${this.position.y})`;
+                document.getElementById('status-display').textContent = this.status;
+            }
+            
+            bark() {
+                if (this.battery >= 5) {
+                    this.battery -= 5;
+                    this.status = '짖음';
+                    this.logAction(`${this.name}: 멍멍! 🐕`);
+                    this.updateDisplay();
+                    setTimeout(() => {
+                        this.status = '대기';
+                        this.updateDisplay();
+                    }, 2000);
+                } else {
+                    this.logAction(`${this.name}: 배터리 부족... 😴`);
+                }
+            }
+            
+            move(x = 1, y = 0) {
+                if (this.battery >= 10) {
+                    this.battery -= 10;
+                    this.position.x += x;
+                    this.position.y += y;
+                    this.status = '이동';
+                    this.logAction(`${this.name}이 (${x}, ${y})만큼 이동했습니다! 🚶`);
+                    this.updateDisplay();
+                    setTimeout(() => {
+                        this.status = '대기';
+                        this.updateDisplay();
+                    }, 2000);
+                } else {
+                    this.logAction(`${this.name}: 배터리 부족으로 이동 불가 ❌`);
+                }
+            }
+            
+            sit() {
+                if (this.battery >= 3) {
+                    this.battery -= 3;
+                    this.status = '앉음';
+                    this.logAction(`${this.name}가 앉았습니다 🪑`);
+                    this.updateDisplay();
+                    setTimeout(() => {
+                        this.status = '대기';
+                        this.updateDisplay();
+                    }, 3000);
+                } else {
+                    this.logAction(`${this.name}: 배터리 부족... 😴`);
+                }
+            }
+            
+            play() {
+                if (this.battery >= 8) {
+                    this.battery -= 8;
+                    this.status = '놀이';
+                    this.logAction(`${this.name}가 신나게 놀고 있습니다! 🎾`);
+                    this.updateDisplay();
+                    setTimeout(() => {
+                        this.status = '대기';
+                        this.updateDisplay();
+                    }, 4000);
+                } else {
+                    this.logAction(`${this.name}: 배터리 부족... 😴`);
+                }
+            }
+            
+            logAction(message) {
+                const log = document.getElementById('action-log');
+                const timestamp = new Date().toLocaleTimeString();
+                log.innerHTML += `<span class="text-yellow-400">[${timestamp}]</span> ${message}<br>`;
+                log.scrollTop = log.scrollHeight;
+            }
+            
+            generateClass() {
+                const name = document.getElementById('dog-name').value || 'Buddy';
+                const model = document.getElementById('dog-model').value;
+                const battery = document.getElementById('battery-slider').value;
+                const speed = document.getElementById('speed-slider').value;
+                const posX = document.getElementById('pos-x').value || 0;
+                const posY = document.getElementById('pos-y').value || 0;
+                
+                // 선택된 메서드들
+                const methods = [];
+                if (document.getElementById('method-bark').checked) methods.push('bark');
+                if (document.getElementById('method-move').checked) methods.push('move');
+                if (document.getElementById('method-sit').checked) methods.push('sit');
+                if (document.getElementById('method-play').checked) methods.push('play');
+                if (document.getElementById('method-sleep').checked) methods.push('sleep');
+                
+                // 클래스 코드 생성
+                let classCode = `# 🤖 ${name} MechDog 클래스 (자동 생성)
+
+class ${name}MechDog:
+    """${name} MechDog - ${model} 모델"""
     
-    def get_info(self):
-        """로봇 정보 반환"""
-        return {
-            "이름": self.name,
-            "모델": self.model,
-            "배터리": self.battery,
-            "위치": self.position,
-            "센서": self.sensors
-        }
+    def __init__(self, name="${name}"):
+        self.name = name
+        self.model = "${model}"
+        self.color = "${selectedColor}"
+        self.battery = ${battery}
+        self.speed = ${speed}
+        self.position = {"x": ${posX}, "y": ${posY}}
+        self.status = "대기"
+        self.actions = []
+        print(f"🤖 {self.name}({self.model}) MechDog 생성됨!")
+        print(f"초기 상태: 배터리 {self.battery}%, 위치 ({self.position['x']}, {self.position['y']})")
     
+    def __str__(self):
+        return f"🐕 {self.name}({self.model}) - 배터리:{self.battery}% - 위치:({self.position['x']}, {self.position['y']})"
+`;
+
+                // 선택된 메서드들 추가
+                if (methods.includes('bark')) {
+                    classCode += `    
+    def bark(self):
+        """짖기 메서드"""
+        if self.battery >= 5:
+            print(f"{self.name}: 멍멍! 🐕")
+            self.battery -= 5
+            self.status = "짖음"
+            self.actions.append("짖기")
+        else:
+            print(f"{self.name}: 배터리 부족... 😴")
+`;
+                }
+
+                if (methods.includes('move')) {
+                    classCode += `    
     def move(self, x, y):
-        """로봇 이동"""
+        """이동 메서드"""
         if self.battery >= 10:
-            old_pos = self.position.copy()
             self.position["x"] += x
             self.position["y"] += y
             self.battery -= 10
+            self.status = "이동"
+            self.actions.append(f"이동({x}, {y})")
+            print(f"🚶 {self.name} → ({self.position['x']}, {self.position['y']})")
+        else:
+            print(f"❌ {self.name}: 배터리 부족!")
+`;
+                }
+
+                if (methods.includes('sit')) {
+                    classCode += `    
+    def sit(self):
+        """앉기 메서드"""
+        if self.battery >= 3:
+            self.battery -= 3
+            self.status = "앉음"
+            self.actions.append("앉기")
+            print(f"🪑 {self.name}가 앉았습니다.")
+        else:
+            print(f"❌ {self.name}: 배터리 부족!")
+`;
+                }
+
+                if (methods.includes('play')) {
+                    classCode += `    
+    def play(self):
+        """놀기 메서드"""
+        if self.battery >= 8:
+            self.battery -= 8
+            self.status = "놀이"
+            self.actions.append("놀기")
+            print(f"🎾 {self.name}가 신나게 놀고 있습니다!")
+        else:
+            print(f"❌ {self.name}: 배터리 부족!")
+`;
+                }
+
+                if (methods.includes('sleep')) {
+                    classCode += `    
+    def sleep(self):
+        """잠자기 메서드"""
+        if self.battery < 100:
+            old_battery = self.battery
+            self.battery = min(100, self.battery + 30)
+            self.status = "잠자는 중"
+            self.actions.append("잠자기")
+            print(f"😴 {self.name}가 잠을 자고 있습니다... 배터리 회복 중")
+            print(f"배터리: {old_battery}% → {self.battery}%")
+        else:
+            print(f"{self.name}: 이미 충분히 쉬었어요! 😊")
+`;
+                }
+
+                // 객체 생성 및 테스트 코드
+                classCode += `
+
+# ${name} MechDog 객체 생성 및 테스트
+print("=== ${name} MechDog 생성 ===")
+my_dog = ${name}MechDog()
+print(my_dog)
+
+print("\\n=== 기능 테스트 ===")`;
+
+                if (methods.includes('bark')) classCode += `\nmy_dog.bark()`;
+                if (methods.includes('move')) classCode += `\nmy_dog.move(2, 1)`;
+                if (methods.includes('sit')) classCode += `\nmy_dog.sit()`;
+                if (methods.includes('play')) classCode += `\nmy_dog.play()`;
+                
+                classCode += `
+print("\\n=== 최종 상태 ===")
+print(my_dog)
+print(f"수행한 액션: {my_dog.actions}")`;
+
+                // 에디터에 코드 설정
+                if (typeof setEditorValue === 'function') {
+                    setEditorValue(classCode);
+                }
+                
+                // 시뮬레이터 업데이트
+                this.name = name;
+                this.model = model;
+                this.color = selectedColor;
+                this.battery = parseInt(battery);
+                this.speed = parseInt(speed);
+                this.position.x = parseInt(posX);
+                this.position.y = parseInt(posY);
+                this.updateDisplay();
+                
+                this.logAction(`✨ ${name} MechDog 클래스가 생성되었습니다!`);
+                this.logAction(`📝 에디터에서 생성된 코드를 확인해보세요.`);
+            }
+        }
+        
+        // 색상 선택 함수
+        function selectColor(color) {
+            selectedColor = color;
+            document.getElementById('selected-color').textContent = color;
             
-            print(f"🚶 {self.name} 이동:")
-            print(f"  이전 위치: ({old_pos['x']}, {old_pos['y']})")
-            print(f"  현재 위치: ({self.position['x']}, {self.position['y']})")
-            print(f"  배터리: {self.battery}%")
-        else:
-            print(f"❌ {self.name}: 배터리 부족으로 이동 불가")
-    
-    def scan_environment(self):
-        """환경 스캔"""
-        if self.sensors["camera"] and self.battery >= 5:
-            print(f"📷 {self.name} 환경 스캔 중...")
-            self.battery -= 5
-            
-            # 가상의 스캔 결과
-            import random
-            obstacles = random.randint(0, 3)
-            objects = random.randint(1, 5)
-            
-            print(f"  🚧 장애물: {obstacles}개")
-            print(f"  📦 객체: {objects}개")
-            print(f"  🔋 배터리: {self.battery}%")
-            
-            return {"obstacles": obstacles, "objects": objects}
-        else:
-            print(f"❌ {self.name}: 스캔 불가 (센서 오류 또는 배터리 부족)")
-            return None
-
-# 여러 로봇 객체 생성
-print("=== 고급 로봇들 생성 ===")
-robot1 = AdvancedRobot("알파", "경비형")
-robot2 = AdvancedRobot("베타", "탐사형")
-
-print("\n=== 로봇 정보 확인 ===")
-print("로봇1 정보:", robot1.get_info())
-print("로봇2 정보:", robot2.get_info())
-
-print("\n=== 로봇 동작 테스트 ===")
-robot1.move(3, 2)
-robot1.scan_environment()
-
-print()
-robot2.move(-1, 4)
-robot2.scan_environment()</textarea>
-                    <button class="run-button" onclick="runCode('editor2', 'output2')">실행 ▶</button>
-                    <div class="output" id="output2">여기에 실행 결과가 표시됩니다</div>
-                </div>
-            </div>
-
-            <div class="content-section">
-                <h2>🔒 접근 제어와 프로퍼티</h2>
-                <p>언더스코어(_)를 사용해 접근을 제한하고, 프로퍼티로 안전하게 속성을 관리할 수 있습니다.</p>
-
-                <div class="tip-box">
-                    <h4>💡 파이썬 접근 제어</h4>
-                    <ul>
-                        <li><code>public</code>: 일반 속성/메서드</li>
-                        <li><code>_protected</code>: 내부용 (권장사항)</li>
-                        <li><code>__private</code>: 강제 비공개</li>
-                    </ul>
-                </div>
-
-                <div class="code-container">
-                    <textarea class="code-editor" id="editor3"># 보안이 강화된 로봇 클래스
-class SecureRobot:
-    """보안 기능이 있는 로봇 클래스"""
-    
-    def __init__(self, name, access_code):
-        self.name = name
-        self._access_code = access_code  # 보호된 속성
-        self.__system_key = "SECRET123"  # 비공개 속성
-        self._battery = 100
-        self._is_authorized = False
-    
-    def authenticate(self, code):
-        """인증 메서드"""
-        if code == self._access_code:
-            self._is_authorized = True
-            print(f"✅ {self.name} 인증 성공!")
-            return True
-        else:
-            print(f"❌ {self.name} 인증 실패!")
-            return False
-    
-    @property
-    def battery(self):
-        """배터리 값 읽기 (getter)"""
-        return self._battery
-    
-    @battery.setter
-    def battery(self, value):
-        """배터리 값 설정 (setter)"""
-        if self._is_authorized:
-            if 0 <= value <= 100:
-                self._battery = value
-                print(f"🔋 배터리가 {value}%로 설정되었습니다.")
-            else:
-                print("❌ 배터리 값은 0-100 사이여야 합니다.")
-        else:
-            print("❌ 인증이 필요합니다!")
-    
-    def secure_operation(self):
-        """보안 작업"""
-        if self._is_authorized:
-            print(f"🔐 {self.name} 보안 작업 실행 중...")
-            print(f"   시스템 키: {self.__system_key}")
-            return True
-        else:
-            print("❌ 인증되지 않은 접근!")
-            return False
-    
-    def get_status(self):
-        """상태 확인"""
-        return {
-            "이름": self.name,
-            "배터리": self._battery,
-            "인증됨": self._is_authorized
+            // 색상 버튼 활성화 상태 업데이트
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.classList.remove('ring-4', 'ring-blue-300');
+            });
+            document.querySelector(`[data-color="${color}"]`).classList.add('ring-4', 'ring-blue-300');
         }
 
-# 보안 로봇 테스트
-print("=== 보안 로봇 테스트 ===")
-secure_bot = SecureRobot("Guardian", "1234")
+        // 코드 예제들
+        const examples = {
+            basicClass: `# 📝 기본 클래스 개념
 
-print("\n=== 인증 전 테스트 ===")
-print("상태:", secure_bot.get_status())
-secure_bot.battery = 80  # 인증 안됨
-secure_bot.secure_operation()  # 인증 안됨
-
-print("\n=== 인증 후 테스트 ===")
-secure_bot.authenticate("1234")  # 올바른 코드
-print("상태:", secure_bot.get_status())
-secure_bot.battery = 85  # 인증됨
-print(f"현재 배터리: {secure_bot.battery}")
-secure_bot.secure_operation()  # 인증됨
-
-print("\n=== 잘못된 인증 테스트 ===")
-secure_bot2 = SecureRobot("Sentinel", "5678")
-secure_bot2.authenticate("0000")  # 틀린 코드
-secure_bot2.battery = 90</textarea>
-                    <button class="run-button" onclick="runCode('editor3', 'output3')">실행 ▶</button>
-                    <div class="output" id="output3">여기에 실행 결과가 표시됩니다</div>
-                </div>
-            </div>
-
-            <div class="content-section">
-                <h2>🔄 특수 메서드</h2>
-                <p>특수 메서드(매직 메서드)를 사용해 클래스의 동작을 커스터마이징할 수 있습니다.</p>
-
-                <div class="code-container">
-                    <textarea class="code-editor" id="editor4"># 특수 메서드를 가진 로봇 클래스
-class SmartRobot:
-    """특수 메서드를 가진 스마트 로봇"""
+class Robot:
+    """기본 로봇 클래스"""
     
-    def __init__(self, name, intelligence=50):
+    def __init__(self, name):
         self.name = name
-        self.intelligence = intelligence
-        self.energy = 100
-        self.tasks_completed = 0
-        
-    def __str__(self):
-        """문자열 표현 (print할 때 사용)"""
-        return f"🤖 {self.name} (지능:{self.intelligence}, 에너지:{self.energy})"
+        self.battery = 100
+        print(f"🤖 {name} 로봇 생성됨!")
     
-    def __repr__(self):
-        """개발자용 문자열 표현"""
-        return f"SmartRobot('{self.name}', {self.intelligence})"
+    def move(self):
+        print(f"{self.name}이 움직입니다!")
     
-    def __len__(self):
-        """길이 (완료한 작업 수)"""
-        return self.tasks_completed
-    
-    def __add__(self, other):
-        """두 로봇 합치기 (+연산자)"""
-        if isinstance(other, SmartRobot):
-            combined_name = f"{self.name}+{other.name}"
-            combined_intelligence = (self.intelligence + other.intelligence) // 2
-            return SmartRobot(combined_name, combined_intelligence)
-        else:
-            return NotImplemented
-    
-    def __eq__(self, other):
-        """동등성 비교 (==연산자)"""
-        if isinstance(other, SmartRobot):
-            return self.intelligence == other.intelligence
-        return False
-    
-    def __lt__(self, other):
-        """크기 비교 (<연산자)"""
-        if isinstance(other, SmartRobot):
-            return self.intelligence < other.intelligence
-        return NotImplemented
-    
-    def complete_task(self, difficulty=1):
-        """작업 완료"""
-        if self.energy >= difficulty * 10:
-            self.energy -= difficulty * 10
-            self.tasks_completed += 1
-            self.intelligence += difficulty
-            print(f"✅ {self.name} 작업 완료! (난이도: {difficulty})")
-            print(f"   지능 +{difficulty}, 에너지 -{difficulty*10}")
-        else:
-            print(f"❌ {self.name} 에너지 부족!")
+    def get_info(self):
+        return f"이름: {self.name}, 배터리: {self.battery}%"
 
-# 특수 메서드 테스트
-print("=== 스마트 로봇 생성 ===")
-robot_a = SmartRobot("Alpha", 60)
-robot_b = SmartRobot("Beta", 80)
-robot_c = SmartRobot("Gamma", 60)
+# 객체 생성
+robot1 = Robot("알파")
+robot2 = Robot("베타")
 
-print("=== __str__ 메서드 테스트 ===")
-print(robot_a)
-print(robot_b)
+print(robot1.get_info())
+print(robot2.get_info())
 
-print("\n=== __repr__ 메서드 테스트 ===")
-print(repr(robot_a))
+robot1.move()
+robot2.move()`,
 
-print("\n=== 작업 완료 및 __len__ 테스트 ===")
-robot_a.complete_task(2)
-robot_a.complete_task(1)
-print(f"Alpha 완료 작업 수: {len(robot_a)}")
+            mechdogClass: `# 🤖 고급 MechDog 클래스
 
-print("\n=== __eq__ 메서드 테스트 (동등성) ===")
-print(f"Alpha == Beta: {robot_a == robot_b}")
-print(f"Alpha == Gamma: {robot_a == robot_c}")
-
-print("\n=== __lt__ 메서드 테스트 (크기 비교) ===")
-print(f"Alpha < Beta: {robot_a < robot_b}")
-print(f"Beta < Alpha: {robot_b < robot_a}")
-
-print("\n=== __add__ 메서드 테스트 (합치기) ===")
-combined_robot = robot_a + robot_b
-print(f"합쳐진 로봇: {combined_robot}")
-
-# 로봇들을 리스트로 정렬
-print("\n=== 정렬 테스트 ===")
-robots = [robot_a, robot_b, robot_c, combined_robot]
-robots.sort()  # __lt__ 메서드 사용
-print("지능 순으로 정렬:")
-for robot in robots:
-    print(f"  {robot}")</textarea>
-                    <button class="run-button" onclick="runCode('editor4', 'output4')">실행 ▶</button>
-                    <div class="output" id="output4">여기에 실행 결과가 표시됩니다</div>
-                </div>
-            </div>
-
-            <div class="content-section exercise-section">
-                <h2>🎯 실습 과제</h2>
-                <p>지금까지 학습한 내용을 종합해서 완전한 MechDog 클래스를 설계해보세요!</p>
-
-                <div class="mechdog-demo">
-                    <h4>🐕 완전한 MechDog 클래스 설계</h4>
-                    <p>다음 기능들을 포함한 MechDog 클래스를 만들어보세요:</p>
-                    <ul>
-                        <li>🔧 기본 속성: 이름, 모델, 배터리, 위치</li>
-                        <li>🎭 기본 행동: 이동, 짖기, 앉기, 일어서기</li>
-                        <li>📊 센서 기능: 환경 스캔, 거리 측정</li>
-                        <li>⚙️ 특수 메서드: __str__, __eq__, __add__</li>
-                        <li>🔒 보안 기능: 접근 제어, 프로퍼티</li>
-                    </ul>
-                </div>
-
-                <div class="code-container">
-                    <textarea class="code-editor" id="exercise"># 🐕 완전한 MechDog 클래스를 설계해보세요!
-
-class MechDog:
-    """완전한 MechDog 클래스"""
-    
+class AdvancedMechDog:
     # 클래스 변수
     total_dogs = 0
     
     def __init__(self, name, model="Standard"):
-        """MechDog 초기화"""
-        # 여기에 초기화 코드를 작성하세요
-        pass
-    
-    def __str__(self):
-        """문자열 표현"""
-        # 여기에 문자열 표현 코드를 작성하세요
-        pass
-    
-    def bark(self):
-        """짖기 메서드"""
-        # 여기에 짖기 코드를 작성하세요
-        pass
+        self.name = name
+        self.model = model
+        self.battery = 100
+        self.position = {"x": 0, "y": 0}
+        self.actions = []
+        
+        AdvancedMechDog.total_dogs += 1
+        print(f"🤖 {self.name}({self.model}) 생성!")
+        print(f"📊 총 MechDog 수: {AdvancedMechDog.total_dogs}")
     
     def move(self, x, y):
-        """이동 메서드"""
-        # 여기에 이동 코드를 작성하세요
-        pass
+        if self.battery >= 10:
+            self.position["x"] += x
+            self.position["y"] += y
+            self.battery -= 10
+            self.actions.append(f"이동: ({x}, {y})")
+            print(f"🚶 {self.name} → ({self.position['x']}, {self.position['y']})")
+        else:
+            print(f"❌ {self.name}: 배터리 부족!")
     
-    def sit(self):
-        """앉기 메서드"""
-        # 여기에 앉기 코드를 작성하세요
-        pass
-    
-    def scan(self):
-        """환경 스캔 메서드"""
-        # 여기에 스캔 코드를 작성하세요
-        pass
-    
-    @property
-    def battery(self):
-        """배터리 getter"""
-        # 여기에 getter 코드를 작성하세요
-        pass
-    
-    @battery.setter
-    def battery(self, value):
-        """배터리 setter"""
-        # 여기에 setter 코드를 작성하세요
-        pass
+    def perform_action(self, action):
+        if self.battery >= 5:
+            self.battery -= 5
+            self.actions.append(action)
+            print(f"🎭 {self.name}: {action} 수행!")
+        else:
+            print(f"❌ {self.name}: 배터리 부족!")
 
-# 테스트 코드
-print("=== MechDog 테스트 ===")
-dog1 = MechDog("Buddy", "Premium")
-dog2 = MechDog("Rex", "Basic")
+# 여러 MechDog 생성
+dog1 = AdvancedMechDog("Buddy", "Premium")
+dog2 = AdvancedMechDog("Max", "Basic")
 
+dog1.move(3, 2)
+dog1.perform_action("앉기")
+dog2.move(-1, 1)
+dog2.perform_action("짖기")`,
+
+            specialMethods:
+ `# ⚙️ 특수 메서드 MechDog
+
+class SmartMechDog:
+    def __init__(self, name, intelligence=50):
+        self.name = name
+        self.intelligence = intelligence
+        self.battery = 100
+        
+    def __str__(self):
+        """문자열 표현"""
+        return f"🤖 {self.name} (지능:{self.intelligence}, 배터리:{self.battery}%)"
+    
+    def __eq__(self, other):
+        """동등성 비교"""
+        if isinstance(other, SmartMechDog):
+            return self.intelligence == other.intelligence
+        return False
+    
+    def __lt__(self, other):
+        """크기 비교"""
+        if isinstance(other, SmartMechDog):
+            return self.intelligence < other.intelligence
+        return False
+    
+    def __add__(self, other):
+        """두 MechDog 합치기"""
+        if isinstance(other, SmartMechDog):
+            new_name = f"{self.name}+{other.name}"
+            new_intelligence = (self.intelligence + other.intelligence) // 2
+            return SmartMechDog(new_name, new_intelligence)
+
+# 특수 메서드 테스트
+dog1 = SmartMechDog("Alpha", 60)
+dog2 = SmartMechDog("Beta", 80)
+dog3 = SmartMechDog("Gamma", 60)
+
+print("=== __str__ 메서드 ===")
 print(dog1)
 print(dog2)
 
-# 여기에 테스트 코드를 추가하세요</textarea>
-                    <button class="run-button" onclick="runCode('exercise', 'exerciseOutput')">실행 ▶</button>
-                    <div class="output" id="exerciseOutput">여기에 실행 결과가 표시됩니다</div>
-                </div>
+print("=== __eq__ 메서드 ===")
+print(f"Alpha == Beta: {dog1 == dog2}")
+print(f"Alpha == Gamma: {dog1 == dog3}")
 
-                <div class="tip-box">
-                    <h4>💡 해답 힌트</h4>
-                    <pre>def __init__(self, name, model="Standard"):
-    self.name = name
-    self.model = model
-    self._battery = 100
-    self.position = {"x": 0, "y": 0}
-    self.status = "대기"
-    MechDog.total_dogs += 1
+print("=== __lt__ 메서드 ===")
+print(f"Alpha < Beta: {dog1 < dog2}")
 
-def __str__(self):
-    return f"🐕 {self.name}({self.model}) - 배터리:{self._battery}%"
+print("=== __add__ 메서드 ===")
+combined = dog1 + dog2
+print(f"합쳐진 MechDog: {combined}")
 
-def bark(self):
-    if self._battery > 5:
-        print(f"{self.name}: 멍멍! 🐕")
-        self._battery -= 5
-        self.status = "짖음"
-    else:
-        print(f"{self.name}: 배터리 부족... 😴")</pre>
-                </div>
-            </div>
-        </div>
+# 정렬 테스트
+dogs = [dog1, dog2, dog3]
+dogs.sort()
+print("=== 지능순 정렬 ===")
+for dog in dogs:
+    print(dog)`,
 
-        <div class="navigation">
-            <a href="lesson6.html" class="nav-button">← 이전: 모듈과 패키지</a>
-            <a href="../home.html" class="nav-button">🏠 홈으로</a>
-            <a href="lesson8.html" class="nav-button">다음: MechDog 클래스 구조 →</a>
-        </div>
-    </div>
+            challenge: `# 🎯 도전 과제: 완전한 MechDog 클래스
 
-    <script>
-        let pyodide;
+class CompleteMechDog:
+    """완전한 MechDog 클래스"""
+    total_dogs = 0
+    
+    def __init__(self, name, model="Standard"):
+        self.name = name
+        self.model = model
+        self._battery = 100
+        self.position = {"x": 0, "y": 0}
+        self.status = "대기"
+        self.actions = []
         
-        async function main() {
-            pyodide = await loadPyodide();
-        }
-        
-        main();
+        CompleteMechDog.total_dogs += 1
+        print(f"🤖 {self.name}({self.model}) 생성!")
+        print(f"📊 총 MechDog 수: {CompleteMechDog.total_dogs}")
 
-        async function runCode(editorId, outputId) {
-            const code = document.getElementById(editorId).value;
-            const outputElement = document.getElementById(outputId);
+    def __str__(self):
+        return f"🐕 {self.name}({self.model}) - 배터리:{self._battery}% - 위치:({self.position['x']}, {self.position['y']})"
+
+    def bark(self):
+        if self._battery > 5:
+            print(f"{self.name}: 멍멍! 🐕")
+            self._battery -= 5
+            self.status = "짖음"
+            self.actions.append("짖기")
+        else:
+            print(f"{self.name}: 배터리 부족... 😴")
+    
+    def move(self, x, y):
+        if self._battery > 10:
+            self.position["x"] += x
+            self.position["y"] += y
+            self._battery -= 10
+            self.status = "이동"
+            self.actions.append(f"이동({x}, {y})")
+            print(f"🚶 {self.name} → ({self.position['x']}, {self.position['y']})")
+        else:
+            print(f"❌ {self.name}: 배터리 부족!")
+    
+    def sit(self):
+        if self._battery > 3:
+            self._battery -= 3
+            self.status = "앉기"
+            self.actions.append("앉기")
+            print(f"🪑 {self.name}가 앉았습니다.")
+        else:
+            print(f"❌ {self.name}: 배터리 부족!")
+    
+    @property
+    def battery(self):
+        return self._battery
+    
+    @battery.setter
+    def battery(self, value):
+        if 0 <= value <= 100:
+            self._battery = value
+            print(f"🔋 {self.name} 배터리: {value}%")
+        else:
+            print("❌ 배터리는 0-100 사이여야 합니다!")
+    
+    def get_history(self):
+        print(f"📋 {self.name} 행동 기록:")
+        for i, action in enumerate(self.actions, 1):
+            print(f"  {i}. {action}")
+
+# 완전한 MechDog 테스트
+print("=== 완전한 MechDog 생성 ===")
+buddy = CompleteMechDog("Buddy", "Premium")
+max_dog = CompleteMechDog("Max", "Standard")
+
+print("=== 동작 테스트 ===")
+print(buddy)
+buddy.bark()
+buddy.move(3, 2)
+buddy.sit()
+buddy.battery = 95
+
+print("=== 행동 기록 ===")
+buddy.get_history()
+
+print("=== 두 번째 MechDog 테스트 ===")
+print(max_dog)
+max_dog.move(-1, 1)
+max_dog.bark()
+max_dog.get_history()`
+        };
+        
+        // 에디터 초기화 및 이벤트 리스너 설정
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔧 Lesson 7 초기화 시작');
             
-            try {
-                outputElement.textContent = "코드 실행 중...";
-                
-                // Pyodide가 로드될 때까지 대기
-                if (!pyodide) {
-                    outputElement.textContent = "Python 환경을 로딩 중입니다...";
-                    await main();
-                }
-                
-                // 출력을 캡처하기 위한 설정
-                pyodide.runPython(`
-import sys
-from io import StringIO
-sys.stdout = StringIO()
-                `);
-                
-                // 사용자 코드 실행
-                pyodide.runPython(code);
-                
-                // 출력 결과 가져오기
-                const stdout = pyodide.runPython("sys.stdout.getvalue()");
-                outputElement.textContent = stdout || "실행 완료 (출력 없음)";
-                outputElement.style.color = "#00ff00";
-                
-            } catch (error) {
-                outputElement.textContent = `오류 발생: ${error.message}`;
-                outputElement.style.color = "#ff6b6b";
+            // MechDog 시뮬레이터 초기화
+            currentMechDog = new MechDogSimulator();
+            currentMechDog.updateDisplay();
+            
+            // 슬라이더 이벤트 리스너
+            const batterySlider = document.getElementById('battery-slider');
+            const speedSlider = document.getElementById('speed-slider');
+            const batteryValue = document.getElementById('battery-value');
+            const speedValue = document.getElementById('speed-value');
+            
+            if (batterySlider && batteryValue) {
+                batterySlider.addEventListener('input', function() {
+                    batteryValue.textContent = this.value;
+                });
             }
-        }
-
-        // 진도 추적
-        window.addEventListener('load', function() {
-            const currentLesson = 7;
-            let progress = JSON.parse(localStorage.getItem('pythonProgress') || '[]');
-            if (!progress.includes(currentLesson)) {
-                progress.push(currentLesson);
-                localStorage.setItem('pythonProgress', JSON.stringify(progress));
+            
+            if (speedSlider && speedValue) {
+                speedSlider.addEventListener('input', function() {
+                    speedValue.textContent = this.value;
+                });
+            }
+            
+            // 클래스 생성 버튼
+            const generateBtn = document.getElementById('generate-class');
+            if (generateBtn) {
+                generateBtn.addEventListener('click', function() {
+                    currentMechDog.generateClass();
+                });
+            }
+            
+            // MechDog 테스트 버튼들
+            const testBarkBtn = document.getElementById('test-bark');
+            const testSitBtn = document.getElementById('test-sit');
+            const testMoveBtn = document.getElementById('test-move');
+            const testPlayBtn = document.getElementById('test-play');
+            
+            if (testBarkBtn) {
+                testBarkBtn.addEventListener('click', () => currentMechDog.bark());
+            }
+            if (testSitBtn) {
+                testSitBtn.addEventListener('click', () => currentMechDog.sit());
+            }
+            if (testMoveBtn) {
+                testMoveBtn.addEventListener('click', () => currentMechDog.move());
+            }
+            if (testPlayBtn) {
+                testPlayBtn.addEventListener('click', () => currentMechDog.play());
+            }
+            
+            // 로그 지우기 버튼
+            const clearLogBtn = document.getElementById('clear-log');
+            if (clearLogBtn) {
+                clearLogBtn.addEventListener('click', function() {
+                    const log = document.getElementById('action-log');
+                    log.innerHTML = '> MechDog 시뮬레이터 시작됨...<br>> 클래스를 생성하고 테스트해보세요!<br>';
+                });
+            }
+            
+            // CodeMirror 에디터 초기화
+            if (typeof initCodeEditor === 'function') {
+                console.log('✅ initCodeEditor 함수 발견');
+                initCodeEditor(defaultCode);
+            } else {
+                console.error('❌ initCodeEditor 함수를 찾을 수 없습니다');
+            }
+            
+            // 공통 이벤트 리스너 설정
+            if (typeof setupCommonEventListeners === 'function') {
+                console.log('✅ setupCommonEventListeners 함수 발견');
+                setupCommonEventListeners();
+            } else {
+                console.error('❌ setupCommonEventListeners 함수를 찾을 수 없습니다');
+            }
+            
+            // 레슨 7 전용 버튼 이벤트 리스너
+            const basicClassBtn = document.getElementById('basic-class');
+            if (basicClassBtn) {
+                basicClassBtn.addEventListener('click', () => {
+                    if (typeof setEditorValue === 'function') {
+                        setEditorValue(examples.basicClass);
+                    } else {
+                        console.error('❌ setEditorValue 함수를 찾을 수 없습니다');
+                    }
+                });
+            }
+            
+            const mechdogClassBtn = document.getElementById('mechdog-class');
+            if (mechdogClassBtn) {
+                mechdogClassBtn.addEventListener('click', () => {
+                    if (typeof setEditorValue === 'function') {
+                        setEditorValue(examples.mechdogClass);
+                    }
+                });
+            }
+            
+            const specialMethodsBtn = document.getElementById('special-methods');
+            if (specialMethodsBtn) {
+                specialMethodsBtn.addEventListener('click', () => {
+                    if (typeof setEditorValue === 'function') {
+                        setEditorValue(examples.specialMethods);
+                    }
+                });
+            }
+            
+            const challengeBtn = document.getElementById('exercise-challenge');
+            if (challengeBtn) {
+                challengeBtn.addEventListener('click', () => {
+                    if (typeof setEditorValue === 'function') {
+                        setEditorValue(examples.challenge);
+                    }
+                });
+            }
+            
+            const showChallengeBtn = document.getElementById('show-challenge');
+            if (showChallengeBtn) {
+                showChallengeBtn.addEventListener('click', () => {
+                    if (typeof setEditorValue === 'function') {
+                        setEditorValue(examples.challenge);
+                    }
+                });
             }
         });
     </script>
