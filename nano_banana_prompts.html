@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="구글 Gemini 통합 나노바나나 AI 이미지 생성·편집 완벽 가이드. 포토샵급 편집, 실시간 처리, 실무 활용법까지 완전 정복">
-    <meta name="keywords" content="나노바나나, NanoBanana, AI 이미지 생성, 구글 Gemini, 이미지 편집, AI 도구, 마케팅, 교육">
+    <meta name="description" content="구글 Gemini 통합 나노바나나 프로 AI 이미지 생성·편집 완벽 가이드. 포토샵급 편집, 실시간 처리, 실무 활용법까지 완전 정복">
+    <meta name="keywords" content="나노바나나 프로, NanoBanana Pro, AI 이미지 생성, 구글 Gemini, 이미지 편집, AI 도구, 마케팅, 교육">
     <meta name="author" content="NanoBanana Guide">
-    <meta property="og:title" content="나노바나나(NanoBanana) 활용 가이드">
+    <meta property="og:title" content="나노바나나 프로(NanoBanana Pro) 활용 가이드">
     <meta property="og:description" content="구글 Gemini 통합 AI 이미지 생성·편집 완벽 가이드">
     <meta property="og:type" content="website">
-    <title>나노바나나(NanoBanana) 활용 가이드</title>
+    <title>나노바나나 프로(NanoBanana Pro) 활용 가이드</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍌</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -141,9 +142,10 @@
 
     <div class="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
         <header class="text-center mb-6 sm:mb-8 md:mb-12 px-2">
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 leading-tight">나노바나나(NanoBanana)</h1>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 leading-tight">나노바나나 프로(NanoBanana Pro) 활용 가이드</h1>
             <p class="mt-3 text-base sm:text-lg md:text-xl text-stone-600 px-4">구글 Gemini 통합 AI 이미지 생성·편집 완벽 가이드</p>
-            <div class="mt-4 flex flex-wrap justify-center gap-2 text-sm">
+            <p class="mt-4 flex flex-wrap justify-center gap-2 text-sm">
+                <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full">Gemini 3.0 Pro</span>
                 <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full">포토샵급 편집</span>
                 <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">실시간 처리</span>
                 <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full">대화형 인터페이스</span>
@@ -164,7 +166,7 @@
             <section class="bg-white p-4 sm:p-6 rounded-xl shadow-md mb-6 sm:mb-8 md:mb-12 mx-2 fade-in" aria-labelledby="chart-title">
                 <h2 id="chart-title" class="text-xl sm:text-2xl font-bold text-center mb-3 sm:mb-4 text-stone-900">핵심 기능 분포 및 전문성 비교</h2>
                 <p class="text-center text-stone-600 mb-4 sm:mb-6 max-w-4xl mx-auto text-sm sm:text-base leading-relaxed px-2">
-                    나노바나나는 구글 Gemini에 통합된 최신 AI 이미지 생성·편집 모델로, 기존 생성형 AI의 한계를 넘어 실무 작업에도 활용될 정도로 강력한 기능들을 제공합니다. 단순히 이미지를 생성하는 것을 넘어 일관성 있는 인물 표현, 자연스러운 사진 편집, 멀티 이미지 합성 등 포토샵급 편집 작업까지 텍스트 명령만으로 수행할 수 있습니다. 아래 차트는 10가지 핵심 기능 카테고리별 전문성과 활용도를 보여줍니다.
+                    나노바나나 프로는 구글 Gemini에 통합된 최신 AI 이미지 생성·편집 모델로, 기존 생성형 AI의 한계를 넘어 실무 작업에도 활용될 정도로 강력한 기능들을 제공합니다. 단순히 이미지를 생성하는 것을 넘어 일관성 있는 인물 표현, 자연스러운 사진 편집, 멀티 이미지 합성 등 포토샵급 편집 작업까지 텍스트 명령만으로 수행할 수 있습니다. 아래 차트는 10가지 핵심 기능 카테고리별 전문성과 활용도를 보여줍니다.
                 </p>
                 <div class="chart-container">
                     <canvas id="featuresChart"></canvas>
@@ -273,11 +275,159 @@
                 </div>
             </section>
             
-            <!-- 나노바나나 활용 시나리오 섹션 -->
-            <section class="bg-gradient-to-br from-yellow-50 to-amber-50 p-4 sm:p-6 rounded-xl shadow-md mb-6 sm:mb-8 md:mb-12 mx-2 fade-in" aria-labelledby="scenarios-title">
-                <h2 id="scenarios-title" class="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6 text-stone-900">🎯 나노바나나 실전 활용 시나리오</h2>
+            <!-- 추천 프롬프트 사이트 섹션 -->
+            <section class="bg-gradient-to-br from-indigo-50 to-purple-50 p-4 sm:p-6 rounded-xl shadow-md mb-6 sm:mb-8 md:mb-12 mx-2 fade-in" aria-labelledby="resources-title">
+                <h2 id="resources-title" class="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6 text-stone-900">🔗 추천 프롬프트 리소스</h2>
                 <p class="text-center text-stone-600 mb-6 max-w-4xl mx-auto text-sm sm:text-base">
-                    실무에서 자주 발생하는 상황별로 나노바나나를 어떻게 활용할 수 있는지 구체적인 시나리오와 함께 알아보세요.
+                    더 많은 나노바나나 프로 프롬프트 예시와 활용법을 찾아보세요. 다양한 카테고리별 프롬프트를 제공하는 유용한 사이트들을 모았습니다.
+                </p>
+                
+                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    <!-- 사이트 1 -->
+                    <a href="https://bananaprompts.fun/explore?tags=Anime" target="_blank" rel="noopener noreferrer" 
+                       class="bg-white p-5 sm:p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border-2 border-transparent hover:border-purple-300 group">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-400 rounded-lg flex items-center justify-center text-white text-xl font-bold group-hover:scale-110 transition-transform duration-300">
+                                🎨
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <h3 class="text-lg font-bold text-stone-800 mb-2 group-hover:text-purple-600 transition-colors">
+                                    Banana Prompts Fun
+                                </h3>
+                                <p class="text-sm text-stone-600 mb-3">
+                                    애니메이션, 캐릭터 디자인 등 다양한 태그별로 분류된 프롬프트 갤러리
+                                </p>
+                                <span class="inline-flex items-center text-xs font-medium text-purple-600">
+                                    사이트 방문 →
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- 사이트 2 -->
+                    <a href="https://nanobananaprompt.org/" target="_blank" rel="noopener noreferrer" 
+                       class="bg-white p-5 sm:p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border-2 border-transparent hover:border-blue-300 group">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-lg flex items-center justify-center text-white text-xl font-bold group-hover:scale-110 transition-transform duration-300">
+                                📚
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <h3 class="text-lg font-bold text-stone-800 mb-2 group-hover:text-blue-600 transition-colors">
+                                    NanoBanana Prompt
+                                </h3>
+                                <p class="text-sm text-stone-600 mb-3">
+                                    나노바나나 프로 프롬프트 전문 커뮤니티 및 라이브러리
+                                </p>
+                                <span class="inline-flex items-center text-xs font-medium text-blue-600">
+                                    사이트 방문 →
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- 사이트 3 -->
+                    <a href="https://youmind.com/ko-KR/nano-banana-pro-prompts?categories=infographic-edu-visual" target="_blank" rel="noopener noreferrer" 
+                       class="bg-white p-5 sm:p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border-2 border-transparent hover:border-green-300 group">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-400 rounded-lg flex items-center justify-center text-white text-xl font-bold group-hover:scale-110 transition-transform duration-300">
+                                💡
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <h3 class="text-lg font-bold text-stone-800 mb-2 group-hover:text-green-600 transition-colors">
+                                    YouMind - 나노바나나 프로 프롬프트
+                                </h3>
+                                <p class="text-sm text-stone-600 mb-3">
+                                    인포그래픽, 교육용 시각자료 등 전문 카테고리별 프롬프트 모음
+                                </p>
+                                <span class="inline-flex items-center text-xs font-medium text-green-600">
+                                    사이트 방문 →
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- 사이트 4 -->
+                    <a href="https://www.canva.com/design/DAG6_Zjwl_w/0XvALALNrNaULE8wdTFHIQ/view?utm_content=DAG6_Zjwl_w&utm_campaign=designshare&utm_medium=link&utm_source=viewer" target="_blank" rel="noopener noreferrer" 
+                       class="bg-white p-5 sm:p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border-2 border-transparent hover:border-amber-300 group">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-400 rounded-lg flex items-center justify-center text-white text-xl font-bold group-hover:scale-110 transition-transform duration-300">
+                                🎯
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <h3 class="text-lg font-bold text-stone-800 mb-2 group-hover:text-amber-600 transition-colors">
+                                    Canva 프롬프트 가이드
+                                </h3>
+                                <p class="text-sm text-stone-600 mb-3">
+                                    시각적으로 정리된 나노바나나 프로 프롬프트 활용 가이드
+                                </p>
+                                <span class="inline-flex items-center text-xs font-medium text-amber-600">
+                                    사이트 방문 →
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- 사이트 5 -->
+                    <a href="https://www.localbanana.io/" target="_blank" rel="noopener noreferrer" 
+                       class="bg-white p-5 sm:p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border-2 border-transparent hover:border-yellow-300 group">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-yellow-400 to-amber-400 rounded-lg flex items-center justify-center text-white text-xl font-bold group-hover:scale-110 transition-transform duration-300">
+                                🍌
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <h3 class="text-lg font-bold text-stone-800 mb-2 group-hover:text-yellow-600 transition-colors">
+                                    Local Banana
+                                </h3>
+                                <p class="text-sm text-stone-600 mb-3">
+                                    나노바나나 프로 로컬 버전 및 프롬프트 최적화 도구
+                                </p>
+                                <span class="inline-flex items-center text-xs font-medium text-yellow-600">
+                                    사이트 방문 →
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- 사이트 6 -->
+                    <a href="https://prompthero.com/nano-banana-prompts" target="_blank" rel="noopener noreferrer" 
+                       class="bg-white p-5 sm:p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border-2 border-transparent hover:border-rose-300 group">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-rose-400 to-pink-400 rounded-lg flex items-center justify-center text-white text-xl font-bold group-hover:scale-110 transition-transform duration-300">
+                                🌟
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <h3 class="text-lg font-bold text-stone-800 mb-2 group-hover:text-rose-600 transition-colors">
+                                    PromptHero - Nano Banana
+                                </h3>
+                                <p class="text-sm text-stone-600 mb-3">
+                                    나노바나나 프로 프롬프트 영웅 커뮤니티 및 고급 예시 모음
+                                </p>
+                                <span class="inline-flex items-center text-xs font-medium text-rose-600">
+                                    사이트 방문 →
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="mt-6 p-4 bg-white rounded-lg border-l-4 border-purple-400 max-w-4xl mx-auto">
+                    <h3 class="font-semibold text-stone-800 mb-2 flex items-center">
+                        <span class="mr-2">💎</span>이런 분들께 추천합니다
+                    </h3>
+                    <ul class="text-sm text-stone-700 space-y-1">
+                        <li>• 다양한 프롬프트 예시를 참고하여 영감을 얻고 싶은 분</li>
+                        <li>• 특정 카테고리(애니메이션, 교육, 마케팅 등)에 특화된 프롬프트가 필요한 분</li>
+                        <li>• 커뮤니티에서 검증된 고품질 프롬프트를 사용하고 싶은 분</li>
+                        <li>• 나노바나나 프로 활용 능력을 한 단계 업그레이드하고 싶은 분</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 나노바나나 프로 활용 시나리오 섹션 -->
+            <section class="bg-gradient-to-br from-yellow-50 to-amber-50 p-4 sm:p-6 rounded-xl shadow-md mb-6 sm:mb-8 md:mb-12 mx-2 fade-in" aria-labelledby="scenarios-title">
+                <h2 id="scenarios-title" class="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6 text-stone-900">🎯 나노바나나 프로 실전 활용 시나리오</h2>
+                <p class="text-center text-stone-600 mb-6 max-w-4xl mx-auto text-sm sm:text-base">
+                    실무에서 자주 발생하는 상황별로 나노바나나 프로를 어떻게 활용할 수 있는지 구체적인 시나리오와 함께 알아보세요.
                 </p>
                 
                 <div class="max-w-6xl mx-auto">
@@ -408,7 +558,7 @@
                     <!-- 성공 비법 -->
                     <div class="bg-gradient-to-r from-amber-100 to-orange-100 p-6 rounded-xl">
                         <h3 class="text-lg font-bold mb-4 text-amber-900 flex items-center">
-                            <span class="mr-2">🏆</span>나노바나나 활용 성공 비법
+                            <span class="mr-2">🏆</span>나노바나나 프로 활용 성공 비법
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div class="bg-white p-4 rounded-lg">
@@ -448,7 +598,7 @@
                                 <span class="mr-2">💬</span>대화하듯 사용하기
                             </h4>
                             <p class="text-sm text-stone-700">
-                                나노바나나는 단순한 도구가 아닌 창작 파트너입니다. "이렇게 해줘"가 아닌 "이런 느낌으로 만들어볼까?"라는 
+                                나노바나나 프로는 단순한 도구가 아닌 창작 파트너입니다. "이렇게 해줘"가 아닌 "이런 느낌으로 만들어볼까?"라는 
                                 마음가짐으로 대화하듯 사용하면 훨씬 더 만족스러운 결과를 얻을 수 있습니다.
                             </p>
                         </div>
@@ -459,7 +609,7 @@
         </main>
         
         <footer class="text-center mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-stone-200 px-4">
-            <p class="text-xs sm:text-sm text-stone-500">&copy; 2025 NanoBanana Interactive Guide. All rights reserved.</p>
+            <p class="text-xs sm:text-sm text-stone-500">&copy; 2025 NanoBanana Pro Interactive Guide. All rights reserved.</p>
         </footer>
     </div>
 
@@ -468,7 +618,7 @@
             "교육/창작": {
                 icon: "📚",
                 color: "rgba(139, 69, 19, 0.7)",
-                 items: ["4컷만화 생성", "과학 다이어그램 생성", "교육용 시각자료", "아이디어 스케치 구현", "창의적 브레인스토밍", "디자인 프로토타이핑", "학습용 캐릭터 제작", "교과서급 일러스트"],
+                 items: ["4컷만화 생성", "과학 다이어그램 생성", "교육용 시각자료", "아이디어 스케치 구현", "창의적 브레인스토밍", "디자인 프로토타이핑", "학습용 캐릭터 제작", "교과서급 일러스트", "손그림 낙서 캐릭터", "스케치에서 실사 비디오 생성"],
                  examples: [
                      "아래 내용으로 2X2형식의 4컷만화 그려주세요.\n\n주제: \"폰 바꾸면 다 사라지는 거 아니야?\"\n\n1컷\n- 장면: 휴대폰 매장 앞에서 망설이는 주인공\n- 대사(주인공): \"새 폰으로 바꾸면… 내 사진이랑 카톡 다 날아가는 거 아냐?\"\n\n2컷\n- 장면: 직원이 웃으면서 설명\n- 대사(직원): \"걱정 마세요~ 다 옮겨드립니다. 번호도 그대로예요.\"\n\n3컷\n- 장면: 의심 반, 기대 반 표정으로 폰을 들여다보는 주인공\n- 대사(주인공): \"진짜요? 내 손녀 사진 하나도 안 없어지는 거죠?\"\n\n4컷\n- 장면: 새 폰 화면에 손녀 사진이 그대로 떠 있고, 주인공 환하게 웃음\n- 대사(주인공): \"오오~ 세상 좋아졌네! 나도 이제 최신형 사용자인가?\"",
                      "태양계 행성들의 궤도를 설명하는 과학 다이어그램 이미지를 제작해주세요.",
@@ -477,7 +627,9 @@
                      "\"미래 도시 교통\"이라는 주제를 시각화한 브레인스토밍 아트워크를 제작해주세요.",
                      "새로운 스마트워치 UI 아이디어를 반영한 프로토타입 목업 이미지를 제작해주세요.",
                      "어린이를 위한 수학 학습 캐릭터(귀여운 펭귄 선생님)를 제작해주세요.",
-                     "고등학교 생물 교과서에 수록될 수준의 정밀한 세포 구조 일러스트를 만들어주세요."
+                     "고등학교 생물 교과서에 수록될 수준의 정밀한 세포 구조 일러스트를 만들어주세요.",
+                     "줄이 있는 공책 종이 위에 손으로 낙서하듯 그린\n[캐릭터 이름]의 초상 일러스트.\n\n[캐릭터 설명: 성격, 세계관에서의 역할, 대표적인 감정이나 분위기,\n상징적인 포즈나 상황을 한두 문장으로 서술]\n\n볼펜으로 그린 손그림 스타일로,\n즉흥적이고 자유로운 선,\n겹쳐 그린 스트로크와\n실제 공책에 빠르게 스케치한 듯한 질감이 살아 있음.\n\n캐릭터의 성격과 특징이 자연스럽게 드러나도록 표현하고,\n윤곽선은 살짝 강조된 손그림 아웃라인.\n주변에는 손글씨 느낌의 한글 메모, 화살표, 짧은 주석을 배치해\n마치 캐릭터를 분석하거나 감상하며 적어둔 노트 같은 분위기.\n\n전체 스타일은 낙서 아트(doodle art),\n만화 주석 느낌이지만 과하게 깔끔하지 않게,\n삐뚤고 인간적인 손맛을 유지.\n볼펜 특유의 질감, 번짐, 긁힘 표현을 포함.\n\n[사용할 색상: 예) 파랑·검정 볼펜만 사용 / 노랑 포인트 추가]\n\n고해상도 느낌의 일러스트,\n가로 세로 비율 1080x1350.",
+                     "🎬 스케치에서 실사 비디오를 만드는 7가지 창의적인 프롬프트\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n【예시 1】기본 2단계 프로세스 (Grok + Veo3)\n\n1단계 (Grok으로 이미지 생성):\n스케치북 위에 연필로 그린 남산타워와 하늘의 간단한 스케치.\n선은 거칠고 자연스러운 손그림 느낌.\n스케치북 주변으로 책상이나 손이 살짝 보이는 구도.\n\n2단계 (Veo3로 비디오 생성):\nLanterns rise from Namsan Mountain, Seoul at night.\nThe hand-drawn sketch on the sketchbook gradually transforms into a realistic scene.\nWarm lanterns float up into the dark sky, glowing softly.\nThe camera slowly zooms into the sketch as it comes to life.\nCinematic lighting, magical atmosphere, smooth transition from drawing to reality.\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n【예시 2】남산에서 등불이 솟아오른다\n\n마법 같은 순간을 포착한 초현실적인 사진입니다. 나선형으로 제본된 스케치북 페이지에 미세한 붓을 든 손이 한 번 터치합니다. 이 페이지에는 밤의 서울 한강을 놀랍도록 섬세하고 사실적으로 묘사한 일러스트로, 반짝이는 도시의 불빛과 다리에 반사되는 넓은 강을 보여줍니다. 한 번의 터치로 복잡한 물결이 빠르게 바깥으로 퍼져나가면서 강 표면 전체에 반사된 그림이 일그러집니다. 물결이 페이지의 모든 곳으로 확장되면서 수많은 작고 빛나는 주황색 소원등이 페인트 칠한 물에서 나와 실제 공기 위로 부드럽게 떠오르기 시작합니다. 시네마틱 조명, 8k 해상도, 극도의 디테일.\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n【예시 3】열대우림의 폭발\n\n나무 책상 위에서 마법 같은 순간을 포착한 초현실적인 사진입니다. 나선형으로 제본된 스케치북에는 나뭇가지에 앉은 스칼렛 마코와 함께 생생한 열대우림의 캐노피가 놀랍도록 섬세하고 사실적인 색연필 그림으로 그려져 있습니다. 색칠한 잉꼬를 손으로 부드럽게 만져보세요. 그 순간 마코앵무가 2D 페이지에서 현실로 튀어나와 연필 질감의 깃털에서 실제 무지개 빛깔의 깃털로 바뀌며 날아오르는 모습을 볼 수 있습니다. 동시에 무성한 열대 덩굴과 잎, 이국적인 꽃이 스케치북 페이지에서 빠르게 자라나 책상 위로 쏟아져 나오기 시작합니다. 영화 같은 햇빛이 나뭇잎 사이로 들어오고, 8k 해상도와 극도의 텍스처 디테일로 표현됩니다.\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n【예시 4】김이 모락모락 나는 라면\n\n마법 같은 요리의 순간을 포착한 초현실적인 사진. 나선형으로 제본된 열린 스케치북이 소박한 테이블 위에 놓여 있습니다. 이 페이지에는 차슈 돼지고기, 달걀, 김이 들어간 김이 모락모락 나는 일본 라멘 한 그릇이 놀랍도록 섬세하고 사실적인 목탄과 잉크로 그려져 있습니다. 실제 나무 젓가락을 든 손이 그림에 닿아 위로 당겨집니다. 국물이 뚝뚝 떨어지고 김이 모락모락 피어오르는 실제 라면 면발이 그림 속 그릇에서 물리적으로 추출되고 있습니다. 그림 주변의 종이는 예술에서 나오는 열과 습기로 인해 젖어 있고 약간 뒤틀린 것처럼 보입니다. 따뜻하고 아늑한 시네마틱 조명, 8k 해상도, 증기와 음식 질감의 극도의 디테일이 돋보입니다.\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n【예시 5】미니어처 십자군\n\n마법 같은 판타지의 순간을 포착한 초현실적인 사진입니다. 나선형으로 제본된 열린 스케치북이 어둡고 앤티크한 책상 위에 놓여 있습니다. 이 페이지에는 요새화된 성문이 있는 거대한 중세 판타지 성의 놀랍도록 섬세하고 사실적인 펜과 잉크로 그린 건축 그림이 있습니다. 손가락이 그려진 성의 도개교에 닿습니다. 즉시 도개교가 종이에서 물리적으로 내려오고, 작은 판타지 생물과 함께 말을 탄 빛나는 미니어처 기사들의 행렬이 그림에서 벗어나 책상 표면으로 행진하기 시작합니다. 그려진 성벽의 돌 질감이 바깥쪽으로 튀어나와 입체적으로 보입니다. 마법 같은 빛을 내는 시네마틱 조명, 8k 해상도, 극도로 정교한 디테일이 돋보입니다.\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n【예시 6】그림이 현실이 되는 군고구마\n\n마법 같은 순간을 포착한 초현실적인 사진. 거친 나무 탁자 위에 펼쳐진 스프링 스케치북이 있습니다. 스케치북 페이지 안에는 껍질이 검게 그을리고 먹음직스러운 군고구마 더미가 쌓여 있는 놀라울 정도로 정교한 실사 그림(색연필과 목탄화 느낌)이 담겨 있다. 한 손이 그림 속 군고구마 하나를 잡고 들어 올리는 중입니다. 잡힌 군고구마는 2D 그림에서 물리적으로 빠져나와 김이 모락모락 나는 뜨거운 3D 실물로 변하고 있다. 갓 구운 고구마의 갈라진 껍질 질감과 피어오르는 하얀 김이 극도로 사실적으로 묘사되고, 고구마가 나오는 종이 부분은 열기에 살짝 그을리거나 우그러진 듯 보인다. 따뜻한 시네마틱 조명, 8K 해상도, 극한의 디테일.\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n【예시 7】북한산 위 태양\n\n나무 책상 위 마법 같은 순간을 포착한 초현실적인 시네마틱 사진. 왼쪽 스케치북 페이지는 원래 북한산 하늘 위에 밝은 태양이 떠 있는 실사 사진이었으나, 그림 속 태양이 추출되는 순간 어두운 밤으로 변해버린 모습입니다. 현재 스케치북 속 밤하늘에는 태양이 있던 자리가 선명한 빈 공간으로 남아 있다. 정밀한 금속 핀셋을 쥔 손이 막 뽑아낸 빛나는 태양을 잡고 오른쪽 아메리카노 머그컵을 향해 순식간에 움직이며 모션 블러 효과를 만들어냅니다. 태양이 아메리카노에 들어가는 순간 커피가 격렬하게 끓어오르며 노란색 카페라떼 거품으로 변하는데, 이 거품은 컵 밖으로 넘치지 않고 표면에 선명한 하트 모양을 형성함. 8K 해상도, 극한의 디테일, 속도감 포착."
                  ],
                  tips: [
                      ["• 각 컷마다 명확한 상황과 감정을 구체적으로 묘사하세요", "• 캐릭터의 일관성을 위해 외모, 옷차림, 표정 스타일을 통일하세요", "• 만화의 흐름이 자연스럽게 이어지도록 기승전결 구조를 명확히 하세요", "• 웹툰, 일본 만화, 미국 카툰 등 원하는 스타일을 구체적으로 지정하세요"],
@@ -487,7 +639,9 @@
                      ["• 브레인스토밍 주제의 다양한 관점과 가능성을 포함하도록 하세요", "• 창의적이면서도 논리적 연결고리가 있는 아이디어들을 시각화하세요", "• 미래 지향적이면서도 현실성 있는 컨셉들을 균형있게 배치하세요"],
                      ["• UI/UX 원칙을 고려한 사용자 친화적 디자인을 요청하세요", "• 실제 디바이스의 제약사항(화면 크기, 해상도)을 반영하세요", "• 프로토타입의 주요 기능과 사용 시나리오를 명확히 표현하세요"],
                      ["• 대상 연령층이 좋아할 만한 친근한 외모와 성격을 설정하세요", "• 교육 내용과 연관된 시각적 요소들을 캐릭터에 자연스럽게 포함하세요", "• 다양한 표정과 제스처로 활용할 수 있도록 확장성을 고려하세요"],
-                     ["• 교육 과정과 학습 수준에 맞는 정확하고 상세한 정보를 포함하세요", "• 전문적이면서도 학생들이 이해하기 쉬운 시각적 표현을 사용하세요", "• 교과서 인쇄 품질을 고려한 선명하고 명확한 이미지로 제작하세요"]
+                     ["• 교육 과정과 학습 수준에 맞는 정확하고 상세한 정보를 포함하세요", "• 전문적이면서도 학생들이 이해하기 쉬운 시각적 표현을 사용하세요", "• 교과서 인쇄 품질을 고려한 선명하고 명확한 이미지로 제작하세요"],
+                     ["• [캐릭터 이름]과 [캐릭터 설명] 부분을 구체적으로 작성하세요", "• 캐릭터의 성격이 시각적으로 드러나는 포즈와 표정을 명시하세요", "• 색상은 볼펜의 특성(파랑, 검정)을 살리되 포인트 컬러를 활용하세요", "• 주변 메모와 주석의 내용을 캐릭터 분석이나 특징과 연결하세요", "• 손그림의 삐뚤고 자연스러운 느낌을 유지하도록 '완벽하지 않게' 요청하세요"],
+                     ["💡 공통 핵심 팁:", "• Grok으로 먼저 스케치북 이미지를 생성한 후, Veo3로 비디오를 만드는 2단계 프로세스입니다", "• 스케치는 '손으로 그린 느낌'을 강조하여 자연스럽고 거친 선으로 표현하세요", "• '초현실적인 사진', '마법 같은 순간' 등의 키워드로 환상적 분위기를 강조하세요", "• Veo3 프롬프트에서 'transforms', 'comes to life' 등의 키워드로 변환 효과를 명시하세요", "", "🎬 영상 효과 팁:", "• 2D에서 3D로의 물리적 변환('튀어나온다', '빠져나온다', '추출된다')을 구체적으로 묘사하세요", "• 터치나 물결 효과로 그림에서 현실로의 전환 계기를 명확히 하세요", "• 카메라 움직임(zoom in, pan)을 추가하면 더 역동적인 영상이 됩니다", "• 모션 블러로 속도감과 역동성을 표현하세요", "", "✨ 디테일 향상 팁:", "• 8K 해상도를 명시하여 고품질 결과물을 요청하세요", "• '극도의 디테일', '극도의 텍스처 디테일'로 사실감을 극대화하세요", "• 질감 변화(연필→실제, 2D→3D)를 단계적으로 설명하면 더 사실적입니다", "• 조명과 분위기(cinematic, magical, warm)를 구체적으로 지정하면 품질이 향상됩니다", "", "🎨 주제별 특화 팁:", "• 자연/동물: 식물이나 동물의 움직임을 역동적으로 표현하세요", "• 음식: 김/열기/국물 등 물리적 영향을 구체적으로 묘사하고, 종이가 젖거나 뒤틀리는 환경 변화도 포함하세요", "• 판타지: 미니어처 요소는 스케일을 명확히 지정하고, 앤티크하거나 마법적인 분위기는 조명으로 강조하세요", "• 추출 컨셉: 도구(핀셋 등)를 구체화하고, 추출 후 원본의 변화를 명확히 설정하세요", "", "🌟 실사로 전환되는 순간의 부드러운 트랜지션을 위해 'smooth transition' 키워드 필수!"]
                  ]
             },
             "인물 편집": {
@@ -526,7 +680,7 @@
             "광고/마케팅": {
                 icon: "📢",
                 color: "rgba(244, 114, 182, 0.7)",
-                 items: ["모델컷 합성", "다중 객체 합성", "광고 이미지 자동 생성", "목업 합성", "랜딩 페이지·배너 생성", "로고 스토리보드", "제품 홍보 이미지", "브랜드 캠페인 통일", "SNS 밈 콘텐츠", "전자상거래 이미지"],
+                 items: ["모델컷 합성", "다중 객체 합성", "광고 이미지 자동 생성", "목업 합성", "랜딩 페이지·배너 생성", "로고 스토리보드", "제품 홍보 이미지", "브랜드 캠페인 통일", "SNS 밈 콘텐츠", "전자상거래 이미지", "제품 상세페이지 생성"],
                  examples: [
                      "여성 모델이 스마트폰을 들고 있는 장면에, 옆에 맥주잔과 브랜드 로고를 자연스럽게 합성해주세요.",
                      "모델이 자동차 보닛 위에 앉아 있고, 옆에 강아지와 가방이 배치된 장면을 만들어주세요.",
@@ -537,7 +691,8 @@
                      "하얀 배경 위에 고급스러운 향수 병을 올려놓고, 부드러운 그림자와 반사를 강조한 홍보 컷을 제작해주세요.",
                      "같은 브랜드 로고를 사용해 사무실, 카페, 거리에서 모두 동일하게 적용된 캠페인 컷을 제작해주세요.",
                      "귀여운 고양이가 커피를 마시는 밈 스타일 이미지를 제작해주세요.",
-                     "하얀 배경에서 의류 제품을 평평하게 놓은 듯한 전자상거래용 사진을 만들어주세요."
+                     "하얀 배경에서 의류 제품을 평평하게 놓은 듯한 전자상거래용 사진을 만들어주세요.",
+                     "A photorealistic e-commerce product detail page, presented as a long-form vertical infographic.\nThe main hero and all product visuals are high-quality, photorealistic 3D renders with depth and dimension,\nbased on the uploaded product image. The overall design is clean, minimalist, and premium.\n\n[Visual Style] Premium commercial photography aesthetic, luxurious feel.\nThe color scheme and background elements\n(e.g., subtle textures, soft lighting, thematic props)\nseamlessly blend with the real-world appearance of the uploaded product.\n\n[Text & Content Rules]\nLanguage: All text is in Korean (Hangul).\nContent: AI generates context-aware, persuasive Korean marketing copy.\n\n[Layout Structure & Photorealistic Content]\nHero Banner: Large, photorealistic banner with the product as the centerpiece,\nsurrounded by realistic thematic elements. Compelling Korean headline and subtitle.\nKey Benefits: 3-4 sections with realistic 3D icons and concise Korean descriptions highlighting top features.\nTrust & Quality: Realistic certification badges or awards with Korean labels.\nTechnical Detail: A photorealistic 3D breakdown or cross-section of the product,\nshowing internal components or key ingredients with Korean explanations.\nUsage Steps: A 3-step guide with realistic,\nhigh-quality visuals illustrating how to use the product, accompanied by brief Korean instructions.\nSocial Proof & CTA: Realistic customer review section with star ratings and Korean text bubbles.\nProminent Korean CTA button at the bottom."
                  ],
                  tips: [
                      ["• 합성할 요소들의 크기 비율을 현실적으로 지정하세요", "• 조명 방향과 그림자를 일치시키려면 '자연스러운 조명'을 언급하세요", "• 원본 이미지의 품질이 합성 결과에 큰 영향을 미칩니다"],
@@ -549,7 +704,8 @@
                      ["• 제품의 핵심 특징이 잘 드러나는 앵글을 선택하세요", "• 고급스러운 느낌을 위해 조명과 그림자 디테일을 요청하세요", "• 제품 카테고리에 맞는 배경과 소품을 활용하세요"],
                      ["• 브랜드 아이덴티티 키워드를 일관되게 사용하세요", "• 각 매체별 특성을 고려한 구도와 비율을 요청하세요", "• 시즌이나 캠페인 테마를 모든 이미지에 반영하세요"],
                      ["• 트렌드에 맞는 밈 포맷과 텍스트 스타일을 활용하세요", "• 과장되고 유머러스한 표현을 두려워하지 마세요", "• 타겟 연령층이 공감할 수 있는 상황을 설정하세요"],
-                     ["• 깔끔한 화이트 배경과 균등한 조명을 요청하세요", "• 제품의 디테일이 선명하게 보이도록 고해상도를 지정하세요", "• 그림자는 최소화하고 제품 자체에 집중하도록 하세요"]
+                     ["• 깔끔한 화이트 배경과 균등한 조명을 요청하세요", "• 제품의 디테일이 선명하게 보이도록 고해상도를 지정하세요", "• 그림자는 최소화하고 제품 자체에 집중하도록 하세요"],
+                     ["• 제품 이미지를 먼저 업로드한 후 프롬프트를 사용하세요", "• 제품 특성에 맞는 배경 요소를 구체적으로 지정하세요 (예: 화장품은 꽃잎/물방울)", "• 한국어 마케팅 카피가 자연스럽게 생성되도록 제품 장점을 명시하세요", "• 세로형 인포그래픽 형태로 생성되므로 모바일 최적화에 적합합니다", "• 3D 렌더링 품질을 높이려면 'photorealistic', 'premium', 'luxurious' 키워드를 강조하세요"]
                  ]
             },
             "스타일 변환": {
